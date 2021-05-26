@@ -2,14 +2,14 @@ package com.emcove.rest.api.Core.response;
 
 import com.google.gson.Gson;
 
-public class Producto {
+public class Product {
     private Integer id;
     private String name;
     private String description;
     private Float price;
 
-    public Producto() {}
-    public Producto(Integer id, String name, String description, Float price) {
+    public Product() {}
+    public Product(Integer id, String name, String description, Float price) {
         this.id = id;
         this.name = name;
         this.description = description;

@@ -3,21 +3,21 @@ package com.emcove.rest.api.Core.response;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Emprendimiento {
+public class Entreprenuership {
     private Integer id ;
     private String name;
     private String description ;
-    private Set<Producto> products = new HashSet<>();
-    private Reputacion reputation;
+    private Set<Product> products = new HashSet<>();
+    private Reputation reputation;
 
-    public Emprendimiento() {}
+    public Entreprenuership() {}
 
-    public Emprendimiento(Integer id, String name, String description) {
+    public Entreprenuership(Integer id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
         //Ver como se inicializa, se deberia autogenerar el id
-        this.reputation = new Reputacion();
+        this.reputation = new Reputation();
     }
 
     public Integer getId() {

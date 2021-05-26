@@ -1,16 +1,16 @@
 package com.emcove.rest.api.Core.response;
 
-public class Comentario {
+public class Comment {
     private Integer id;
     private String username;
     private String title;
     private String description;
-    private ValorComentario value;
+    private CommentValue value;
 
-    public Comentario() {
+    public Comment() {
     }
 
-    public Comentario(Integer id, String username, String title, String description, ValorComentario value) {
+    public Comment(Integer id, String username, String title, String description, CommentValue value) {
         this.id = id;
         this.username = username;
         this.title = title;
@@ -50,11 +50,11 @@ public class Comentario {
         this.description = description;
     }
 
-    public ValorComentario getValue() {
+    public CommentValue getValue() {
         return value;
     }
 
-    public void setValue(ValorComentario value) {
+    public void setValue(CommentValue value) {
         this.value = value;
     }
 }

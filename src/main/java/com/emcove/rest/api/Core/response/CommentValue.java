@@ -1,6 +1,6 @@
 package com.emcove.rest.api.Core.response;
 
-public enum ValorComentario {
+public enum CommentValue {
     MUY_MALO("MUY_MALO", 1),
     MALO("MALO", 2),
     BUENO("BUENO", 3),
@@ -8,7 +8,7 @@ public enum ValorComentario {
     EXCELENTE("EXCELENTE", 5);
 
 
-    ValorComentario(String name, int value) {
+    CommentValue(String name, int value) {
         this.name = name;
         this.value = value;
     }

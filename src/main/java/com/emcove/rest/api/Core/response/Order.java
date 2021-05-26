@@ -6,17 +6,17 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Pedido {
+public class Order {
     private Integer id;
     private LocalDate createDate;
     private LocalDate deliverDate;
-    private EstadoPedido state;
-    private Set<Producto> products = new HashSet<>();
+    private OrderState state;
+    private Set<Product> products = new HashSet<>();
 
-    public Pedido() {
+    public Order() {
     }
 
-    public Pedido(Integer id, LocalDate createDate, LocalDate deliverDate, EstadoPedido state, Set<Producto> products) {
+    public Order(Integer id, LocalDate createDate, LocalDate deliverDate, OrderState state, Set<Product> products) {
         this.id = id;
         this.createDate = createDate;
         this.deliverDate = deliverDate;
@@ -48,11 +48,11 @@ public class Pedido {
         this.deliverDate = deliverDate;
     }
 
-    public EstadoPedido getState() {
+    public OrderState getState() {
         return state;
     }
 
-    public void setState(EstadoPedido state) {
+    public void setState(OrderState state) {
         this.state = state;
     }
     public String toJson(){

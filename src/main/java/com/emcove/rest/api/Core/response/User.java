@@ -1,20 +1,20 @@
 package com.emcove.rest.api.Core.response;
 
-public class Usuario {
+public class User {
     private String userName;
     private String password;
     private String email;
-    private Emprendimiento emprendimiento;
-    private Reputacion reputation;
+    private Entreprenuership entreprenuership;
+    private Reputation reputation;
 
-    public Usuario(){}
+    public User(){}
 
-    public Usuario(String userName, String password, String email) {
+    public User(String userName, String password, String email) {
         this.userName = userName;
         this.password = password;
         this.email = email;
         //Ver como se inicializa, se deberia autogenerar el id
-        this.reputation = new Reputacion();
+        this.reputation = new Reputation();
     }
 
     public String getUserName() {
@@ -40,11 +40,11 @@ public class Usuario {
     public void setEmail(String email) {
         this.email = email;
     }
-    public Emprendimiento getEmprendimiento() {
-        return emprendimiento;
+    public Entreprenuership getEmprendimiento() {
+        return entreprenuership;
     }
 
-    public void setEmprendimiento(Emprendimiento emprendimiento) {
-        this.emprendimiento = emprendimiento;
+    public void setEmprendimiento(Entreprenuership entreprenuership) {
+        this.entreprenuership = entreprenuership;
     }
 }

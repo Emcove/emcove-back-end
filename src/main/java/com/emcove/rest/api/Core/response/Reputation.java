@@ -3,19 +3,19 @@ package com.emcove.rest.api.Core.response;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Reputacion {
+public class Reputation {
     private Integer id;
     private Float averagePoints;
     private int totalPoint;
-    private Set<Comentario> coments = new HashSet<>();
+    private Set<Comment> coments = new HashSet<>();
 
-    public Reputacion(Integer id, Float averagePoints, int totalPoint) {
+    public Reputation(Integer id, Float averagePoints, int totalPoint) {
         this.id = id;
         this.averagePoints = averagePoints;
         this.totalPoint = totalPoint;
     }
 
-    public Reputacion() {
+    public Reputation() {
         averagePoints = 0F;
         totalPoint = 0;
     }
@@ -44,20 +44,20 @@ public class Reputacion {
         this.totalPoint = totalPoint;
     }
 
-    public Set<Comentario> getComents() {
+    public Set<Comment> getComents() {
         return coments;
     }
 
-    public void setComents(Set<Comentario> coments) {
+    public void setComents(Set<Comment> coments) {
         this.coments = coments;
     }
 
-    public void addComent(Comentario coment){
+    public void addComent(Comment coment){
         getComents().add(coment);
-        calcularReputacion(coment.getValue().getValue());
+        calculateReputation(coment.getValue().getValue());
     }
 
-    public void calcularReputacion(int newValue){
+    public void calculateReputation(int newValue){
         setTotalPoint(getTotalPoint() + newValue);
         setAveragePoints((float) (getTotalPoint() / (getComents().size()+1)));
     }
