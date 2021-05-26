@@ -1,8 +1,7 @@
 package com.emcove.rest.api.Core.controllers;
 
-import com.emcove.rest.api.Core.response.EstadoPedido;
-import com.emcove.rest.api.Core.response.Pedido;
-import com.emcove.rest.api.Core.response.Usuario;
+import com.emcove.rest.api.Core.response.OrderState;
+import com.emcove.rest.api.Core.response.Order;
 import com.emcove.rest.api.Core.utilities.ResponseUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,12 +10,12 @@ import java.util.HashSet;
 
 @RestController
 @RequestMapping("/order")
-public class PedidoController {
+public class OrderController {
 
     @GetMapping("/{id}")
     public String getOrder(@PathVariable Integer id){
         LocalDate localDate = LocalDate.of(2021,5,25);
-        Pedido order = new Pedido(id,localDate, null, EstadoPedido.PENDIENTE,new HashSet<>());
+        Order order = new Order(id,localDate, null, OrderState.PENDIENTE,new HashSet<>());
         return ResponseUtils.toJson(order);
     }
 
@@ -27,7 +26,7 @@ public class PedidoController {
 
     @PostMapping("/")
     public String createOrder(@RequestParam String dateStr){
-        Pedido order = new Pedido(1,ResponseUtils.getLocalDateFromString(dateStr), null, EstadoPedido.PENDIENTE,new HashSet<>());
+        Order order = new Order(1,ResponseUtils.getLocalDateFromString(dateStr), null, OrderState.PENDIENTE,new HashSet<>());
         return "Order create with success. user:" + ResponseUtils.toJson(order);
     }
 }
