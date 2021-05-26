@@ -1,5 +1,7 @@
 package com.emcove.rest.api.Core.response;
 
+import com.google.gson.Gson;
+
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -52,5 +54,9 @@ public class Pedido {
 
     public void setState(EstadoPedido state) {
         this.state = state;
+    }
+    public String toJson(){
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 }

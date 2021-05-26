@@ -1,5 +1,7 @@
 package com.emcove.rest.api.Core.response;
 
+import com.google.gson.Gson;
+
 public class Producto {
     private Integer id;
     private String name;
@@ -44,5 +46,9 @@ public class Producto {
 
     public void setPrice(Float price) {
         this.price = price;
+    }
+    public String toJson(){
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 }
