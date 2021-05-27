@@ -1,6 +1,6 @@
 package com.emcove.rest.api.Core.response;
 
-import com.google.gson.Gson;
+import java.util.HashMap;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,13 +15,17 @@ public class Product {
     private String name;
     private String description;
     private Float price;
+    private HashMap<String, String[]> props;
 
-    public Product() {}
-    public Product(Integer id, String name, String description, Float price) {
+    public Product(HashMap<String, String[]> props) {
+        this.props = props;
+    }
+    public Product(Integer id, String name, String description, Float price, HashMap<String, String[]> props) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.props = props;
     }
 
     public Integer getId() {
@@ -54,9 +58,5 @@ public class Product {
 
     public void setPrice(Float price) {
         this.price = price;
-    }
-    public String toJson(){
-        Gson gson = new Gson();
-        return gson.toJson(this);
     }
 }

@@ -67,9 +67,4 @@ public class Order {
     public void setProduct(Product product) {
         this.product = product;
     }
-
-    public String toJson(){
-        Gson gson = new Gson();
-        return gson.toJson(this);
-    }
 }
