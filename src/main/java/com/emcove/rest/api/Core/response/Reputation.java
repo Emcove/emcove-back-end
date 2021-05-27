@@ -1,12 +1,16 @@
 package com.emcove.rest.api.Core.response;
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-
+@Entity
 public class Reputation {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Float averagePoints;
     private int totalPoint;
+    @OneToMany
     private Set<Comment> coments = new HashSet<>();
 
     public Reputation(Integer id, Float averagePoints, int totalPoint) {

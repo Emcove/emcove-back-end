@@ -2,15 +2,19 @@ package com.emcove.rest.api.Core.response;
 
 import com.google.gson.Gson;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-
+@Entity
 public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private LocalDate createDate;
     private LocalDate deliverDate;
     private OrderState state;
+    @OneToOne
     private Product product;
 
     public Order() {
@@ -56,4 +60,11 @@ public class Order {
         this.state = state;
     }
 
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 }
