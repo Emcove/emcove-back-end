@@ -1,13 +1,18 @@
 package com.emcove.rest.api.Core.response;
 
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-
+@Entity
 public class Entreprenuership {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id ;
     private String name;
     private String description ;
+    @OneToMany
     private Set<Product> products = new HashSet<>();
+    @OneToOne
     private Reputation reputation;
 
     public Entreprenuership() {}

@@ -1,10 +1,18 @@
 package com.emcove.rest.api.Core.response;
 
+import javax.persistence.*;
+
+@Entity
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String userName;
     private String password;
     private String email;
+    @OneToOne
     private Entreprenuership entreprenuership;
+    @OneToOne
     private Reputation reputation;
 
     public User(){}
@@ -15,6 +23,14 @@ public class User {
         this.email = email;
         //Ver como se inicializa, se deberia autogenerar el id
         this.reputation = new Reputation();
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getUserName() {
