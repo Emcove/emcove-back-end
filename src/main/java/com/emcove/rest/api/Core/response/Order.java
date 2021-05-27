@@ -11,17 +11,17 @@ public class Order {
     private LocalDate createDate;
     private LocalDate deliverDate;
     private OrderState state;
-    private Set<Product> products = new HashSet<>();
+    private Product product;
 
     public Order() {
     }
 
-    public Order(Integer id, LocalDate createDate, LocalDate deliverDate, OrderState state, Set<Product> products) {
+    public Order(Integer id, LocalDate createDate, LocalDate deliverDate, OrderState state, Product product) {
         this.id = id;
         this.createDate = createDate;
         this.deliverDate = deliverDate;
         this.state = state;
-        this.products = products;
+        this.product = product;
     }
 
     public Integer getId() {
@@ -55,8 +55,5 @@ public class Order {
     public void setState(OrderState state) {
         this.state = state;
     }
-    public String toJson(){
-        Gson gson = new Gson();
-        return gson.toJson(this);
-    }
+
 }

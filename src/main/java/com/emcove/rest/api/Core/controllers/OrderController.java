@@ -15,7 +15,7 @@ public class OrderController {
     @GetMapping("/{id}")
     public String getOrder(@PathVariable Integer id){
         LocalDate localDate = LocalDate.of(2021,5,25);
-        Order order = new Order(id,localDate, null, OrderState.PENDIENTE,new HashSet<>());
+        Order order = new Order(id,localDate, null, OrderState.PENDIENTE,null);
         return ResponseUtils.toJson(order);
     }
 
@@ -26,7 +26,7 @@ public class OrderController {
 
     @PostMapping("/")
     public String createOrder(@RequestParam String dateStr){
-        Order order = new Order(1,ResponseUtils.getLocalDateFromString(dateStr), null, OrderState.PENDIENTE,new HashSet<>());
+        Order order = new Order(1,ResponseUtils.getLocalDateFromString(dateStr), null, OrderState.PENDIENTE,null);
         return "Order create with success. user:" + ResponseUtils.toJson(order);
     }
 }

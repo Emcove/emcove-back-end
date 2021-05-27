@@ -5,7 +5,8 @@ public enum OrderState {
     EN_PREPARACION("EN_PREPARACION", "En preparación"),
     LISTO_PARA_ENTREGAR("LISTO_PARA_ENTREGAR", "Listo para engregar"),
     ENTREGADO("ENTREGADO", "Entregado"),
-    CANCELADO("CANCELADO", "Cancelado");
+    CANCELADO("CANCELADO", "Cancelado"),
+    RECHAZADO("RECHAZADO", "Rechazado");
 
     OrderState(String name, String description) {
         this.name = name;
