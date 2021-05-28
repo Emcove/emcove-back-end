@@ -1,13 +1,13 @@
 package com.emcove.rest.api.Core.response;
 
 import java.util.HashMap;
+import java.util.Map;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 
 @Entity
+@Table(name="Products")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,17 +15,21 @@ public class Product {
     private String name;
     private String description;
     private Float price;
-    private HashMap<String, String[]> props;
+    @ElementCollection
+    @MapKeyColumn(name="name")
+    @Column(name="value")
+    @CollectionTable(name="product_props", joinColumns=@JoinColumn(name="product_id"))
+    private Map<String, String> props= new HashMap<>();
 
-    public Product(HashMap<String, String[]> props) {
-        this.props = props;
-    }
-    public Product(Integer id, String name, String description, Float price, HashMap<String, String[]> props) {
+     public Product(Integer id, String name, String description, Float price) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
-        this.props = props;
+    }
+
+    public Product() {
+
     }
 
     public Integer getId() {
