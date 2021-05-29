@@ -19,6 +19,7 @@ public class UserController {
     @GetMapping("/{id}")
     public Optional<User> getUser(@PathVariable Integer id){
         Optional<User> user = userService.findUserById(id);
+        user.isPresent();
         return user;
     }
 
