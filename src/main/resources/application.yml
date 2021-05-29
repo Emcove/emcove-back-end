@@ -2,7 +2,7 @@ server:
     port: 8081
 spring:
     profiles:
-        active: prod
+        active: dev-juli
     datasource:
         driver-class-name: org.postgresql.Driver
     jpa:
@@ -25,9 +25,9 @@ spring:
 ---
 spring:
     datasource:
-        url: ${JDBC_DATABASE_URL}
-        username: ${JDBC_DATABASE_USERNAME}
-        password: ${JDBC_DATABASE_PASSWORD}
+        url: jdbc:postgresql://localhost:5432/postgres
+        username: postgres
+        password: rootpass
     config:
         activate:
             on-profile: dev-mari
@@ -35,9 +35,9 @@ spring:
 ---
 spring:
     datasource:
-        url: ${JDBC_DATABASE_URL}
-        username: ${JDBC_DATABASE_USERNAME}
-        password: ${JDBC_DATABASE_PASSWORD}
+        url: jdbc:postgresql://localhost:5432/postgres
+        username: postgres
+        password: rootpass
     config:
         activate:
             on-profile: dev-juli
