@@ -3,6 +3,7 @@ package com.emcove.rest.api.Core.response;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "Users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

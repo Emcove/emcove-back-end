@@ -4,15 +4,16 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 @Entity
+@Table(name = "Entreprenuerships")
 public class Entreprenuership {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id ;
     private String name;
     private String description ;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Product> products = new HashSet<>();
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Reputation reputation;
 
     public Entreprenuership() {}
@@ -45,7 +46,28 @@ public class Entreprenuership {
         return description;
     }
 
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
+    }
+
+    public  boolean addProduct(Product product){
+        return getProducts().add(product);
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Reputation getReputation() {
+        return reputation;
+    }
+
+    public void setReputation(Reputation reputation) {
+        this.reputation = reputation;
+    }
 }
+

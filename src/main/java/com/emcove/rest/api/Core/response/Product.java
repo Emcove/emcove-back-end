@@ -1,13 +1,14 @@
 package com.emcove.rest.api.Core.response;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "Products")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,17 +16,25 @@ public class Product {
     private String name;
     private String description;
     private Float price;
-    private HashMap<String, String[]> props;
+    @Lob
+    private String image;
 
-    public Product(HashMap<String, String[]> props) {
+    @OneToMany(cascade = CascadeType.ALL)
+    @CollectionTable(name="ProductProp")
+    private Set<ProductProp> props = new HashSet<>();
+
+    public Product(Set<ProductProp> props) {
         this.props = props;
     }
-    public Product(Integer id, String name, String description, Float price, HashMap<String, String[]> props) {
+    public Product(Integer id, String name, String description, Float price, Set<ProductProp> props) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.props = props;
+    }
+
+    public Product() {
     }
 
     public Integer getId() {
@@ -58,5 +67,21 @@ public class Product {
 
     public void setPrice(Float price) {
         this.price = price;
+    }
+
+    public Set<ProductProp> getProps() {
+        return props;
+    }
+
+    public void setProps(Set<ProductProp> props) {
+        this.props = props;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
