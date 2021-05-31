@@ -9,4 +9,5 @@ public interface UserService {
     void deleteUser(Integer id);
     void updateUser(User user);
     Optional<User> findUserById(Integer id);
+    boolean checkUserPassword(User user);
 }
