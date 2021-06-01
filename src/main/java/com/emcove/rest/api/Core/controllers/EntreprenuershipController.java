@@ -1,5 +1,6 @@
 package com.emcove.rest.api.Core.controllers;
 
+import com.emcove.rest.api.Core.dto.EntrepreneurshipDTO;
 import com.emcove.rest.api.Core.response.Entreprenuership;
 import com.emcove.rest.api.Core.response.Product;
 import com.emcove.rest.api.Core.response.Reputation;
@@ -24,6 +25,14 @@ public class EntreprenuershipController {
     @Autowired
     protected EntreprenuershipService entreprenuershipService;
 
+    @PostMapping()
+    public ResponseEntity<Entreprenuership> createEntreprenuership(@RequestBody Entreprenuership entreprenuership){
+        Entreprenuership newEntreprenuership = entreprenuershipService.createEntreprenuership(entreprenuership);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newEntreprenuership.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(newEntreprenuership);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Entreprenuership>> getEntreprenuership(@PathVariable Integer id) {
         Optional<Entreprenuership> entreprenuership = entreprenuershipService.findEntreprenuershipById(id);
@@ -34,11 +43,28 @@ public class EntreprenuershipController {
             return ResponseEntity.notFound().build();
 
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Entreprenuership> deleteEntreprenuership(@PathVariable Integer id){
+        entreprenuershipService.deleteEntreprenuership(id);
+        return ResponseEntity.noContent().build();
 
+    }
+
+    @PutMapping()
+    public ResponseEntity<Entreprenuership> updateEnteEntreprenuership(@RequestBody Entreprenuership entreprenuership){
+
+        if(entreprenuership.getId() == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        else
+            return  ResponseEntity.ok().body(entreprenuershipService.updateEntreprenuership(entreprenuership));
+    }
+    @PatchMapping("/{id}")
+    public ResponseEntity<Entreprenuership> patchEnteResponse(@PathVariable Integer id, @RequestBody EntrepreneurshipDTO entrepreneurshipDTO){
+           return ResponseEntity.ok().body(entreprenuershipService.patchEntrepreneurship(id,entrepreneurshipDTO));
+    }
     @GetMapping("/{id}/products")
     public ResponseEntity<Set<Product>> getEntrepreneurshipProducts(@PathVariable Integer id){
         Optional<Entreprenuership> entrepreneurship = entreprenuershipService.findEntreprenuershipById(id);
-        System.out.println(entrepreneurship.isPresent());
         if(entrepreneurship.isPresent())
             return ResponseEntity.ok().body(entrepreneurship.get().getProducts());
         else
@@ -49,7 +75,6 @@ public class EntreprenuershipController {
     @GetMapping("/{id}/reputation")
     public ResponseEntity<Reputation> getEntrepreneurshipReputation(@PathVariable Integer id){
         Optional<Entreprenuership> entrepreneurship = entreprenuershipService.findEntreprenuershipById(id);
-        System.out.println(entrepreneurship.isPresent());
         if(entrepreneurship.isPresent())
             return ResponseEntity.ok().body(entrepreneurship.get().getReputation());
         else
@@ -57,29 +82,12 @@ public class EntreprenuershipController {
 
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Entreprenuership> deleteEntreprenuership(@PathVariable Integer id){
-        entreprenuershipService.deleteEntreprenuership(id);
-        return ResponseEntity.noContent().build();
 
-    }
-
-    @PostMapping()
-    public ResponseEntity<Entreprenuership> createEntreprenuership(@RequestBody Entreprenuership entreprenuership){
-        Entreprenuership newEntreprenuership = entreprenuershipService.createEntreprenuership(entreprenuership);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newEntreprenuership.getId()).toUri();
-
-        return ResponseEntity.created(uri).body(newEntreprenuership);
-    }
-
-    @PutMapping("/{id}/product")
+    @PostMapping("/{id}/product")
     public ResponseEntity<Entreprenuership> addEntrepreneurshipProduct(@PathVariable Integer id, @RequestBody Product product){
         Optional<Entreprenuership> entrepreneurship = entreprenuershipService.findEntreprenuershipById(id);
-        System.out.println(entrepreneurship.isPresent());
         if(entrepreneurship.isPresent()){
-            entrepreneurship.get().addProduct(product);
-            entreprenuershipService.updateEntreprenuership(entrepreneurship.get());
-            return ResponseEntity.ok().body(entrepreneurship.get());
+            return ResponseEntity.ok().body(entreprenuershipService.addProduct(entrepreneurship.get(), product));
         } else
             return ResponseEntity.notFound().build();
 

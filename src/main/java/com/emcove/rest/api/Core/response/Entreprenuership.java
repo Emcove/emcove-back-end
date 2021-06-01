@@ -15,16 +15,11 @@ public class Entreprenuership {
     private Set<Product> products = new HashSet<>();
     @OneToOne(cascade = CascadeType.ALL)
     private Reputation reputation;
+    @ElementCollection
+    private Set<Category> categories = new HashSet<>();
+
 
     public Entreprenuership() {}
-
-    public Entreprenuership(Integer id, String name, String description) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        //Ver como se inicializa, se deberia autogenerar el id
-        this.reputation = new Reputation();
-    }
 
     public Integer getId() {
         return id;
@@ -68,6 +63,14 @@ public class Entreprenuership {
 
     public void setReputation(Reputation reputation) {
         this.reputation = reputation;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 }
 
