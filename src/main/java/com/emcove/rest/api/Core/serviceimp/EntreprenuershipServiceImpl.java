@@ -9,6 +9,7 @@ import com.emcove.rest.api.Core.service.EntreprenuershipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -58,5 +59,10 @@ public class EntreprenuershipServiceImpl implements EntreprenuershipService {
             entrepreneurship.setCategories(entrepreneurshipDTO.getCategories());
 
         return entrepreneurship;
+    }
+
+    @Override
+    public List<Entreprenuership> findAll() {
+        return entreprenuershipRepository.findAll();
     }
 }

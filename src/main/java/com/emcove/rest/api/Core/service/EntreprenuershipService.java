@@ -5,6 +5,7 @@ import com.emcove.rest.api.Core.response.Entreprenuership;
 import com.emcove.rest.api.Core.response.Product;
 
 
+import java.util.List;
 import java.util.Optional;
 
 public interface EntreprenuershipService {
@@ -17,4 +18,7 @@ public interface EntreprenuershipService {
     Entreprenuership addProduct(Entreprenuership entreprenuership, Product product);
 
     Entreprenuership patchEntrepreneurship(Integer id, EntrepreneurshipDTO entrepreneurshipDTO);
+
+    List<Entreprenuership> findAll();
+
 }

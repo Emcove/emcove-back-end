@@ -5,17 +5,12 @@ import com.emcove.rest.api.Core.response.Entreprenuership;
 import com.emcove.rest.api.Core.response.Product;
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.service.EntreprenuershipService;
-import com.emcove.rest.api.Core.utilities.ResponseUtils;
-import com.google.gson.JsonObject;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.management.ObjectName;
-import java.lang.annotation.Repeatable;
 import java.net.URI;
 import java.util.*;
 
@@ -24,7 +19,11 @@ import java.util.*;
 public class EntreprenuershipController {
     @Autowired
     protected EntreprenuershipService entreprenuershipService;
+    @GetMapping()
+    public ResponseEntity<List<Entreprenuership>> getAll() {
+        return ResponseEntity.ok().body(entreprenuershipService.findAll());
 
+    }
     @PostMapping()
     public ResponseEntity<Entreprenuership> createEntreprenuership(@RequestBody Entreprenuership entreprenuership){
         Entreprenuership newEntreprenuership = entreprenuershipService.createEntreprenuership(entreprenuership);

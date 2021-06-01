@@ -11,11 +11,11 @@ public class Entreprenuership {
     private Integer id ;
     private String name;
     private String description ;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<Product> products = new HashSet<>();
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Reputation reputation;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<Category> categories = new HashSet<>();
 
 
