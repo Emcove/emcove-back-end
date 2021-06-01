@@ -3,8 +3,8 @@ package com.emcove.rest.api.Core.response;
 import javax.annotation.processing.Generated;
 import javax.persistence.*;
 
-@Entity
-@Table(name = "Comments")
+
+@Table(name="Comments")
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,6 +12,7 @@ public class Comment {
     private String username;
     private String title;
     private String description;
+    @Enumerated(EnumType.STRING)
     private CommentValue value;
 
     public Comment() {

@@ -1,43 +1,43 @@
 server:
-    port: 8081
+  port: 8081
 spring:
-    profiles:
-        active: prod
-    datasource:
-        driver-class-name: org.postgresql.Driver
-    jpa:
-        database-platform: org.hibernate.dialect.PostgreSQLDialect
-        generate-ddl: true
-        hibernate:
-            ddl-auto: update
-        show-sql: true
+  profiles:
+    active: prod
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 
 ---
 spring:
-    datasource:
-        url: ${JDBC_DATABASE_URL}
-        username: ${JDBC_DATABASE_USERNAME}
-        password: ${JDBC_DATABASE_PASSWORD}
-    config:
-        activate:
-            on-profile: prod
+  datasource:
+    url: ${JDBC_DATABASE_URL}
+    username: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}
+  config:
+    activate:
+      on-profile: prod
 
 ---
 spring:
-    datasource:
-        url: jdbc:postgresql://localhost:5432/emcovedeb
-        username: root
-        password: rootpass
-    config:
-        activate:
-            on-profile: dev-mari
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: rootpass
+  config:
+    activate:
+      on-profile: dev-mari
 
 ---
 spring:
-    datasource:
-        url: jdbc:postgresql://localhost:5432/postgres
-        username: postgres
-        password: rootpass
-    config:
-        activate:
-            on-profile: dev-juli
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: rootpass
+  config:
+    activate:
+      on-profile: dev-juli

@@ -3,8 +3,8 @@ package com.emcove.rest.api.Core.response;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-@Entity
-@Table(name = "Reputations")
+
+@Table(name="Reputations")
 public class Reputation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

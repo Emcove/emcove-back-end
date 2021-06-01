@@ -8,6 +8,6 @@ public interface UserService {
     void createUser(User newUser);
     void deleteUser(Integer id);
     void updateUser(User user);
-
     Optional<User> findUserById(Integer id);
+    boolean checkUserPassword(User user);
 }

@@ -24,7 +24,7 @@ public class OrderController {
         return "DeleteOrder: " + id;
     }
 
-    @PostMapping("/")
+    @PostMapping()
     public String createOrder(@RequestParam String dateStr){
         Order order = new Order(1,ResponseUtils.getLocalDateFromString(dateStr), null, OrderState.PENDIENTE,null);
         return "Order create with success. user:" + ResponseUtils.toJson(order);

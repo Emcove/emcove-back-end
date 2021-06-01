@@ -1,14 +1,9 @@
 package com.emcove.rest.api.Core.response;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import javax.persistence.*;
 
 @Entity
-@Table(name = "Products")
+@Table(name="Products")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +26,10 @@ public class Product {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.props = props;
+    }
+
+    public Product() {
+
     }
 
     public Product() {

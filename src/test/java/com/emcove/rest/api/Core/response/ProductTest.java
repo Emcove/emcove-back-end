@@ -13,6 +13,7 @@ public class ProductTest {
     public void toJson(){
 //        Product product = new Product(5, "Torta", "Torta de chocolate", 1500.05F, new HashMap<>());
 //        System.out.println(product);
+
     }
 
     @Test
@@ -23,6 +24,7 @@ public class ProductTest {
 //        productList.add(new Product(3, "Torta", "Torta de Chips", 2400.05F, new HashMap<>()));
 //        productList.add(new Product(4, "Torta", "Torta de vainilla", 500.05F, new HashMap<>()));
 //        productList.add(new Product(5, "Torta", "Selva negra", 2500.05F, new HashMap<>()));
+
 
         Gson gson = new Gson();
         System.out.println(gson.toJson(productList));

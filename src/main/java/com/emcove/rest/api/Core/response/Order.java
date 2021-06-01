@@ -14,6 +14,7 @@ public class Order {
     private Integer id;
     private LocalDate createDate;
     private LocalDate deliverDate;
+    @Enumerated(EnumType.STRING)
     private OrderState state;
     @OneToOne
     private Product product;
