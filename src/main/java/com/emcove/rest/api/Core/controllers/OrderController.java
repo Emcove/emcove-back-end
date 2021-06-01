@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/orders")
 public class OrderController {
 
     @GetMapping("/{id}")

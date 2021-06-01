@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
@@ -20,8 +19,8 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{id}")
-    public Optional<User> getUser(@PathVariable Integer id){
-        Optional<User> user = userService.findUserById(id);
+    public User getUser(@PathVariable Integer id){
+        var user = userService.findUserById(id);
         if(user.isPresent()){
             return user.get();
         }

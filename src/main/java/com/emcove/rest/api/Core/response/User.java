@@ -14,7 +14,7 @@ public class User {
     private String password;
     private String email;
     @OneToOne
-    private Entreprenuership entreprenuership;
+    private Entrepreneurship entrepreneurship;
     @OneToOne(cascade = CascadeType.ALL)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Reputation reputation;
@@ -61,12 +61,12 @@ public class User {
         this.email = email;
     }
 
-    public Entreprenuership getEmprendimiento() {
-        return entreprenuership;
+    public Entrepreneurship getEmprendimiento() {
+        return entrepreneurship;
     }
 
-    public void setEmprendimiento(Entreprenuership entreprenuership) {
-        this.entreprenuership = entreprenuership;
+    public void setEmprendimiento(Entrepreneurship entrepreneurship) {
+        this.entrepreneurship = entrepreneurship;
     }
 
     public Reputation getReputation() {
