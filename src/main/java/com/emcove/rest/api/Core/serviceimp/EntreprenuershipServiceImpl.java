@@ -58,7 +58,7 @@ public class EntreprenuershipServiceImpl implements EntreprenuershipService {
         if (entrepreneurshipDTO.getCategories() != null && !entrepreneurshipDTO.getCategories().isEmpty())
             entrepreneurship.setCategories(entrepreneurshipDTO.getCategories());
 
-        return entrepreneurship;
+        return entreprenuershipRepository.save(entrepreneurship);
     }
 
     @Override
