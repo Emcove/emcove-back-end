@@ -1,30 +1,34 @@
 package com.emcove.rest.api.Core.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 
 @Entity
+@Table(name = "Users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String userName;
+    private String username;
     private String password;
     private String email;
     @OneToOne
     private Entreprenuership entreprenuership;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Reputation reputation;
+    private final int enabled = 1;
 
     public User(){}
 
     public User(String userName, String password, String email) {
-        this.userName = userName;
+        this.username = userName;
         this.password = password;
         this.email = email;
         //Ver como se inicializa, se deberia autogenerar el id
         this.reputation = new Reputation();
     }
-
     public Integer getId() {
         return id;
     }
@@ -33,12 +37,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String userName) {
+        this.username = userName;
     }
 
     public String getPassword() {
@@ -56,11 +60,20 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
     public Entreprenuership getEmprendimiento() {
         return entreprenuership;
     }
 
     public void setEmprendimiento(Entreprenuership entreprenuership) {
         this.entreprenuership = entreprenuership;
+    }
+
+    public Reputation getReputation() {
+        return this.reputation;
+    }
+
+    public void setReputation(Reputation reputation) {
+        this.reputation = reputation;
     }
 }

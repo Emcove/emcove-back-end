@@ -7,12 +7,14 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 @Entity
+@Table(name = "Orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private LocalDate createDate;
     private LocalDate deliverDate;
+    @Enumerated(EnumType.STRING)
     private OrderState state;
     @OneToOne
     private Product product;
