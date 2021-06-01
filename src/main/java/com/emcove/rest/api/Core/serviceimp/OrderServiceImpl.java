@@ -2,7 +2,9 @@ package com.emcove.rest.api.Core.serviceimp;
 
 import com.emcove.rest.api.Core.response.Order;
 import com.emcove.rest.api.Core.service.OrderService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class OrderServiceImpl implements OrderService {
 
     @Override

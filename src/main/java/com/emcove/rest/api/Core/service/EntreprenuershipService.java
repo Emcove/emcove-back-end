@@ -1,9 +1,24 @@
 package com.emcove.rest.api.Core.service;
 
+import com.emcove.rest.api.Core.dto.EntrepreneurshipDTO;
 import com.emcove.rest.api.Core.response.Entreprenuership;
+import com.emcove.rest.api.Core.response.Product;
+
+
+import java.util.List;
+import java.util.Optional;
 
 public interface EntreprenuershipService {
-    void createEntreprenuership(Entreprenuership entreprenuership);
+    Entreprenuership createEntreprenuership(Entreprenuership entreprenuership);
     void deleteEntreprenuership(Integer id);
-    void updateEntreprenuership(Entreprenuership entreprenuership);
+    Entreprenuership updateEntreprenuership(Entreprenuership entreprenuership);
+
+    Optional<Entreprenuership> findEntreprenuershipById(Integer id);
+
+    Entreprenuership addProduct(Entreprenuership entreprenuership, Product product);
+
+    Entreprenuership patchEntrepreneurship(Integer id, EntrepreneurshipDTO entrepreneurshipDTO);
+
+    List<Entreprenuership> findAll();
+
 }

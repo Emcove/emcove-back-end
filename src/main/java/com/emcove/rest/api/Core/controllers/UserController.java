@@ -23,7 +23,7 @@ public class UserController {
     public Optional<User> getUser(@PathVariable Integer id){
         Optional<User> user = userService.findUserById(id);
         if(user.isPresent()){
-            return user;
+            return user.get();
         }
         return null;
     }
@@ -39,7 +39,9 @@ public class UserController {
         try {
             userService.createUser(user);
         }catch (Exception e){
+          
         }
+
         return "user create with success. user:" + ResponseUtils.toJson(user);
     }
 

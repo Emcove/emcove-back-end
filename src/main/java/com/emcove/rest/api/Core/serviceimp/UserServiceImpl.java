@@ -1,11 +1,14 @@
 package com.emcove.rest.api.Core.serviceimp;
 
 import com.emcove.rest.api.Core.repository.UserRepository;
+
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.ReputationService;
 import com.emcove.rest.api.Core.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -45,9 +48,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findUserById(Integer id) {
-        Optional<User> user = userRepository.findById(id);
-
-        return user;
+        return userRepository.findById(id);
     }
 
     @Override

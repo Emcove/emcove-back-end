@@ -1,10 +1,6 @@
 package com.emcove.rest.api.Core.response;
 
 import java.util.HashMap;
-import java.util.Map;
-
-import javax.persistence.*;
-
 
 @Entity
 @Table(name="Products")
@@ -15,13 +11,17 @@ public class Product {
     private String name;
     private String description;
     private Float price;
-    @ElementCollection
-    @MapKeyColumn(name="name")
-    @Column(name="value")
-    @CollectionTable(name="product_props", joinColumns=@JoinColumn(name="product_id"))
-    private Map<String, String> props= new HashMap<>();
+    @Lob
+    private String image;
 
-     public Product(Integer id, String name, String description, Float price) {
+    @OneToMany(cascade = CascadeType.ALL)
+    @CollectionTable(name="ProductProp")
+    private Set<ProductProp> props = new HashSet<>();
+
+    public Product(Set<ProductProp> props) {
+        this.props = props;
+    }
+    public Product(Integer id, String name, String description, Float price, Set<ProductProp> props) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -30,6 +30,9 @@ public class Product {
 
     public Product() {
 
+    }
+
+    public Product() {
     }
 
     public Integer getId() {
@@ -62,5 +65,21 @@ public class Product {
 
     public void setPrice(Float price) {
         this.price = price;
+    }
+
+    public Set<ProductProp> getProps() {
+        return props;
+    }
+
+    public void setProps(Set<ProductProp> props) {
+        this.props = props;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
