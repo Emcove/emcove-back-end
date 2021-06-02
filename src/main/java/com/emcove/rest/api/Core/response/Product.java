@@ -1,6 +1,17 @@
 package com.emcove.rest.api.Core.response;
 
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="Products")
@@ -26,10 +37,6 @@ public class Product {
         this.name = name;
         this.description = description;
         this.price = price;
-    }
-
-    public Product() {
-
     }
 
     public Product() {
