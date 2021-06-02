@@ -3,7 +3,7 @@ package com.emcove.rest.api.Core.response;
 import javax.annotation.processing.Generated;
 import javax.persistence.*;
 
-
+@Entity
 @Table(name="Comments")
 public class Comment {
     @Id

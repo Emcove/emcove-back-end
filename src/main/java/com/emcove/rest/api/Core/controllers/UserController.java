@@ -23,7 +23,7 @@ public class UserController {
     public Optional<User> getUser(@PathVariable Integer id){
         Optional<User> user = userService.findUserById(id);
         if(user.isPresent()){
-            return user.get();
+            return user;
         }
         return null;
     }
@@ -34,15 +34,15 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String createUser(@RequestBody User user){
-        Map<String,Object> response = new HashMap<>();
+    public ResponseEntity<User> createUser(@RequestBody User user){
+
         try {
-            userService.createUser(user);
+        userService.createUser(user);
         }catch (Exception e){
-          
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
 
-        return "user create with success. user:" + ResponseUtils.toJson(user);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
     @GetMapping("/login")

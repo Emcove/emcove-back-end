@@ -1,6 +1,7 @@
 package com.emcove.rest.api.Core.response;
-
-import java.util.HashMap;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name="Products")
@@ -30,9 +31,6 @@ public class Product {
 
     public Product() {
 
-    }
-
-    public Product() {
     }
 
     public Integer getId() {
