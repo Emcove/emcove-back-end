@@ -10,7 +10,7 @@ import javax.sound.sampled.Port;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/products")
 public class ProductController {
     @Autowired
     private ProductService productService;

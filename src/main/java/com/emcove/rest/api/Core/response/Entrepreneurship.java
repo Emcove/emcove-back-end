@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Table(name="Entreprenuerships")
-public class Entreprenuership {
+@Table(name="Entrepreneurships")
+public class Entrepreneurship {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id ;
@@ -19,7 +19,7 @@ public class Entreprenuership {
     private Set<Category> categories = new HashSet<>();
 
 
-    public Entreprenuership() {}
+    public Entrepreneurship() {}
 
     public Integer getId() {
         return id;
