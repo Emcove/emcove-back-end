@@ -19,6 +19,11 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Reputation reputation;
     private final int enabled = 1;
+    private String name;
+    private String surname;
+    private String city;
+    private String avatar;
+    private Boolean adult;
 
     public User(){}
 

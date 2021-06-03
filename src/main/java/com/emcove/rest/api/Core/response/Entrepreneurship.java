@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@Entity
 @Table(name="Entrepreneurships")
 public class Entrepreneurship {
     @Id
