@@ -11,12 +11,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String username;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private String email;
     @OneToOne
     private Entrepreneurship entrepreneurship;
     @OneToOne(cascade = CascadeType.ALL)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Reputation reputation;
     private final int enabled = 1;
     private String name;
