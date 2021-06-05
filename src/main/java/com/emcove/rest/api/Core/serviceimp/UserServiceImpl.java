@@ -26,14 +26,21 @@ public class UserServiceImpl implements UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public void createUser(User newUser) {
-        try {
-            newUser.setReputation(new Reputation());
-            newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
-            userRepository.save(newUser);
-        }catch (Exception e) {
-            System.out.println("error");
+    public void createUser(User newUser) throws Exception {
+        Optional<User> user = userRepository.findByUsername(newUser.getUsername());
+
+        if(!user.isPresent()){
+            try {
+                newUser.setReputation(new Reputation());
+                newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
+                userRepository.save(newUser);
+            }catch (Exception e) {
+                throw new Exception("No se ha podido crear el usuario, intente nuevamente mas tarde");
+            }
+        }else{
+            throw new Exception("El nombre de usuario ya existe");
         }
+
     }
 
     @Override

@@ -1,11 +1,15 @@
 package com.emcove.rest.api.Core.controllers;
 
+import com.emcove.rest.api.Core.repository.UserRepository;
 import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.UserService;
 import com.emcove.rest.api.Core.utilities.ResponseUtils;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -13,11 +17,13 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("http://localhost:3000")
+@CrossOrigin("${spring.config.env.crossOrigin}")
 @RequestMapping("/users")
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/{id}")
     public Optional<User> getUser(@PathVariable Integer id){
@@ -34,20 +40,35 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String createUser(@RequestBody User user){
-        Map<String,Object> response = new HashMap<>();
+    public ResponseEntity<String> createUser(@RequestBody User user){
+        Gson gson = new Gson();
+        System.out.println(gson.toJson(user));
         try {
             userService.createUser(user);
+            return ResponseEntity.status(HttpStatus.OK).body("Usuario creado correctamente");
         }catch (Exception e){
-          
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-
-        return "user create with success. user:" + ResponseUtils.toJson(user);
     }
 
     @GetMapping("/login")
-    public ResponseEntity<String> login(){
-        return ResponseEntity.status(HttpStatus.OK).body("messiii");
+    public ResponseEntity<User> login(){
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username;
+
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails)principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+
+        Optional<User> user = userRepository.findByUsername(username);
+
+        if(user.isPresent()){
+            return ResponseEntity.status(HttpStatus.OK).body(user.get());
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
 }
