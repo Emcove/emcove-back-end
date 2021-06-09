@@ -24,14 +24,6 @@ public class EntrepreneurshipController {
         return ResponseEntity.ok().body(entrepreneurshipService.findAll());
 
     }
-    @PostMapping()
-    public ResponseEntity<Entrepreneurship> createEntrepreneurship(@RequestBody Entrepreneurship entrepreneurship){
-        Entrepreneurship newEntrepreneurship = entrepreneurshipService.createEntrepreneurship(entrepreneurship);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newEntrepreneurship.getId()).toUri();
-
-        return ResponseEntity.created(uri).body(newEntrepreneurship);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Entrepreneurship>> getEntrepreneurship(@PathVariable Integer id) {
         Optional<Entrepreneurship> entreprenuership = entrepreneurshipService.findEntrepreneurshipById(id);

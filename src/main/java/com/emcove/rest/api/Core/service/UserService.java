@@ -1,5 +1,6 @@
 package com.emcove.rest.api.Core.service;
 
+import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.User;
 import org.springframework.http.HttpStatus;
 
@@ -12,4 +13,6 @@ public interface UserService {
     void updateUser(User user);
     Optional<User> findUserById(Integer id);
     boolean checkUserPassword(User user);
+
+    User createEntrepreneurship(Integer userId, Entrepreneurship entrepreneurship) throws Exception;
 }
