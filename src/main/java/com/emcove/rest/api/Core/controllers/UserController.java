@@ -1,6 +1,7 @@
 package com.emcove.rest.api.Core.controllers;
 
 import com.emcove.rest.api.Core.repository.UserRepository;
+import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.UserService;
 import com.emcove.rest.api.Core.utilities.ResponseUtils;
@@ -11,7 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -69,6 +73,21 @@ public class UserController {
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    }
+
+    @PostMapping("/{id}/entrepreneurship")
+    public ResponseEntity<Entrepreneurship> createEntrepreneurship(HttpServletRequest request, @PathVariable Integer userId, @RequestBody Entrepreneurship entrepreneurship){
+        final User user;
+        try {
+            user = userService.createEntrepreneurship(userId, entrepreneurship);
+            final URI uri = ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null).path("/entrepreneurships/{id}").buildAndExpand(user.getEmprendimiento().getId()).toUri();
+
+            return ResponseEntity.created(uri).body(user.getEmprendimiento());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 
 }

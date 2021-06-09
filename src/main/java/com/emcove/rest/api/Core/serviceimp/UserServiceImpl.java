@@ -2,6 +2,7 @@ package com.emcove.rest.api.Core.serviceimp;
 
 import com.emcove.rest.api.Core.repository.UserRepository;
 
+import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.ReputationService;
@@ -67,5 +68,16 @@ public class UserServiceImpl implements UserService {
             }
         }
         return false;
+    }
+
+    @Override
+    public User createEntrepreneurship(Integer userId, Entrepreneurship entrepreneurship) throws Exception {
+        Optional<User> userOpt = userRepository.findById(userId);
+        if(userOpt.isPresent()){
+            userOpt.get().setEmprendimiento(entrepreneurship);
+            return userRepository.save(userOpt.get());
+        }else
+            throw new Exception("No se encontro ningún usuario");
+
     }
 }
