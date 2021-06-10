@@ -2,6 +2,7 @@ package com.emcove.rest.api.Core.serviceimp;
 
 import com.emcove.rest.api.Core.repository.UserRepository;
 
+import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
@@ -79,5 +80,25 @@ public class UserServiceImpl implements UserService {
         }else
             throw new Exception("No se encontro ningún usuario");
 
+    }
+
+    @Override
+    public Reputation addComment(Integer id, Comment comment) throws Exception {
+        Optional<User> userOpt = userRepository.findById(id);
+        if(userOpt.isPresent()){
+            userOpt.get().getReputation().addComent(comment);
+            return userRepository.save(userOpt.get()).getReputation();
+        }else
+            throw new Exception("No se encontro ningún usuario");
+
+    }
+
+    @Override
+    public Reputation getReputation(Integer id) throws Exception {
+        Optional<User> userOpt = userRepository.findById(id);
+        if(userOpt.isPresent()){
+            return userOpt.get().getReputation();
+        }else
+            throw new Exception("No se encontro ningún usuario");
     }
 }

@@ -1,6 +1,7 @@
 package com.emcove.rest.api.Core.controllers;
 
 import com.emcove.rest.api.Core.dto.EntrepreneurshipDTO;
+import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Product;
 import com.emcove.rest.api.Core.response.Reputation;
@@ -83,4 +84,23 @@ public class EntrepreneurshipController {
             return ResponseEntity.notFound().build();
 
     }
+    @PostMapping("/{id}/reputation/comment")
+    public ResponseEntity<Reputation>  createComment(@PathVariable Integer id, @RequestBody Comment comment){
+        try {
+            Reputation reputation = entrepreneurshipService.addComment(id, comment);
+            return ResponseEntity.ok().body(reputation);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+
+    }
+    @GetMapping("/{id}/reputation")
+    public ResponseEntity<Reputation>  getReputation(@PathVariable Integer id){
+        try {
+            return ResponseEntity.ok().body(entrepreneurshipService.getReputation(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 }
