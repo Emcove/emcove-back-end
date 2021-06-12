@@ -66,12 +66,11 @@ public class EntrepreneurshipController {
 
     @GetMapping("/{id}/reputation")
     public ResponseEntity<Reputation> getEntrepreneurshipReputation(@PathVariable Integer id){
-        Optional<Entrepreneurship> entrepreneurship = entrepreneurshipService.findEntrepreneurshipById(id);
-        if(entrepreneurship.isPresent())
-            return ResponseEntity.ok().body(entrepreneurship.get().getReputation());
-        else
-            return ResponseEntity.notFound().build();
-
+        try {
+            return ResponseEntity.ok().body(entrepreneurshipService.getReputation(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 
@@ -94,13 +93,6 @@ public class EntrepreneurshipController {
         }
 
     }
-    @GetMapping("/{id}/reputation")
-    public ResponseEntity<Reputation>  getReputation(@PathVariable Integer id){
-        try {
-            return ResponseEntity.ok().body(entrepreneurshipService.getReputation(id));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
+
 
 }
