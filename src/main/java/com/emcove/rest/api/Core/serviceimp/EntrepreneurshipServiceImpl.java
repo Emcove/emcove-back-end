@@ -53,10 +53,14 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
             return null;
         Entrepreneurship entrepreneurship = entrepreneurshipOpt.get();
 
-        if(entrepreneurshipDTO.getDescription() != null)
-            entrepreneurship.setDescription(entrepreneurshipDTO.getDescription());
         if(entrepreneurshipDTO.getName() != null)
             entrepreneurship.setName(entrepreneurshipDTO.getName());
+        if(entrepreneurshipDTO.getLogo() != null)
+            entrepreneurship.setLogo(entrepreneurshipDTO.getLogo());
+        if(entrepreneurshipDTO.getCity() != null)
+            entrepreneurship.setCity(entrepreneurshipDTO.getCity());
+        if(entrepreneurshipDTO.getDoesShipments() != null)
+            entrepreneurship.setDoesShipments(entrepreneurshipDTO.getDoesShipments());
         if (entrepreneurshipDTO.getCategories() != null && !entrepreneurshipDTO.getCategories().isEmpty())
             entrepreneurship.setCategories(entrepreneurshipDTO.getCategories());
 

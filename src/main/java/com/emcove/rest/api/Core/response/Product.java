@@ -9,8 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -21,23 +21,15 @@ public class Product {
     private Integer id;
     private String name;
     private String description;
-    private Float price;
+    private Boolean hasStock;
+    private Integer productionTime;
     @Lob
-    private String image;
+    @CollectionTable(name ="Product_images")
+    private Set<String> images;
 
     @OneToMany(cascade = CascadeType.ALL)
     @CollectionTable(name="ProductProp")
     private Set<ProductProp> props = new HashSet<>();
-
-    public Product(Set<ProductProp> props) {
-        this.props = props;
-    }
-    public Product(Integer id, String name, String description, Float price, Set<ProductProp> props) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-    }
 
     public Product() {
     }
@@ -66,14 +58,6 @@ public class Product {
         this.description = description;
     }
 
-    public Float getPrice() {
-        return price;
-    }
-
-    public void setPrice(Float price) {
-        this.price = price;
-    }
-
     public Set<ProductProp> getProps() {
         return props;
     }
@@ -82,11 +66,40 @@ public class Product {
         this.props = props;
     }
 
-    public String getImage() {
-        return image;
+    public Boolean getHasStock() {
+        return hasStock;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setHasStock(Boolean hasStock) {
+        this.hasStock = hasStock;
+    }
+
+    public Integer getProductionTime() {
+        return productionTime;
+    }
+
+    public void setProductionTime(Integer productionTime) {
+        this.productionTime = productionTime;
+    }
+
+    public Set<String> getImages() {
+        return images;
+    }
+
+    public void setImages(Set<String> images) {
+        this.images = images;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return id.equals(product.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
