@@ -1,8 +1,11 @@
 package com.emcove.rest.api.Core.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class UserDTO {
     private Integer id;
     private String username;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private String email;
     private String name;
@@ -78,6 +81,7 @@ public class UserDTO {
     public void setCity(String city) {
         this.city = city;
     }
+
     public String getAvatar() {
         return avatar;
     }
