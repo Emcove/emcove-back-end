@@ -1,6 +1,8 @@
 package com.emcove.rest.api.Core.service;
 
+import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
+import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
 import org.springframework.http.HttpStatus;
 
@@ -15,4 +17,8 @@ public interface UserService {
     boolean checkUserPassword(User user);
 
     User createEntrepreneurship(Integer userId, Entrepreneurship entrepreneurship) throws Exception;
+
+    Reputation addComment(Integer id, Comment comment) throws Exception;
+
+    Reputation getReputation(Integer id) throws Exception;
 }

@@ -1,7 +1,9 @@
 package com.emcove.rest.api.Core.controllers;
 
 import com.emcove.rest.api.Core.repository.UserRepository;
+import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
+import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.UserService;
 import com.emcove.rest.api.Core.utilities.ResponseUtils;
@@ -88,6 +90,25 @@ public class UserController {
             return ResponseEntity.badRequest().build();
         }
 
+    }
+    @PostMapping("/{id}/reputation/comment")
+    public ResponseEntity<Reputation>  createComment(@PathVariable Integer id, @RequestBody Comment comment){
+        try {
+            Reputation reputation = userService.addComment(id, comment);
+            return ResponseEntity.ok().body(reputation);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+
+    }
+
+    @GetMapping("/{id}/reputation")
+    public ResponseEntity<Reputation>  getReputation(@PathVariable Integer id){
+        try {
+            return ResponseEntity.ok().body(userService.getReputation(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 }
