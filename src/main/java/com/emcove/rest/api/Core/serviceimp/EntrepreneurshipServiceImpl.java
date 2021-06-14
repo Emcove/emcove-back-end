@@ -36,7 +36,7 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
         try {
             Optional<User> user = userRepository.findByEntrepreneurshipId(id);
             if(user.isPresent())
-                user.get().setEmprendimiento(null);
+                user.get().setEntrepreneurship(null);
             entrepreneurshipRepository.deleteById(id);
         }catch (Exception e){
             e.printStackTrace();

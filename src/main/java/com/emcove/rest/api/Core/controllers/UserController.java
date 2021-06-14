@@ -74,9 +74,9 @@ public class UserController {
         final User user;
         try {
             user = userService.createEntrepreneurship(id, entrepreneurship);
-            final URI uri = ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null).path("/entrepreneurships/{id}").buildAndExpand(user.getEmprendimiento().getId()).toUri();
+            final URI uri = ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null).path("/entrepreneurships/{id}").buildAndExpand(user.getEntrepreneurship().getId()).toUri();
 
-            return ResponseEntity.created(uri).body(user.getEmprendimiento());
+            return ResponseEntity.created(uri).body(user.getEntrepreneurship());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().build();
