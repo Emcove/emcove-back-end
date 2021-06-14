@@ -12,7 +12,7 @@ public class Reputation {
     private Integer id;
     private Float averagePoints;
     private int totalPoint;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Comment> coments = new HashSet<>();
 
     public Reputation(Integer id, Float averagePoints, int totalPoint) {
@@ -65,6 +65,6 @@ public class Reputation {
 
     public void calculateReputation(int newValue){
         setTotalPoint(getTotalPoint() + newValue);
-        setAveragePoints((float) (getTotalPoint() / (getComents().size()+1)));
+        setAveragePoints((float)getTotalPoint() / (float)getComents().size());
     }
 }

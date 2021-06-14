@@ -18,8 +18,9 @@ public class Entrepreneurship {
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<Product> products = new HashSet<>();
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private Reputation reputation;
+    private Reputation reputation = new Reputation();
     @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
     private Set<Category> categories = new HashSet<>();
 
 

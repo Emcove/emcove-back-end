@@ -2,14 +2,17 @@ package com.emcove.rest.api.Core.response;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -23,9 +26,9 @@ public class Product {
     private String description;
     private Boolean hasStock;
     private Integer productionTime;
-    @Lob
-    @CollectionTable(name ="Product_images")
-    private Set<String> images;
+
+    @ElementCollection
+    private List<String> images;
 
     @OneToMany(cascade = CascadeType.ALL)
     @CollectionTable(name="ProductProp")
@@ -82,11 +85,11 @@ public class Product {
         this.productionTime = productionTime;
     }
 
-    public Set<String> getImages() {
+    public List<String> getImages() {
         return images;
     }
 
-    public void setImages(Set<String> images) {
+    public void setImages(List<String> images) {
         this.images = images;
     }
 

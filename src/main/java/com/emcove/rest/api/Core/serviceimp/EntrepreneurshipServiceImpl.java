@@ -2,12 +2,14 @@ package com.emcove.rest.api.Core.serviceimp;
 
 import com.emcove.rest.api.Core.dto.EntrepreneurshipDTO;
 import com.emcove.rest.api.Core.repository.EntrepreneurshipRepository;
+import com.emcove.rest.api.Core.repository.UserRepository;
 import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Product;
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.EntrepreneurshipService;
+import com.emcove.rest.api.Core.utilities.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,15 +21,27 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     @Autowired
     private EntrepreneurshipRepository entrepreneurshipRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     @Override
     public Entrepreneurship createEntrepreneurship(Entrepreneurship entrepreneurship) {
-        entrepreneurship.setReputation(new Reputation());
+        //entrepreneurship.setReputation(new Reputation());
+        System.out.println(ResponseUtils.toJson(entrepreneurship));
         return entrepreneurshipRepository.save(entrepreneurship);
     }
 
     @Override
     public void deleteEntrepreneurship(Integer id) {
-        entrepreneurshipRepository.deleteById(id);
+        try {
+            Optional<User> user = userRepository.findByEntrepreneurshipId(id);
+            if(user.isPresent())
+                user.get().setEmprendimiento(null);
+            entrepreneurshipRepository.deleteById(id);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     @Override

@@ -78,10 +78,10 @@ public class UserController {
     }
 
     @PostMapping("/{id}/entrepreneurship")
-    public ResponseEntity<Entrepreneurship> createEntrepreneurship(HttpServletRequest request, @PathVariable Integer userId, @RequestBody Entrepreneurship entrepreneurship){
+    public ResponseEntity<Entrepreneurship> createEntrepreneurship(HttpServletRequest request, @PathVariable Integer id, @RequestBody Entrepreneurship entrepreneurship){
         final User user;
         try {
-            user = userService.createEntrepreneurship(userId, entrepreneurship);
+            user = userService.createEntrepreneurship(id, entrepreneurship);
             final URI uri = ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null).path("/entrepreneurships/{id}").buildAndExpand(user.getEmprendimiento().getId()).toUri();
 
             return ResponseEntity.created(uri).body(user.getEmprendimiento());
