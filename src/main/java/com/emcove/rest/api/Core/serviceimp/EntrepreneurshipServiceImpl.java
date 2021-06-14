@@ -2,9 +2,11 @@ package com.emcove.rest.api.Core.serviceimp;
 
 import com.emcove.rest.api.Core.dto.EntrepreneurshipDTO;
 import com.emcove.rest.api.Core.repository.EntrepreneurshipRepository;
+import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Product;
 import com.emcove.rest.api.Core.response.Reputation;
+import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.EntrepreneurshipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,5 +66,24 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     @Override
     public List<Entrepreneurship> findAll() {
         return entrepreneurshipRepository.findAll();
+    }
+
+    @Override
+    public Reputation addComment(Integer id, Comment comment) throws Exception {
+        Optional<Entrepreneurship> entrepreneurshipOpt = entrepreneurshipRepository.findById(id);
+        if(entrepreneurshipOpt.isPresent()){
+            entrepreneurshipOpt.get().getReputation().addComent(comment);
+            return entrepreneurshipRepository.save(entrepreneurshipOpt.get()).getReputation();
+        }else
+            throw new Exception("No se encontro ningún usuario");
+    }
+
+    @Override
+    public Reputation getReputation(Integer id) throws Exception {
+        Optional<Entrepreneurship> entrepreneurshipOpt = entrepreneurshipRepository.findById(id);
+        if(entrepreneurshipOpt.isPresent()){
+            return entrepreneurshipOpt.get().getReputation();
+        }else
+            throw new Exception("No se encontro ningún usuario");
     }
 }

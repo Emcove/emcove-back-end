@@ -1,23 +1,19 @@
 package com.emcove.rest.api.Core.serviceimp;
 
-import com.emcove.rest.api.Core.dto.EntrepreneurshipDTO;
 import com.emcove.rest.api.Core.dto.UserDTO;
 import com.emcove.rest.api.Core.repository.UserRepository;
 
 import com.emcove.rest.api.Core.response.Entrepreneurship;
+import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
-import com.emcove.rest.api.Core.service.ReputationService;
 import com.emcove.rest.api.Core.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.Optional;
 
@@ -106,5 +102,36 @@ public class UserServiceImpl implements UserService {
             }
         }
         return false;
+    }
+
+    @Override
+    public User createEntrepreneurship(Integer userId, Entrepreneurship entrepreneurship) throws Exception {
+        Optional<User> userOpt = userRepository.findById(userId);
+        if(userOpt.isPresent()){
+            userOpt.get().setEmprendimiento(entrepreneurship);
+            return userRepository.save(userOpt.get());
+        }else
+            throw new Exception("No se encontro ningún usuario");
+
+    }
+
+    @Override
+    public Reputation addComment(Integer id, Comment comment) throws Exception {
+        Optional<User> userOpt = userRepository.findById(id);
+        if(userOpt.isPresent()){
+            userOpt.get().getReputation().addComent(comment);
+            return userRepository.save(userOpt.get()).getReputation();
+        }else
+            throw new Exception("No se encontro ningún usuario");
+
+    }
+
+    @Override
+    public Reputation getReputation(Integer id) throws Exception {
+        Optional<User> userOpt = userRepository.findById(id);
+        if(userOpt.isPresent()){
+            return userOpt.get().getReputation();
+        }else
+            throw new Exception("No se encontro ningún usuario");
     }
 }

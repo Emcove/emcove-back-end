@@ -1,8 +1,10 @@
 package com.emcove.rest.api.Core.service;
 
 import com.emcove.rest.api.Core.dto.EntrepreneurshipDTO;
+import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Product;
+import com.emcove.rest.api.Core.response.Reputation;
 
 
 import java.util.List;
@@ -21,4 +23,7 @@ public interface EntrepreneurshipService {
 
     List<Entrepreneurship> findAll();
 
+    Reputation addComment(Integer id, Comment comment) throws Exception;
+
+    Reputation getReputation(Integer id) throws Exception;
 }

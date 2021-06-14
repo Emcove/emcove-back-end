@@ -1,22 +1,21 @@
 package com.emcove.rest.api.Core.controllers;
 
-import com.emcove.rest.api.Core.dto.EntrepreneurshipDTO;
 import com.emcove.rest.api.Core.dto.UserDTO;
 import com.emcove.rest.api.Core.repository.UserRepository;
+import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
+import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.UserService;
-import com.emcove.rest.api.Core.utilities.ResponseUtils;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import java.net.URI;
 import java.util.Optional;
 
 @RestController
@@ -44,6 +43,8 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> createUser(@RequestBody User user){
+        Gson gson = new Gson();
+        System.out.println(gson.toJson(user));
         try {
             userService.createUser(user);
             return ResponseEntity.status(HttpStatus.OK).body("Usuario creado correctamente");
@@ -66,6 +67,40 @@ public class UserController {
     @PatchMapping("/update")
     public ResponseEntity<User> patchUser(@RequestBody UserDTO userDTO){
         return ResponseEntity.ok().body(userService.patchUser(userDTO));
+    }
+
+    @PostMapping("/{id}/entrepreneurship")
+    public ResponseEntity<Entrepreneurship> createEntrepreneurship(HttpServletRequest request, @PathVariable Integer userId, @RequestBody Entrepreneurship entrepreneurship){
+        final User user;
+        try {
+            user = userService.createEntrepreneurship(userId, entrepreneurship);
+            final URI uri = ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null).path("/entrepreneurships/{id}").buildAndExpand(user.getEmprendimiento().getId()).toUri();
+
+            return ResponseEntity.created(uri).body(user.getEmprendimiento());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
+
+    }
+    @PostMapping("/{id}/reputation/comment")
+    public ResponseEntity<Reputation>  createComment(@PathVariable Integer id, @RequestBody Comment comment){
+        try {
+            Reputation reputation = userService.addComment(id, comment);
+            return ResponseEntity.ok().body(reputation);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+
+    }
+
+    @GetMapping("/{id}/reputation")
+    public ResponseEntity<Reputation>  getReputation(@PathVariable Integer id){
+        try {
+            return ResponseEntity.ok().body(userService.getReputation(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 }

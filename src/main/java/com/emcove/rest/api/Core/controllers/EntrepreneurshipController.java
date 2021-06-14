@@ -1,6 +1,7 @@
 package com.emcove.rest.api.Core.controllers;
 
 import com.emcove.rest.api.Core.dto.EntrepreneurshipDTO;
+import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Product;
 import com.emcove.rest.api.Core.response.Reputation;
@@ -24,14 +25,6 @@ public class EntrepreneurshipController {
         return ResponseEntity.ok().body(entrepreneurshipService.findAll());
 
     }
-    @PostMapping()
-    public ResponseEntity<Entrepreneurship> createEntrepreneurship(@RequestBody Entrepreneurship entrepreneurship){
-        Entrepreneurship newEntrepreneurship = entrepreneurshipService.createEntrepreneurship(entrepreneurship);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newEntrepreneurship.getId()).toUri();
-
-        return ResponseEntity.created(uri).body(newEntrepreneurship);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<Optional<Entrepreneurship>> getEntrepreneurship(@PathVariable Integer id) {
         Optional<Entrepreneurship> entreprenuership = entrepreneurshipService.findEntrepreneurshipById(id);
@@ -73,12 +66,11 @@ public class EntrepreneurshipController {
 
     @GetMapping("/{id}/reputation")
     public ResponseEntity<Reputation> getEntrepreneurshipReputation(@PathVariable Integer id){
-        Optional<Entrepreneurship> entrepreneurship = entrepreneurshipService.findEntrepreneurshipById(id);
-        if(entrepreneurship.isPresent())
-            return ResponseEntity.ok().body(entrepreneurship.get().getReputation());
-        else
-            return ResponseEntity.notFound().build();
-
+        try {
+            return ResponseEntity.ok().body(entrepreneurshipService.getReputation(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 
@@ -91,4 +83,16 @@ public class EntrepreneurshipController {
             return ResponseEntity.notFound().build();
 
     }
+    @PostMapping("/{id}/reputation/comment")
+    public ResponseEntity<Reputation>  createComment(@PathVariable Integer id, @RequestBody Comment comment){
+        try {
+            Reputation reputation = entrepreneurshipService.addComment(id, comment);
+            return ResponseEntity.ok().body(reputation);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+
+    }
+
+
 }
