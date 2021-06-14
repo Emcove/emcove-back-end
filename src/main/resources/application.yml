@@ -47,3 +47,15 @@ spring:
       crossOrigin: http://localhost:3000
     activate:
       on-profile: dev-juli
+
+---
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: rootpass
+  config:
+    env:
+      crossOrigin: http://localhost:3000
+    activate:
+      on-profile: dev-mica
