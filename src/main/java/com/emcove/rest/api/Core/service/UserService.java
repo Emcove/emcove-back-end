@@ -15,7 +15,7 @@ public interface UserService {
     Optional<User> findUserById(Integer id);
     String getLoggedUsername();
     boolean checkUserPassword(User user);
-    User createEntrepreneurship(Integer userId, Entrepreneurship entrepreneurship) throws Exception;
+    User createEntrepreneurship(String username, Entrepreneurship entrepreneurship) throws Exception;
     Reputation addComment(Integer id, Comment comment) throws Exception;
     Reputation getReputation(Integer id) throws Exception;
 }

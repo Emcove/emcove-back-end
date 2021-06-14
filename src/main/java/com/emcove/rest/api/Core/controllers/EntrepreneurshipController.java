@@ -5,13 +5,16 @@ import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Product;
 import com.emcove.rest.api.Core.response.Reputation;
+import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.EntrepreneurshipService;
+import com.emcove.rest.api.Core.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.*;
 
@@ -20,6 +23,9 @@ import java.util.*;
 public class EntrepreneurshipController {
     @Autowired
     protected EntrepreneurshipService entrepreneurshipService;
+    @Autowired
+    protected UserService userService;
+
     @GetMapping()
     public ResponseEntity<List<Entrepreneurship>> getAll() {
         return ResponseEntity.ok().body(entrepreneurshipService.findAll());
@@ -39,6 +45,21 @@ public class EntrepreneurshipController {
     public ResponseEntity<Entrepreneurship> deleteEntrepreneurship(@PathVariable Integer id){
         entrepreneurshipService.deleteEntrepreneurship(id);
         return ResponseEntity.noContent().build();
+
+    }
+    @PostMapping()
+    public ResponseEntity<Entrepreneurship> createEntrepreneurship(HttpServletRequest request, @RequestBody Entrepreneurship entrepreneurship){
+        final User user;
+        try {
+            String loggedUsername = userService.getLoggedUsername();;
+            user = userService.createEntrepreneurship(loggedUsername, entrepreneurship);
+            final URI uri = ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null).path("/entrepreneurships/{id}").buildAndExpand(user.getEmprendimiento().getId()).toUri();
+
+            return ResponseEntity.created(uri).body(user.getEmprendimiento());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
 
     }
 

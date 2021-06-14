@@ -69,20 +69,7 @@ public class UserController {
         return ResponseEntity.ok().body(userService.patchUser(userDTO));
     }
 
-    @PostMapping("/{id}/entrepreneurship")
-    public ResponseEntity<Entrepreneurship> createEntrepreneurship(HttpServletRequest request, @PathVariable Integer id, @RequestBody Entrepreneurship entrepreneurship){
-        final User user;
-        try {
-            user = userService.createEntrepreneurship(id, entrepreneurship);
-            final URI uri = ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null).path("/entrepreneurships/{id}").buildAndExpand(user.getEmprendimiento().getId()).toUri();
 
-            return ResponseEntity.created(uri).body(user.getEmprendimiento());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().build();
-        }
-
-    }
     @PostMapping("/{id}/reputation/comment")
     public ResponseEntity<Reputation>  createComment(@PathVariable Integer id, @RequestBody Comment comment){
         try {
