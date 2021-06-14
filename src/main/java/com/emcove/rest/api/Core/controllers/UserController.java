@@ -44,8 +44,6 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> createUser(@RequestBody User user){
-        Gson gson = new Gson();
-        System.out.println(gson.toJson(user));
         try {
             userService.createUser(user);
             return ResponseEntity.status(HttpStatus.OK).body("Usuario creado correctamente");
