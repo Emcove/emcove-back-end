@@ -1,5 +1,10 @@
 package com.emcove.rest.api.Core.response;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
+import java.util.stream.Stream;
+
 public enum CommentValue {
     MUY_MALO("MUY_MALO", 1),
     MALO("MALO", 2),
@@ -18,5 +23,13 @@ public enum CommentValue {
 
     public int getValue() {
         return value;
+    }
+
+    @JsonValue
+    public String getName() { return name; }
+
+    @JsonCreator
+    public static CommentValue getCommentValueFromName(String name){
+        return Stream.of(CommentValue.values()).filter(targetCommentValue -> targetCommentValue.name.equals(name)).findFirst().orElse(null);
     }
 }

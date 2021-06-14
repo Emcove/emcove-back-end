@@ -11,12 +11,16 @@ public class Entrepreneurship {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id ;
     private String name;
-    private String description ;
+    @Lob
+    private String logo;
+    private String city;
+    private Boolean doesShipments;
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<Product> products = new HashSet<>();
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    private Reputation reputation;
+    private Reputation reputation = new Reputation();
     @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
     private Set<Category> categories = new HashSet<>();
 
 
@@ -38,10 +42,6 @@ public class Entrepreneurship {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
     public Set<Product> getProducts() {
         return products;
     }
@@ -52,10 +52,6 @@ public class Entrepreneurship {
 
     public  boolean addProduct(Product product){
         return getProducts().add(product);
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Reputation getReputation() {
@@ -72,6 +68,30 @@ public class Entrepreneurship {
 
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
+    }
+
+    public String getLogo() {
+        return logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public Boolean getDoesShipments() {
+        return doesShipments;
+    }
+
+    public void setDoesShipments(Boolean doesShipments) {
+        this.doesShipments = doesShipments;
     }
 }
 

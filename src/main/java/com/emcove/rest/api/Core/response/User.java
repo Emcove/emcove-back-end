@@ -15,7 +15,7 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private String email;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Entrepreneurship entrepreneurship;
     @OneToOne(cascade = CascadeType.ALL)
     private Reputation reputation;
