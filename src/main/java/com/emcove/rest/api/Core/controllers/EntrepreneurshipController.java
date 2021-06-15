@@ -52,8 +52,8 @@ public class EntrepreneurshipController {
         try {
             String loggedUsername = userService.getLoggedUsername();
             User user = userService.createEntrepreneurship(loggedUsername, entrepreneurship);
-            final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getEmprendimiento().getId()).toUri();
-            return ResponseEntity.created(uri).body(user.getEmprendimiento());
+            final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getEntrepreneurship().getId()).toUri();
+            return ResponseEntity.created(uri).body(user.getEntrepreneurship());
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.badRequest().build();
