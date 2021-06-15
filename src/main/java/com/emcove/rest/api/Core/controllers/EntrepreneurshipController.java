@@ -48,13 +48,11 @@ public class EntrepreneurshipController {
 
     }
     @PostMapping()
-    public ResponseEntity<Entrepreneurship> createEntrepreneurship(HttpServletRequest request, @RequestBody Entrepreneurship entrepreneurship){
-        final User user;
+    public ResponseEntity<Entrepreneurship> createEntrepreneurship(@RequestBody Entrepreneurship entrepreneurship){
         try {
-            String loggedUsername = userService.getLoggedUsername();;
-            user = userService.createEntrepreneurship(loggedUsername, entrepreneurship);
-            final URI uri = ServletUriComponentsBuilder.fromRequestUri(request).replacePath(null).path("/entrepreneurships/{id}").buildAndExpand(user.getEmprendimiento().getId()).toUri();
-
+            String loggedUsername = userService.getLoggedUsername();
+            User user = userService.createEntrepreneurship(loggedUsername, entrepreneurship);
+            final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getEmprendimiento().getId()).toUri();
             return ResponseEntity.created(uri).body(user.getEmprendimiento());
         } catch (Exception e) {
             e.printStackTrace();
