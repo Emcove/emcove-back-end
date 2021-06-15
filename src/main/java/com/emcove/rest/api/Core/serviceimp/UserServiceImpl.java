@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
     public User createEntrepreneurship(String username, Entrepreneurship entrepreneurship) throws Exception {
         Optional<User> userOpt = userRepository.findByUsername(username);
         if(userOpt.isPresent()){
-            userOpt.get().setEmprendimiento(entrepreneurship);
+            userOpt.get().setEntrepreneurship(entrepreneurship);
             return userRepository.save(userOpt.get());
         }else
             throw new Exception("No se encontro ningún usuario");

@@ -72,14 +72,6 @@ public class User {
         this.email = email;
     }
 
-    public Entrepreneurship getEmprendimiento() {
-        return entrepreneurship;
-    }
-
-    public void setEmprendimiento(Entrepreneurship entrepreneurship) {
-        this.entrepreneurship = entrepreneurship;
-    }
-
     public Reputation getReputation() {
         return this.reputation;
     }
