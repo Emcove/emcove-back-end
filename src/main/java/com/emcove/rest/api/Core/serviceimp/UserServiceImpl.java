@@ -105,8 +105,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createEntrepreneurship(Integer userId, Entrepreneurship entrepreneurship) throws Exception {
-        Optional<User> userOpt = userRepository.findById(userId);
+    public User createEntrepreneurship(String username, Entrepreneurship entrepreneurship) throws Exception {
+        Optional<User> userOpt = userRepository.findByUsername(username);
         if(userOpt.isPresent()){
             userOpt.get().setEntrepreneurship(entrepreneurship);
             return userRepository.save(userOpt.get());
