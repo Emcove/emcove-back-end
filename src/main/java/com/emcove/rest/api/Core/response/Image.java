@@ -27,4 +27,12 @@ public class Image {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 }
