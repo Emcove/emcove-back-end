@@ -19,6 +19,7 @@ import java.net.URI;
 import java.util.*;
 
 @RestController
+@CrossOrigin("${spring.config.env.crossOrigin}")
 @RequestMapping("/entrepreneurships")
 public class EntrepreneurshipController {
     @Autowired
