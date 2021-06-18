@@ -17,7 +17,7 @@ public interface EntrepreneurshipService {
 
     Optional<Entrepreneurship> findEntrepreneurshipById(Integer id);
 
-    Entrepreneurship addProduct(Entrepreneurship entrepreneurship, Product product);
+    Entrepreneurship addProduct(Entrepreneurship entrepreneurship, Product product) throws Exception;
 
     Entrepreneurship patchEntrepreneurship(Integer id, EntrepreneurshipDTO entrepreneurshipDTO);
 
@@ -26,4 +26,6 @@ public interface EntrepreneurshipService {
     Reputation addComment(Integer id, Comment comment) throws Exception;
 
     Reputation getReputation(Integer id) throws Exception;
+
+    void validateEntrepreneurship(Entrepreneurship entrepreneurship)throws Exception;
 }

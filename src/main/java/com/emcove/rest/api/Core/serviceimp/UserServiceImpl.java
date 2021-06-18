@@ -7,6 +7,7 @@ import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
+import com.emcove.rest.api.Core.service.EntrepreneurshipService;
 import com.emcove.rest.api.Core.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +25,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private EntrepreneurshipService entrepreneurshipService;
 
     @Override
     public void createUser(User newUser) throws Exception {
@@ -107,9 +111,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createEntrepreneurship(String username, Entrepreneurship entrepreneurship) throws Exception {
         Optional<User> userOpt = userRepository.findByUsername(username);
+
         if(userOpt.isPresent()){
-            userOpt.get().setEntrepreneurship(entrepreneurship);
-            return userRepository.save(userOpt.get());
+            User user = userOpt.get();
+            if(user.getEntrepreneurship() != null)
+                throw new Exception("Ya cuenta con un emprendimiento creado");
+
+            entrepreneurshipService.validateEntrepreneurship(entrepreneurship);
+
+            user.setEntrepreneurship(entrepreneurship);
+            return userRepository.save(user);
         }else
             throw new Exception("No se encontro ningún usuario");
 

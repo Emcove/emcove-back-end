@@ -19,17 +19,15 @@ public enum CommentValue {
     }
 
     private String name;
-    private int value;
-
+    private Integer value;
+    @JsonValue
     public int getValue() {
         return value;
     }
-
-    @JsonValue
     public String getName() { return name; }
 
     @JsonCreator
-    public static CommentValue getCommentValueFromName(String name){
-        return Stream.of(CommentValue.values()).filter(targetCommentValue -> targetCommentValue.name.equals(name)).findFirst().orElse(null);
+    public static CommentValue getCommentValueFromName(Integer value){
+        return Stream.of(CommentValue.values()).filter(targetCommentValue -> targetCommentValue.value.equals(value)).findFirst().orElse(null);
     }
 }
