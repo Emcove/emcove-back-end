@@ -9,6 +9,7 @@ import com.emcove.rest.api.Core.response.Product;
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.EntrepreneurshipService;
+import com.emcove.rest.api.Core.service.ProductService;
 import com.emcove.rest.api.Core.utilities.ResponseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,10 +25,11 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    private ProductService productService;
+
     @Override
     public Entrepreneurship createEntrepreneurship(Entrepreneurship entrepreneurship) {
-        //entrepreneurship.setReputation(new Reputation());
-        System.out.println(ResponseUtils.toJson(entrepreneurship));
         return entrepreneurshipRepository.save(entrepreneurship);
     }
 
@@ -55,7 +57,8 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     }
 
     @Override
-    public Entrepreneurship addProduct(Entrepreneurship entrepreneurship, Product product) {
+    public Entrepreneurship addProduct(Entrepreneurship entrepreneurship, Product product) throws Exception {
+        productService.validateProduct(product);
         entrepreneurship.addProduct(product);
         return entrepreneurshipRepository.save(entrepreneurship);
     }
@@ -103,5 +106,19 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
             return entrepreneurshipOpt.get().getReputation();
         }else
             throw new Exception("No se encontro ningún usuario");
+    }
+
+    @Override
+    public void validateEntrepreneurship(Entrepreneurship entrepreneurship) throws Exception {
+        Optional<Entrepreneurship> entrepreneurshipOptional = entrepreneurshipRepository.findByName(entrepreneurship.getName());
+        if(entrepreneurshipOptional.isPresent())
+            throw new Exception("Ya existe un emprendimiento con el nombre: " + entrepreneurship.getName());
+        if(!ResponseUtils.validWord(entrepreneurship.getName(),entrepreneurship.getCity()))
+            throw new Exception("El emprendimiento contiene palabras indecentes en su configuración");
+        for(Product p : entrepreneurship.getProducts()){
+            if(!ResponseUtils.validWord(p.getName(),p.getDescription()))
+                throw new Exception("Alguno de los productos contiene palabras indecentes en su configuración");
+
+        }
     }
 }

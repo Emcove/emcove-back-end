@@ -48,7 +48,7 @@ public class EntrepreneurshipController {
 
     }
     @PostMapping()
-    public ResponseEntity<Entrepreneurship> createEntrepreneurship(@RequestBody Entrepreneurship entrepreneurship){
+    public ResponseEntity createEntrepreneurship(@RequestBody Entrepreneurship entrepreneurship){
         try {
             String loggedUsername = userService.getLoggedUsername();
             User user = userService.createEntrepreneurship(loggedUsername, entrepreneurship);
@@ -56,7 +56,7 @@ public class EntrepreneurshipController {
             return ResponseEntity.created(uri).body(user.getEntrepreneurship());
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
 
     }
@@ -94,10 +94,15 @@ public class EntrepreneurshipController {
 
 
     @PostMapping("/{id}/product")
-    public ResponseEntity<Entrepreneurship> addEntrepreneurshipProduct(@PathVariable Integer id, @RequestBody Product product){
+    public ResponseEntity addEntrepreneurshipProduct(@PathVariable Integer id, @RequestBody Product product){
         Optional<Entrepreneurship> entrepreneurship = entrepreneurshipService.findEntrepreneurshipById(id);
         if(entrepreneurship.isPresent()){
-            return ResponseEntity.ok().body(entrepreneurshipService.addProduct(entrepreneurship.get(), product));
+            try {
+                return ResponseEntity.ok().body(entrepreneurshipService.addProduct(entrepreneurship.get(), product));
+            } catch (Exception e) {
+                e.printStackTrace();
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
         } else
             return ResponseEntity.notFound().build();
 

@@ -1,5 +1,7 @@
 package com.emcove.rest.api.Core.response;
 
+
+
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
@@ -8,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.HashSet;
@@ -24,7 +25,7 @@ public class Product {
     private Integer id;
     private String name;
     private String description;
-    private Boolean hasStock;
+    private boolean hasStock;
     private Integer productionTime;
 
     @ElementCollection

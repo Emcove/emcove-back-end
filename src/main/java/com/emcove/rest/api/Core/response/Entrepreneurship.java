@@ -1,6 +1,19 @@
 package com.emcove.rest.api.Core.response;
 
-import javax.persistence.*;
+
+import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -92,6 +105,10 @@ public class Entrepreneurship {
 
     public void setDoesShipments(Boolean doesShipments) {
         this.doesShipments = doesShipments;
+    }
+
+    public boolean hasProduct(final Product product) {
+        return getProducts().contains(product);
     }
 }
 
