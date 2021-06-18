@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import static javax.persistence.FetchType.EAGER;
+
 @Entity
 @Table(name="Products")
 public class Product {
@@ -28,8 +30,8 @@ public class Product {
     private boolean hasStock;
     private Integer productionTime;
 
-    @ElementCollection
-    private List<String> images;
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = EAGER)
+    private List<Image> images;
 
     @OneToMany(cascade = CascadeType.ALL)
     @CollectionTable(name="ProductProp")
@@ -86,11 +88,11 @@ public class Product {
         this.productionTime = productionTime;
     }
 
-    public List<String> getImages() {
+    public List<Image> getImages() {
         return images;
     }
 
-    public void setImages(List<String> images) {
+    public void setImages(List<Image> images) {
         this.images = images;
     }
 
