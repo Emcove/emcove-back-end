@@ -50,6 +50,7 @@ public class EntrepreneurshipController {
     }
     @PostMapping()
     public ResponseEntity createEntrepreneurship(@RequestBody Entrepreneurship entrepreneurship){
+        //TODO: Ver por que cuando se manda un nombre de emprendimiento igual tira "Unable to access lob stream"
         try {
             String loggedUsername = userService.getLoggedUsername();
             User user = userService.createEntrepreneurship(loggedUsername, entrepreneurship);

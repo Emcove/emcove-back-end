@@ -56,7 +56,6 @@ public class UserController {
     @GetMapping("/login")
     public ResponseEntity<User> login(){
         Optional<User> user = userRepository.findByUsername(userService.getLoggedUsername());
-
         if(user.isPresent()){
             return ResponseEntity.status(HttpStatus.OK).body(user.get());
         }

@@ -32,7 +32,7 @@ public class Entrepreneurship {
     private Set<Product> products = new HashSet<>();
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Reputation reputation = new Reputation();
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
     private Set<Category> categories = new HashSet<>();
 
