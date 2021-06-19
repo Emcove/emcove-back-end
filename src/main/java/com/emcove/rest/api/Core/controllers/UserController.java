@@ -89,4 +89,27 @@ public class UserController {
         }
     }
 
+    @GetMapping("/myReputation")
+    public ResponseEntity<Reputation>  getMyReputation(){
+        String username = userService.getLoggedUsername();
+        Optional<User> user = userRepository.findByUsername(username);
+
+        try {
+            return ResponseEntity.ok().body(user.get().getReputation());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/myBusinessReputation")
+    public ResponseEntity<Reputation>  getMyBusinessReputation(){
+        String username = userService.getLoggedUsername();
+        Optional<User> user = userRepository.findByUsername(username);
+
+        try {
+            return ResponseEntity.ok().body(user.get().getEntrepreneurship().getReputation());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

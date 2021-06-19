@@ -13,7 +13,7 @@ public class Reputation {
     private Float averagePoints;
     private int totalPoint;
     @OneToMany(cascade = CascadeType.ALL)
-    private Set<Comment> coments = new HashSet<>();
+    private Set<Comment> comments = new HashSet<>();
 
     public Reputation(Integer id, Float averagePoints, int totalPoint) {
         this.id = id;
@@ -50,21 +50,21 @@ public class Reputation {
         this.totalPoint = totalPoint;
     }
 
-    public Set<Comment> getComents() {
-        return coments;
+    public Set<Comment> getComments() {
+        return comments;
     }
 
-    public void setComents(Set<Comment> coments) {
-        this.coments = coments;
+    public void setComments(Set<Comment> coments) {
+        this.comments = coments;
     }
 
     public void addComent(Comment coment){
-        getComents().add(coment);
+        getComments().add(coment);
         calculateReputation(coment.getValue().getValue());
     }
 
     public void calculateReputation(int newValue){
         setTotalPoint(getTotalPoint() + newValue);
-        setAveragePoints((float)getTotalPoint() / (float)getComents().size());
+        setAveragePoints((float)getTotalPoint() / (float) getComments().size());
     }
 }
