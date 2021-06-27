@@ -1,6 +1,8 @@
 package com.emcove.rest.api.Core.response;
 
 
+import com.emcove.rest.api.Core.utilities.NoBadWord;
+
 import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -23,9 +25,11 @@ public class Entrepreneurship {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id ;
+    @NoBadWord
     private String name;
     @Lob
     private String logo;
+    @NoBadWord
     private String city;
     private Boolean doesShipments;
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)

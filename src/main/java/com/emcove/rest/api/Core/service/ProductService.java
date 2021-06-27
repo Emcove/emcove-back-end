@@ -11,6 +11,4 @@ public interface ProductService {
     void deleteProduct(Integer id);
 
     Optional<Product> findProductById(Integer id);
-
-    void validateProduct(@NotNull Product product) throws Exception;
 }

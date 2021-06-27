@@ -26,6 +26,4 @@ public interface EntrepreneurshipService {
     Reputation addComment(Integer id, Comment comment) throws Exception;
 
     Reputation getReputation(Integer id) throws Exception;
-
-    void validateEntrepreneurship(Entrepreneurship entrepreneurship)throws Exception;
 }

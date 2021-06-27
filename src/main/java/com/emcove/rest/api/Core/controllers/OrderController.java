@@ -2,12 +2,10 @@ package com.emcove.rest.api.Core.controllers;
 
 import com.emcove.rest.api.Core.response.OrderState;
 import com.emcove.rest.api.Core.response.Order;
-import com.emcove.rest.api.Core.utilities.ResponseUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 
 @RestController
 @RequestMapping("/orders")

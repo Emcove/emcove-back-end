@@ -1,5 +1,7 @@
 package com.emcove.rest.api.Core.response;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
@@ -20,4 +22,11 @@ public class EntrepreneurshipTest {
         Assert.isTrue(!entrepreneurship.hasProduct(product2), "Product with id 2 doesnt have to be on the entrepreneurship");
     }
 
+    @BeforeEach
+    void setUp() {
+    }
+
+    @AfterEach
+    void tearDown() {
+    }
 }

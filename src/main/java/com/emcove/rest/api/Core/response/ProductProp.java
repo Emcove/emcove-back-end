@@ -1,7 +1,16 @@
 package com.emcove.rest.api.Core.response;
 
-import javax.persistence.*;
-import java.util.ArrayList;
+import com.emcove.rest.api.Core.utilities.NoBadWord;
+import com.emcove.rest.api.Core.utilities.NoBadWordObject;
+
+
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Table;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,20 +20,20 @@ public class ProductProp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
+    @NoBadWord
     private String name;
 
     @ElementCollection
     @JoinColumn(name = "product_id")
-    private List<String> options = new ArrayList<>();
+    private List<String> options ;
 
+    @NoBadWord(content = NoBadWordObject.List)
     public ProductProp() {
     }
 
     public ProductProp(List<String> options) {
         this.options = options;
     }
-
     public List<String> getOptions() {
         return options;
     }
@@ -48,6 +57,7 @@ public class ProductProp {
     public void setName(String name) {
         this.name = name;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
