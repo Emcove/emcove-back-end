@@ -15,9 +15,9 @@ public interface EntrepreneurshipService {
     void deleteEntrepreneurship(Integer id);
     Entrepreneurship updateEntrepreneurship(Entrepreneurship entrepreneurship);
 
-    Optional<Entrepreneurship> findEntrepreneurshipById(Integer id);
+    Entrepreneurship findEntrepreneurshipById(Integer id);
 
-    Entrepreneurship addProduct(Entrepreneurship entrepreneurship, Product product);
+    Entrepreneurship addProduct(Integer entrepreneurshipId, Product product);
 
     Entrepreneurship patchEntrepreneurship(Integer id, EntrepreneurshipDTO entrepreneurshipDTO);
 

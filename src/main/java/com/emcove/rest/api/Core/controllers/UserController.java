@@ -25,16 +25,10 @@ import java.util.Optional;
 public class UserController {
     @Autowired
     private UserService userService;
-    @Autowired
-    private UserRepository userRepository;
 
     @GetMapping("/{id}")
-    public Optional<User> getUser(@PathVariable Integer id){
-        var user = userService.findUserById(id);
-        if(user.isPresent()){
-            return user;
-        }
-        return null;
+    public ResponseEntity<User> getUser(@PathVariable Integer id){
+        return ResponseEntity.ok(userService.findUserById(id));
     }
 
     @DeleteMapping("/{username}")
@@ -50,12 +44,7 @@ public class UserController {
 
     @GetMapping("/login")
     public ResponseEntity<User> login(){
-        Optional<User> user = userRepository.findByUsername(userService.getLoggedUsername());
-        if(user.isPresent()){
-            return ResponseEntity.status(HttpStatus.OK).body(user.get());
-        }else
-            throw new ResourceNotFoundException("No se encontro ningún usuario");
-
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getLoggedUser());
     }
 
     @PatchMapping("/update")
@@ -72,34 +61,11 @@ public class UserController {
 
     @GetMapping("/{id}/reputation")
     public ResponseEntity<Reputation>  getReputation(@PathVariable Integer id){
-        try {
-            return ResponseEntity.ok().body(userService.getReputation(id));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok().body(userService.getReputation(id));
     }
 
     @GetMapping("/reputation")
     public ResponseEntity<Reputation>  getMyReputation(){
-        String username = userService.getLoggedUsername();
-        Optional<User> user = userRepository.findByUsername(username);
-
-        try {
-            return ResponseEntity.ok().body(user.get().getReputation());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @GetMapping("/myBusinessReputation")
-    public ResponseEntity<Reputation>  getMyBusinessReputation(){
-        String username = userService.getLoggedUsername();
-        Optional<User> user = userRepository.findByUsername(username);
-
-        try {
-            return ResponseEntity.ok().body(user.get().getEntrepreneurship().getReputation());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok().body(userService.getReputationByUsername(userService.getLoggedUsername()));
     }
 }

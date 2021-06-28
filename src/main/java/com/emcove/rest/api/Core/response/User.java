@@ -131,4 +131,6 @@ public class User {
     public void setAdult(Boolean adult) {
         this.adult = adult;
     }
+
+    public boolean hasEntrepreneuship(){ return getEntrepreneurship() != null;}
 }

@@ -8,7 +8,6 @@ import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
-import com.emcove.rest.api.Core.service.EntrepreneurshipService;
 import com.emcove.rest.api.Core.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,9 +27,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    @Autowired
-    private EntrepreneurshipService entrepreneurshipService;
 
     @Override
     public void createUser(User newUser){
@@ -96,8 +92,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findUserById(Integer id) {
-        return userRepository.findById(id);
+    public User findUserById(Integer id) {
+        Optional<User> userOp = userRepository.findById(id);
+        if(userOp.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
+
+        return userOp.get();
     }
 
     @Override
@@ -141,7 +141,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Reputation getReputation(Integer id) {
         Optional<User> userOpt = userRepository.findById(id);
-        if(!userOpt.isPresent())
+        if(userOpt.isEmpty())
             throw new ResourceNotFoundException("No se encontro ningún usuario");
 
         return userOpt.get().getReputation();
@@ -150,9 +150,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public Reputation getReputationByUsername(String username) {
         Optional<User> userOpt = userRepository.findByUsername(username);
-        if(!userOpt.isPresent())
+        if(userOpt.isEmpty())
             throw new ResourceNotFoundException("No se encontro ningún usuario");
 
         return userOpt.get().getReputation();
+    }
+
+    @Override
+    public User getLoggedUser() {
+        Optional<User> userOpt = userRepository.findByUsername(getLoggedUsername());
+        if(userOpt.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
+
+        return userOpt.get();
     }
 }

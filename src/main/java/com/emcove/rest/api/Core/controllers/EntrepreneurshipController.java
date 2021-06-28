@@ -34,14 +34,8 @@ public class EntrepreneurshipController {
 
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Entrepreneurship>> getEntrepreneurship(@PathVariable Integer id) {
-        Optional<Entrepreneurship> entreprenuership = entrepreneurshipService.findEntrepreneurshipById(id);
-
-        if (entreprenuership.isPresent())
-            return ResponseEntity.ok(entreprenuership);
-        else
-            return ResponseEntity.notFound().build();
-
+    public ResponseEntity<Entrepreneurship> getEntrepreneurship(@PathVariable Integer id) {
+        return ResponseEntity.ok(entrepreneurshipService.findEntrepreneurshipById(id));
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Entrepreneurship> deleteEntrepreneurship(@PathVariable Integer id){
@@ -57,17 +51,11 @@ public class EntrepreneurshipController {
         User user = userService.createEntrepreneurship(loggedUsername, entrepreneurship);
         final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getEntrepreneurship().getId()).toUri();
         return ResponseEntity.created(uri).body(user.getEntrepreneurship());
-
-
     }
 
     @PutMapping()
     public ResponseEntity<Entrepreneurship> updateEnteEntrepreneurship(@RequestBody Entrepreneurship entrepreneurship){
-
-        if(entrepreneurship.getId() == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        else
-            return  ResponseEntity.ok().body(entrepreneurshipService.updateEntrepreneurship(entrepreneurship));
+        return  ResponseEntity.ok().body(entrepreneurshipService.updateEntrepreneurship(entrepreneurship));
     }
     @PatchMapping("/{id}")
     public ResponseEntity<Entrepreneurship> patchEntrepreneurship(@PathVariable Integer id, @RequestBody EntrepreneurshipDTO entrepreneurshipDTO){
@@ -75,12 +63,7 @@ public class EntrepreneurshipController {
     }
     @GetMapping("/{id}/products")
     public ResponseEntity<Set<Product>> getEntrepreneurshipProducts(@PathVariable Integer id){
-        Optional<Entrepreneurship> entrepreneurship = entrepreneurshipService.findEntrepreneurshipById(id);
-        if(entrepreneurship.isPresent())
-            return ResponseEntity.ok().body(entrepreneurship.get().getProducts());
-        else
-            return ResponseEntity.notFound().build();
-
+        return ResponseEntity.ok().body(entrepreneurshipService.findEntrepreneurshipById(id).getProducts());
     }
 
     /**
@@ -90,11 +73,7 @@ public class EntrepreneurshipController {
      */
     @GetMapping("/{id}/reputation")
     public ResponseEntity<Reputation> getEntrepreneurshipReputation(@PathVariable Integer id){
-        try {
-            return ResponseEntity.ok().body(entrepreneurshipService.getReputation(id));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok().body(entrepreneurshipService.getReputation(id));
     }
 
     /**
@@ -102,40 +81,16 @@ public class EntrepreneurshipController {
      */
     @GetMapping("/reputation")
     public ResponseEntity<Reputation> getLoggedEntrepreneurshipReputation(){
-        try {
-            return ResponseEntity.ok().body(entrepreneurshipService.getReputationByUsername(userService.getLoggedUsername()));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok().body(entrepreneurshipService.getReputationByUsername(userService.getLoggedUsername()));
     }
-
 
     @PostMapping("/{id}/product")
     public ResponseEntity addEntrepreneurshipProduct(@PathVariable Integer id,@Valid @RequestBody Product product){
-        System.out.println(product.getProps().isEmpty());
-        Optional<Entrepreneurship> entrepreneurship = entrepreneurshipService.findEntrepreneurshipById(id);
-        if(entrepreneurship.isPresent()){
-            try {
-                return ResponseEntity.ok().body(entrepreneurshipService.addProduct(entrepreneurship.get(), product));
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println(e.getClass());
-
-                return ResponseEntity.badRequest().body(e.getMessage());
-            }
-        } else
-            return ResponseEntity.notFound().build();
-
+        return ResponseEntity.ok().body(entrepreneurshipService.addProduct(id, product));
     }
     @PostMapping("/{id}/reputation/comment")
     public ResponseEntity<Reputation>  createComment(@PathVariable Integer id, @RequestBody Comment comment){
-        try {
-            Reputation reputation = entrepreneurshipService.addComment(id, comment);
-            return ResponseEntity.ok().body(reputation);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-
+        return ResponseEntity.ok().body(entrepreneurshipService.addComment(id, comment));
     }
 
 

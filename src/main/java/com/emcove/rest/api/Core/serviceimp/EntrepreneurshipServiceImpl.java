@@ -11,6 +11,7 @@ import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.EntrepreneurshipService;
 import com.emcove.rest.api.Core.service.ProductService;
+import org.springframework.beans.InvalidPropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,17 +44,30 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
 
     @Override
     public Entrepreneurship updateEntrepreneurship(Entrepreneurship entrepreneurship) {
+        if(entrepreneurship.getId() == null)
+            throw new IllegalArgumentException("No se permite nuevo emprendimiento");
+
         return entrepreneurshipRepository.save(entrepreneurship);
     }
 
     @Override
-    public Optional<Entrepreneurship> findEntrepreneurshipById(Integer id) {
-        return entrepreneurshipRepository.findById(id);
+    public Entrepreneurship findEntrepreneurshipById(Integer id) {
+        Optional<Entrepreneurship> entrepreneurshipOpt = entrepreneurshipRepository.findById(id);
+        if(entrepreneurshipOpt.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
+
+        return entrepreneurshipOpt.get();
     }
 
     @Override
-    public Entrepreneurship addProduct(Entrepreneurship entrepreneurship, Product product) {
+    public Entrepreneurship addProduct(Integer entrepreneurshipId, Product product) {
+        Optional<Entrepreneurship> entrepreneurshipOp = entrepreneurshipRepository.findById(entrepreneurshipId);
+        if(entrepreneurshipOp.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
+
+        Entrepreneurship entrepreneurship = entrepreneurshipOp.get();
         entrepreneurship.addProduct(product);
+
         return entrepreneurshipRepository.save(entrepreneurship);
     }
 
@@ -96,18 +110,18 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     @Override
     public Reputation getReputation(Integer id) {
         Optional<Entrepreneurship> entrepreneurshipOpt = entrepreneurshipRepository.findById(id);
-        if(entrepreneurshipOpt.isPresent()){
-            return entrepreneurshipOpt.get().getReputation();
-        }else
+        if(entrepreneurshipOpt.isEmpty())
             throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
+
+        return entrepreneurshipOpt.get().getReputation();
     }
 
     @Override
     public Reputation getReputationByUsername(String loggedUsername) {
         Optional<User> user = userRepository.findByUsername(loggedUsername);
-        if(!user.isPresent())
+        if(user.isEmpty())
             throw new ResourceNotFoundException("No se encontro ningún usuario");
-        if(user.get().getEntrepreneurship() == null)
+        if(user.get().hasEntrepreneuship())
             throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
 
         return user.get().getEntrepreneurship().getReputation();

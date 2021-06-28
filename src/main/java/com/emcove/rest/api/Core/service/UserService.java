@@ -12,11 +12,13 @@ public interface UserService {
     void createUser(User newUser);
     void deleteUser(Integer id);
     User patchUser(UserDTO userDTO);
-    Optional<User> findUserById(Integer id);
+    User findUserById(Integer id);
     String getLoggedUsername();
     boolean checkUserPassword(User user);
     User createEntrepreneurship(String username, Entrepreneurship entrepreneurship);
     Reputation addComment(Integer id, Comment comment);
     Reputation getReputation(Integer id);
     Reputation getReputationByUsername(String username);
+
+    User getLoggedUser();
 }
