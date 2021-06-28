@@ -36,14 +36,18 @@ public class UserController {
         return null;
     }
 
-    @DeleteMapping("/{username}")
-    public ResponseEntity<String> deleteUser(@PathVariable String username){
-        try {
-            userService.deleteUser(username);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+    @DeleteMapping("")
+    public ResponseEntity<String> deleteUser(){
+        Optional<User> user = userRepository.findByUsername(userService.getLoggedUsername());
+        if ( user.isPresent()) {
+            try {
+                userService.deleteUser(user.get().getId());
+                return ResponseEntity.ok().build();
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
         }
+        return ResponseEntity.badRequest().body("El usuario no existe");
     }
 
     @PostMapping("/register")
