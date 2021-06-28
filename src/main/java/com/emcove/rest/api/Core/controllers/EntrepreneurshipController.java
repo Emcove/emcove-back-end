@@ -9,15 +9,15 @@ import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.EntrepreneurshipService;
 import com.emcove.rest.api.Core.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.*;
+import java.util.List;
+import java.util.Set;
+
 
 @RestController
 @CrossOrigin("${spring.config.env.crossOrigin}")
@@ -44,7 +44,7 @@ public class EntrepreneurshipController {
 
     }
     @PostMapping()
-    public ResponseEntity createEntrepreneurship(@Valid @RequestBody Entrepreneurship entrepreneurship) {
+    public ResponseEntity<Entrepreneurship> createEntrepreneurship(@Valid @RequestBody Entrepreneurship entrepreneurship) {
         //TODO: Ver por que cuando se manda un nombre de emprendimiento igual tira "Unable to access lob stream"
 
         String loggedUsername = userService.getLoggedUsername();
@@ -69,7 +69,7 @@ public class EntrepreneurshipController {
     /**
      * Trae la reputacion de un emprendiemiento
      * @param id id del emprendimiento que se desea obtener la reputacion
-     * @return
+     * @return Devuelve una reputacion
      */
     @GetMapping("/{id}/reputation")
     public ResponseEntity<Reputation> getEntrepreneurshipReputation(@PathVariable Integer id){
@@ -85,7 +85,7 @@ public class EntrepreneurshipController {
     }
 
     @PostMapping("/{id}/product")
-    public ResponseEntity addEntrepreneurshipProduct(@PathVariable Integer id,@Valid @RequestBody Product product){
+    public ResponseEntity<Entrepreneurship> addEntrepreneurshipProduct(@PathVariable Integer id,@Valid @RequestBody Product product){
         return ResponseEntity.ok().body(entrepreneurshipService.addProduct(id, product));
     }
     @PostMapping("/{id}/reputation/comment")
