@@ -117,8 +117,6 @@ public class UserServiceImpl implements UserService {
             if(user.getEntrepreneurship() != null)
                 throw new Exception("Ya cuenta con un emprendimiento creado");
 
-            entrepreneurshipService.validateEntrepreneurship(entrepreneurship);
-
             user.setEntrepreneurship(entrepreneurship);
             return userRepository.save(user);
         }else

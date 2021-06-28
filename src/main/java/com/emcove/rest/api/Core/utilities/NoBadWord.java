@@ -10,10 +10,11 @@ import java.lang.annotation.Target;
 
 @Documented
 @Constraint(validatedBy = NoBadWordValidator.class)
-@Target({ElementType.FIELD,ElementType.CONSTRUCTOR})
+@Target({ElementType.FIELD,ElementType.METHOD,ElementType.CONSTRUCTOR})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NoBadWord {
-    String message() default "Se ha detectado palabras inapropiadas.";
+    String message() default "Se han detectado palabras inapropiadas.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
+    NoBadWordObject[] content() default {NoBadWordObject.STRING};
 }

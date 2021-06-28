@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.*;
 
@@ -49,7 +50,7 @@ public class EntrepreneurshipController {
 
     }
     @PostMapping()
-    public ResponseEntity createEntrepreneurship(@RequestBody Entrepreneurship entrepreneurship){
+    public ResponseEntity createEntrepreneurship(@Valid @RequestBody Entrepreneurship entrepreneurship){
         //TODO: Ver por que cuando se manda un nombre de emprendimiento igual tira "Unable to access lob stream"
         try {
             String loggedUsername = userService.getLoggedUsername();
@@ -96,13 +97,16 @@ public class EntrepreneurshipController {
 
 
     @PostMapping("/{id}/product")
-    public ResponseEntity addEntrepreneurshipProduct(@PathVariable Integer id, @RequestBody Product product){
+    public ResponseEntity addEntrepreneurshipProduct(@PathVariable Integer id,@Valid @RequestBody Product product){
+        System.out.println(product.getProps().isEmpty());
         Optional<Entrepreneurship> entrepreneurship = entrepreneurshipService.findEntrepreneurshipById(id);
         if(entrepreneurship.isPresent()){
             try {
                 return ResponseEntity.ok().body(entrepreneurshipService.addProduct(entrepreneurship.get(), product));
             } catch (Exception e) {
                 e.printStackTrace();
+                System.out.println(e.getClass());
+
                 return ResponseEntity.badRequest().body(e.getMessage());
             }
         } else
