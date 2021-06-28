@@ -37,8 +37,13 @@ public class UserController {
     }
 
     @DeleteMapping("/{username}")
-    public String deleteUser(@PathVariable String username){
-        return "DeleteUser: " + username;
+    public ResponseEntity<String> deleteUser(@PathVariable String username){
+        try {
+            userService.deleteUser(username);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping("/register")

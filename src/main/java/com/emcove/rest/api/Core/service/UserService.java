@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface UserService {
     void createUser(User newUser) throws Exception;
-    void deleteUser(Integer id);
+    void deleteUser(String username) throws Exception;
     User patchUser(UserDTO userDTO);
     Optional<User> findUserById(Integer id);
     String getLoggedUsername();
