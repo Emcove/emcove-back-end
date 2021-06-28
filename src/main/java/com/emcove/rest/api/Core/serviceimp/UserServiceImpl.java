@@ -48,8 +48,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(Integer id) {
-
+    public void deleteUser(Integer id) throws Exception{
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            try {
+                user.get().setEnabled(0);
+                userRepository.save(user.get());
+            } catch (Exception e) {
+                throw new Exception("No se ha podido borrar el usuario");
+            }
+        } else {
+            throw new Exception("El usuario no existe");
+        }
     }
 
     @Override
