@@ -50,17 +50,14 @@ public class EntrepreneurshipController {
 
     }
     @PostMapping()
-    public ResponseEntity createEntrepreneurship(@Valid @RequestBody Entrepreneurship entrepreneurship){
+    public ResponseEntity createEntrepreneurship(@Valid @RequestBody Entrepreneurship entrepreneurship) {
         //TODO: Ver por que cuando se manda un nombre de emprendimiento igual tira "Unable to access lob stream"
-        try {
-            String loggedUsername = userService.getLoggedUsername();
-            User user = userService.createEntrepreneurship(loggedUsername, entrepreneurship);
-            final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getEntrepreneurship().getId()).toUri();
-            return ResponseEntity.created(uri).body(user.getEntrepreneurship());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+
+        String loggedUsername = userService.getLoggedUsername();
+        User user = userService.createEntrepreneurship(loggedUsername, entrepreneurship);
+        final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getEntrepreneurship().getId()).toUri();
+        return ResponseEntity.created(uri).body(user.getEntrepreneurship());
+
 
     }
 
@@ -86,10 +83,27 @@ public class EntrepreneurshipController {
 
     }
 
+    /**
+     * Trae la reputacion de un emprendiemiento
+     * @param id id del emprendimiento que se desea obtener la reputacion
+     * @return
+     */
     @GetMapping("/{id}/reputation")
     public ResponseEntity<Reputation> getEntrepreneurshipReputation(@PathVariable Integer id){
         try {
             return ResponseEntity.ok().body(entrepreneurshipService.getReputation(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    /**
+     * Trae reputacion del emprendimiento del usuario logueado
+     */
+    @GetMapping("/reputation")
+    public ResponseEntity<Reputation> getLoggedEntrepreneurshipReputation(){
+        try {
+            return ResponseEntity.ok().body(entrepreneurshipService.getReputationByUsername(userService.getLoggedUsername()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }

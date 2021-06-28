@@ -17,13 +17,15 @@ public interface EntrepreneurshipService {
 
     Optional<Entrepreneurship> findEntrepreneurshipById(Integer id);
 
-    Entrepreneurship addProduct(Entrepreneurship entrepreneurship, Product product) throws Exception;
+    Entrepreneurship addProduct(Entrepreneurship entrepreneurship, Product product);
 
     Entrepreneurship patchEntrepreneurship(Integer id, EntrepreneurshipDTO entrepreneurshipDTO);
 
     List<Entrepreneurship> findAll();
 
-    Reputation addComment(Integer id, Comment comment) throws Exception;
+    Reputation addComment(Integer id, Comment comment);
 
-    Reputation getReputation(Integer id) throws Exception;
+    Reputation getReputation(Integer id);
+
+    Reputation getReputationByUsername(String loggedUsername);
 }

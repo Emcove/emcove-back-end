@@ -1,6 +1,7 @@
 package com.emcove.rest.api.Core.serviceimp;
 
 import com.emcove.rest.api.Core.dto.UserDTO;
+import com.emcove.rest.api.Core.exception.ResourceNotFoundException;
 import com.emcove.rest.api.Core.repository.UserRepository;
 
 import com.emcove.rest.api.Core.response.Entrepreneurship;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import javax.persistence.EntityExistsException;
 import java.util.Optional;
 
 @Service
@@ -30,7 +33,7 @@ public class UserServiceImpl implements UserService {
     private EntrepreneurshipService entrepreneurshipService;
 
     @Override
-    public void createUser(User newUser) throws Exception {
+    public void createUser(User newUser){
         Optional<User> user = userRepository.findByUsername(newUser.getUsername());
 
         if(!user.isPresent()){
@@ -38,11 +41,11 @@ public class UserServiceImpl implements UserService {
                 newUser.setReputation(new Reputation());
                 newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
                 userRepository.save(newUser);
-            }catch (Exception e) {
-                throw new Exception("No se ha podido crear el usuario, intente nuevamente mas tarde");
+            }catch (IllegalArgumentException e) {
+                throw new IllegalArgumentException("No se ha podido crear el usuario, intente nuevamente mas tarde",e);
             }
         }else{
-            throw new Exception("El nombre de usuario ya existe");
+            throw new EntityExistsException("El nombre de usuario ya existe");
         }
 
     }
@@ -109,38 +112,47 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createEntrepreneurship(String username, Entrepreneurship entrepreneurship) throws Exception {
+    public User createEntrepreneurship(String username, Entrepreneurship entrepreneurship)  {
         Optional<User> userOpt = userRepository.findByUsername(username);
 
         if(userOpt.isPresent()){
             User user = userOpt.get();
             if(user.getEntrepreneurship() != null)
-                throw new Exception("Ya cuenta con un emprendimiento creado");
+                throw new EntityExistsException("Ya cuenta con un emprendimiento creado");
 
             user.setEntrepreneurship(entrepreneurship);
             return userRepository.save(user);
         }else
-            throw new Exception("No se encontro ningún usuario");
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
 
     }
 
     @Override
-    public Reputation addComment(Integer id, Comment comment) throws Exception {
+    public Reputation addComment(Integer id, Comment comment) {
         Optional<User> userOpt = userRepository.findById(id);
         if(userOpt.isPresent()){
             userOpt.get().getReputation().addComent(comment);
             return userRepository.save(userOpt.get()).getReputation();
         }else
-            throw new Exception("No se encontro ningún usuario");
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
 
     }
 
     @Override
-    public Reputation getReputation(Integer id) throws Exception {
+    public Reputation getReputation(Integer id) {
         Optional<User> userOpt = userRepository.findById(id);
-        if(userOpt.isPresent()){
-            return userOpt.get().getReputation();
-        }else
-            throw new Exception("No se encontro ningún usuario");
+        if(!userOpt.isPresent())
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
+
+        return userOpt.get().getReputation();
+    }
+
+    @Override
+    public Reputation getReputationByUsername(String username) {
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        if(!userOpt.isPresent())
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
+
+        return userOpt.get().getReputation();
     }
 }

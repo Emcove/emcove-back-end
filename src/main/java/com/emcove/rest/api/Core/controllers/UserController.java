@@ -1,6 +1,7 @@
 package com.emcove.rest.api.Core.controllers;
 
 import com.emcove.rest.api.Core.dto.UserDTO;
+import com.emcove.rest.api.Core.exception.ResourceNotFoundException;
 import com.emcove.rest.api.Core.repository.UserRepository;
 import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
@@ -43,14 +44,8 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> createUser(@RequestBody User user){
-        Gson gson = new Gson();
-        System.out.println(gson.toJson(user));
-        try {
-            userService.createUser(user);
-            return ResponseEntity.status(HttpStatus.OK).body("Usuario creado correctamente");
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+        userService.createUser(user);
+        return ResponseEntity.status(HttpStatus.OK).body("Usuario creado correctamente");
     }
 
     @GetMapping("/login")
@@ -58,9 +53,9 @@ public class UserController {
         Optional<User> user = userRepository.findByUsername(userService.getLoggedUsername());
         if(user.isPresent()){
             return ResponseEntity.status(HttpStatus.OK).body(user.get());
-        }
+        }else
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 
     @PatchMapping("/update")
@@ -71,13 +66,8 @@ public class UserController {
 
     @PostMapping("/{id}/reputation/comment")
     public ResponseEntity<Reputation>  createComment(@PathVariable Integer id, @RequestBody Comment comment){
-        try {
-            Reputation reputation = userService.addComment(id, comment);
-            return ResponseEntity.ok().body(reputation);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-
+        Reputation reputation = userService.addComment(id, comment);
+        return ResponseEntity.ok().body(reputation);
     }
 
     @GetMapping("/{id}/reputation")
@@ -89,7 +79,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("/myReputation")
+    @GetMapping("/reputation")
     public ResponseEntity<Reputation>  getMyReputation(){
         String username = userService.getLoggedUsername();
         Optional<User> user = userRepository.findByUsername(username);

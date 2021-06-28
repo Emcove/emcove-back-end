@@ -1,6 +1,7 @@
 package com.emcove.rest.api.Core.serviceimp;
 
 import com.emcove.rest.api.Core.dto.EntrepreneurshipDTO;
+import com.emcove.rest.api.Core.exception.ResourceNotFoundException;
 import com.emcove.rest.api.Core.repository.EntrepreneurshipRepository;
 import com.emcove.rest.api.Core.repository.UserRepository;
 import com.emcove.rest.api.Core.response.Comment;
@@ -34,15 +35,10 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
 
     @Override
     public void deleteEntrepreneurship(Integer id) {
-        try {
-            Optional<User> user = userRepository.findByEntrepreneurshipId(id);
-            if(user.isPresent())
-                user.get().setEntrepreneurship(null);
-            entrepreneurshipRepository.deleteById(id);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
+        Optional<User> user = userRepository.findByEntrepreneurshipId(id);
+        if(user.isPresent())
+            user.get().setEntrepreneurship(null);
+        entrepreneurshipRepository.deleteById(id);
     }
 
     @Override
@@ -56,7 +52,7 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     }
 
     @Override
-    public Entrepreneurship addProduct(Entrepreneurship entrepreneurship, Product product) throws Exception {
+    public Entrepreneurship addProduct(Entrepreneurship entrepreneurship, Product product) {
         entrepreneurship.addProduct(product);
         return entrepreneurshipRepository.save(entrepreneurship);
     }
@@ -88,21 +84,32 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     }
 
     @Override
-    public Reputation addComment(Integer id, Comment comment) throws Exception {
+    public Reputation addComment(Integer id, Comment comment){
         Optional<Entrepreneurship> entrepreneurshipOpt = entrepreneurshipRepository.findById(id);
         if(entrepreneurshipOpt.isPresent()){
             entrepreneurshipOpt.get().getReputation().addComent(comment);
             return entrepreneurshipRepository.save(entrepreneurshipOpt.get()).getReputation();
         }else
-            throw new Exception("No se encontro ningún usuario");
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
     }
 
     @Override
-    public Reputation getReputation(Integer id) throws Exception {
+    public Reputation getReputation(Integer id) {
         Optional<Entrepreneurship> entrepreneurshipOpt = entrepreneurshipRepository.findById(id);
         if(entrepreneurshipOpt.isPresent()){
             return entrepreneurshipOpt.get().getReputation();
         }else
-            throw new Exception("No se encontro ningún usuario");
+            throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
+    }
+
+    @Override
+    public Reputation getReputationByUsername(String loggedUsername) {
+        Optional<User> user = userRepository.findByUsername(loggedUsername);
+        if(!user.isPresent())
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
+        if(user.get().getEntrepreneurship() == null)
+            throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
+
+        return user.get().getEntrepreneurship().getReputation();
     }
 }
