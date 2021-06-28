@@ -52,7 +52,8 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
             try {
-                userRepository.deleteById(id);
+                user.get().setEnabled(0);
+                userRepository.save(user.get());
             } catch (Exception e) {
                 throw new Exception("No se ha podido borrar el usuario");
             }
