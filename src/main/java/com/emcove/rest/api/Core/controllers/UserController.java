@@ -33,16 +33,9 @@ public class UserController {
 
     @DeleteMapping("")
     public ResponseEntity<String> deleteUser(){
-        Optional<User> user = userRepository.findByUsername(userService.getLoggedUsername());
-        if ( user.isPresent()) {
-            try {
-                userService.deleteUser(user.get().getId());
-                return ResponseEntity.ok().build();
-            } catch (Exception e) {
-                return ResponseEntity.badRequest().body(e.getMessage());
-            }
-        }
-        return ResponseEntity.badRequest().body("El usuario no existe");
+        userService.deleteUser(userService.getLoggedUsername());
+
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/register")

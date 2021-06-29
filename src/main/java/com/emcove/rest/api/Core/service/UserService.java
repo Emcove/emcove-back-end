@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface UserService {
 
     void createUser(User newUser);
-    void deleteUser(Integer id);
+    void deleteUser(String username);
 
     User patchUser(UserDTO userDTO);
     User findUserById(Integer id);

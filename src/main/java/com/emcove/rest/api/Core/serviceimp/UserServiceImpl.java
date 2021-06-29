@@ -47,17 +47,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(Integer id) throws Exception{
-        Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()) {
-            try {
-                user.get().setEnabled(0);
-                userRepository.save(user.get());
-            } catch (Exception e) {
-                throw new Exception("No se ha podido borrar el usuario");
-            }
-        } else {
-            throw new Exception("El usuario no existe");
+    public void deleteUser(String username){
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        if (userOpt.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
+        User user = userOpt.get();
+
+        user.setEnabled(0);
+
+        try {
+            userRepository.save(userOpt.get());
+        }catch (IllegalArgumentException ex){
+            throw new IllegalArgumentException("No se ha podido borrar el usuari",ex);
         }
     }
 
