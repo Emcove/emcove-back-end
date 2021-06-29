@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.persistence.EntityExistsException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.Set;
 public class RestResponseEntityExceptionHandler  extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity handleConstraintViolation(ConstraintViolationException constraintViolationException){
+    public ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException constraintViolationException){
         Set<ConstraintViolation<?>> violations = constraintViolationException.getConstraintViolations();
         String errorMessage = "";
         if(!violations.isEmpty()){
@@ -28,7 +29,32 @@ public class RestResponseEntityExceptionHandler  extends ResponseEntityException
             errorMessage = builder.toString();
         }else
             errorMessage = "ConstraintViolationException ocurred.";
+        constraintViolationException.printStackTrace();
         return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<Object> resourceNotFoundExceptionHandler(ResourceNotFoundException resourceNotFoundException){
+        resourceNotFoundException.printStackTrace();
+        return new ResponseEntity<>(resourceNotFoundException.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(IllegalAccessError.class)
+    public ResponseEntity<Object> illegalAccessErrorHandler(IllegalAccessError accessError){
+        accessError.printStackTrace();
+        return new ResponseEntity<>(accessError.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(EntityExistsException.class)
+    public ResponseEntity<Object> entityExistsExceptionHandler(EntityExistsException existsException){
+        existsException.printStackTrace();
+        return new ResponseEntity<>(existsException.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Object> illegalArgumentExceptionHandler(IllegalArgumentException illegalArgumentException){
+        illegalArgumentException.printStackTrace();
+        return new ResponseEntity<>(illegalArgumentException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @Override
@@ -41,6 +67,8 @@ public class RestResponseEntityExceptionHandler  extends ResponseEntityException
             errorMessage = builder.toString();
         }else
             errorMessage = "MethodArgumentNotValidException ocurred.";
+
+        ex.printStackTrace();
 
         return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }

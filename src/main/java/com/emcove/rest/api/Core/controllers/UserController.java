@@ -1,6 +1,7 @@
 package com.emcove.rest.api.Core.controllers;
 
 import com.emcove.rest.api.Core.dto.UserDTO;
+import com.emcove.rest.api.Core.exception.ResourceNotFoundException;
 import com.emcove.rest.api.Core.repository.UserRepository;
 import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
@@ -24,16 +25,10 @@ import java.util.Optional;
 public class UserController {
     @Autowired
     private UserService userService;
-    @Autowired
-    private UserRepository userRepository;
 
     @GetMapping("/{id}")
-    public Optional<User> getUser(@PathVariable Integer id){
-        var user = userService.findUserById(id);
-        if(user.isPresent()){
-            return user;
-        }
-        return null;
+    public ResponseEntity<User> getUser(@PathVariable Integer id){
+        return ResponseEntity.ok(userService.findUserById(id));
     }
 
     @DeleteMapping("")
@@ -52,24 +47,13 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<String> createUser(@RequestBody User user){
-        Gson gson = new Gson();
-        System.out.println(gson.toJson(user));
-        try {
-            userService.createUser(user);
-            return ResponseEntity.status(HttpStatus.OK).body("Usuario creado correctamente");
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+        userService.createUser(user);
+        return ResponseEntity.status(HttpStatus.OK).body("Usuario creado correctamente");
     }
 
     @GetMapping("/login")
     public ResponseEntity<User> login(){
-        Optional<User> user = userRepository.findByUsername(userService.getLoggedUsername());
-        if(user.isPresent()){
-            return ResponseEntity.status(HttpStatus.OK).body(user.get());
-        }
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getLoggedUser());
     }
 
     @PatchMapping("/update")
@@ -80,45 +64,17 @@ public class UserController {
 
     @PostMapping("/{id}/reputation/comment")
     public ResponseEntity<Reputation>  createComment(@PathVariable Integer id, @RequestBody Comment comment){
-        try {
-            Reputation reputation = userService.addComment(id, comment);
-            return ResponseEntity.ok().body(reputation);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-
+        Reputation reputation = userService.addComment(id, comment);
+        return ResponseEntity.ok().body(reputation);
     }
 
     @GetMapping("/{id}/reputation")
     public ResponseEntity<Reputation>  getReputation(@PathVariable Integer id){
-        try {
-            return ResponseEntity.ok().body(userService.getReputation(id));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok().body(userService.getReputation(id));
     }
 
-    @GetMapping("/myReputation")
+    @GetMapping("/reputation")
     public ResponseEntity<Reputation>  getMyReputation(){
-        String username = userService.getLoggedUsername();
-        Optional<User> user = userRepository.findByUsername(username);
-
-        try {
-            return ResponseEntity.ok().body(user.get().getReputation());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    @GetMapping("/myBusinessReputation")
-    public ResponseEntity<Reputation>  getMyBusinessReputation(){
-        String username = userService.getLoggedUsername();
-        Optional<User> user = userRepository.findByUsername(username);
-
-        try {
-            return ResponseEntity.ok().body(user.get().getEntrepreneurship().getReputation());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.ok().body(userService.getReputationByUsername(userService.getLoggedUsername()));
     }
 }

@@ -1,5 +1,6 @@
 package com.emcove.rest.api.Core.serviceimp;
 
+import com.emcove.rest.api.Core.exception.ResourceNotFoundException;
 import com.emcove.rest.api.Core.repository.ProductRepository;
 import com.emcove.rest.api.Core.repository.UserRepository;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
@@ -35,8 +36,8 @@ public class ProductServiceImpl implements ProductService {
                 throw new IllegalAccessException("El producto no corresponde al emprendimiento del usuario logueado.");
 
             return productRepository.save(product);
-        }
-        throw new Exception("Usuario no encontrado");
+        }else
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
 
     }
 
