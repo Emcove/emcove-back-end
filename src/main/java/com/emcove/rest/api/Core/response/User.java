@@ -19,7 +19,7 @@ public class User {
     private Entrepreneurship entrepreneurship;
     @OneToOne(cascade = CascadeType.ALL)
     private Reputation reputation;
-    private final int enabled = 1;
+    private int enabled = 1;
     private String name;
     private String surname;
     private String city;
@@ -90,6 +90,10 @@ public class User {
 
     public int getEnabled() {
         return enabled;
+    }
+
+    public void setEnabled(int enabled) {
+         this.enabled = enabled;
     }
 
     public String getName() {

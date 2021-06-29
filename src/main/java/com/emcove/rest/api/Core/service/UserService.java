@@ -9,8 +9,10 @@ import com.emcove.rest.api.Core.response.User;
 import java.util.Optional;
 
 public interface UserService {
+
     void createUser(User newUser);
     void deleteUser(Integer id);
+
     User patchUser(UserDTO userDTO);
     User findUserById(Integer id);
     String getLoggedUsername();

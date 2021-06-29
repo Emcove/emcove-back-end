@@ -9,7 +9,7 @@ public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonIgnore
-    private Integer id ;
+    private Integer id;
     @Lob
     private String image;
 
