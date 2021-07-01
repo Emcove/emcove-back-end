@@ -3,7 +3,9 @@ package com.emcove.rest.api.Core.serviceimp;
 import com.emcove.rest.api.Core.dto.EntrepreneurshipDTO;
 import com.emcove.rest.api.Core.exception.ResourceNotFoundException;
 import com.emcove.rest.api.Core.repository.EntrepreneurshipRepository;
+import com.emcove.rest.api.Core.repository.EntrepreneurshipRepositoryCustom;
 import com.emcove.rest.api.Core.repository.UserRepository;
+import com.emcove.rest.api.Core.response.Category;
 import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Product;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
@@ -24,7 +27,10 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     private EntrepreneurshipRepository entrepreneurshipRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    private EntrepreneurshipRepositoryCustom entrepreneurshipRepositoryCustom;
 
     @Autowired
     private ProductService productService;
@@ -93,8 +99,11 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     }
 
     @Override
-    public List<Entrepreneurship> findAll() {
-        return entrepreneurshipRepository.findAll();
+    public List<Entrepreneurship> findAll(Set<Category> categories, String name, String productName) {
+        if((categories != null && !categories.isEmpty()) || (name != null && !name.equals("")) || (productName != null && !productName.equals("")))
+            return entrepreneurshipRepositoryCustom.find(categories,name,productName);
+        else
+            return entrepreneurshipRepository.findAll();
     }
 
     @Override
