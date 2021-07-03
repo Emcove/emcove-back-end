@@ -1,7 +1,6 @@
 package com.emcove.rest.api.Core.controllers;
 
 import com.emcove.rest.api.Core.dto.EntrepreneurshipDTO;
-import com.emcove.rest.api.Core.response.Category;
 import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Product;
@@ -16,8 +15,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Set;
 
@@ -32,8 +29,9 @@ public class EntrepreneurshipController {
     protected UserService userService;
 
     @GetMapping()
-    public ResponseEntity<List<Entrepreneurship>> getAll(@RequestParam(required = false) Set<Category> categories, @RequestParam(required = false) String name, @RequestParam(required = false) String productName) {
-        return ResponseEntity.ok().body(entrepreneurshipService.findAll(categories,name,productName));
+    public ResponseEntity<List<Entrepreneurship>> getAll() {
+        return ResponseEntity.ok().body(entrepreneurshipService.findAll());
+
     }
     @GetMapping("/{id}")
     public ResponseEntity<Entrepreneurship> getEntrepreneurship(@PathVariable Integer id) {
