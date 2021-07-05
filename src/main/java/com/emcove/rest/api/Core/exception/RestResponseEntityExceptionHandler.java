@@ -3,6 +3,7 @@ package com.emcove.rest.api.Core.exception;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,8 +17,8 @@ import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Set;
 
-@ControllerAdvice
-public class RestResponseEntityExceptionHandler  extends ResponseEntityExceptionHandler {
+//@ControllerAdvice
+public class RestResponseEntityExceptionHandler  /*extends ResponseEntityExceptionHandler */{
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException constraintViolationException){
@@ -57,6 +58,13 @@ public class RestResponseEntityExceptionHandler  extends ResponseEntityException
         return new ResponseEntity<>(illegalArgumentException.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public  ResponseEntity<Object> httpMessageNotReadableExceptionHandler(HttpMessageNotReadableException httpMessageNotReadableException){
+        httpMessageNotReadableException.printStackTrace();
+        return new ResponseEntity<>(httpMessageNotReadableException.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    /*
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<FieldError> fieldErrors = ex.getFieldErrors();
@@ -72,4 +80,5 @@ public class RestResponseEntityExceptionHandler  extends ResponseEntityException
 
         return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
     }
+    */
 }

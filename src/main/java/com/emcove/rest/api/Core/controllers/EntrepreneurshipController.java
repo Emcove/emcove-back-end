@@ -35,16 +35,19 @@ public class EntrepreneurshipController {
     public ResponseEntity<List<Entrepreneurship>> getAll(@RequestParam(required = false) Set<Category> categories, @RequestParam(required = false) String name, @RequestParam(required = false) String productName) {
         return ResponseEntity.ok().body(entrepreneurshipService.findAll(categories,name,productName));
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<Entrepreneurship> getEntrepreneurship(@PathVariable Integer id) {
         return ResponseEntity.ok(entrepreneurshipService.findEntrepreneurshipById(id));
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Entrepreneurship> deleteEntrepreneurship(@PathVariable Integer id){
         entrepreneurshipService.deleteEntrepreneurship(id);
         return ResponseEntity.noContent().build();
 
     }
+
     @PostMapping()
     public ResponseEntity<Entrepreneurship> createEntrepreneurship(@Valid @RequestBody Entrepreneurship entrepreneurship) {
         //TODO: Ver por que cuando se manda un nombre de emprendimiento igual tira "Unable to access lob stream"
@@ -59,10 +62,12 @@ public class EntrepreneurshipController {
     public ResponseEntity<Entrepreneurship> updateEnteEntrepreneurship(@RequestBody Entrepreneurship entrepreneurship){
         return  ResponseEntity.ok().body(entrepreneurshipService.updateEntrepreneurship(entrepreneurship));
     }
+
     @PatchMapping("/{id}")
     public ResponseEntity<Entrepreneurship> patchEntrepreneurship(@PathVariable Integer id, @RequestBody EntrepreneurshipDTO entrepreneurshipDTO){
            return ResponseEntity.ok().body(entrepreneurshipService.patchEntrepreneurship(id,entrepreneurshipDTO));
     }
+
     @GetMapping("/{id}/products")
     public ResponseEntity<Set<Product>> getEntrepreneurshipProducts(@PathVariable Integer id){
         return ResponseEntity.ok().body(entrepreneurshipService.findEntrepreneurshipById(id).getProducts());
@@ -90,6 +95,7 @@ public class EntrepreneurshipController {
     public ResponseEntity<Entrepreneurship> addEntrepreneurshipProduct(@PathVariable Integer id,@Valid @RequestBody Product product){
         return ResponseEntity.ok().body(entrepreneurshipService.addProduct(id, product));
     }
+
     @PostMapping("/{id}/reputation/comment")
     public ResponseEntity<Reputation>  createComment(@PathVariable Integer id, @RequestBody Comment comment){
         return ResponseEntity.ok().body(entrepreneurshipService.addComment(id, comment));

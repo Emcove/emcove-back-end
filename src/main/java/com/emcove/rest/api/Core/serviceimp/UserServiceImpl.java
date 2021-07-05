@@ -99,6 +99,7 @@ public class UserServiceImpl implements UserService {
         } else {
             username = principal.toString();
         }
+        System.out.println(username);
         return username;
     }
 

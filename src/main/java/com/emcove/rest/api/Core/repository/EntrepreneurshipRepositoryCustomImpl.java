@@ -28,23 +28,25 @@ public class EntrepreneurshipRepositoryCustomImpl implements EntrepreneurshipRep
         boolean filterByProductName = productName != null && !productName.equals("");
         sb.append("SELECT DISTINCT ent from Entrepreneurship as ent ");
         sb.append("INNER JOIN  ent.categories as cat ");
-        sb.append("INNER JOIN  ent.products as product ");
+        sb.append("LEFT JOIN  ent.products as product ");
         sb.append("WHERE ");
+
+        if(filterByName && filterByProductName) {
+            sb.append("( LOWER(ent.name) like :name ");
+            sb.append(" OR LOWER(product.name) like :productName )");
+        }
         if(filterByCategory)
-            sb.append("cat in (:categories) ");
-        if(filterByName)
-            sb.append((filterByCategory? " OR" : "") + " LOWER(ent.name) like :name ");
-        if(filterByProductName)
-            sb.append((filterByCategory || filterByName? " OR" : "" )+" LOWER(product.name) like :productName ");
+            sb.append((filterByName && filterByProductName? " AND" : "" )+ " cat in (:categories) ");
 
         Query query = entityManager.createQuery(sb.toString());
 
         if(filterByCategory)
             query.setParameter("categories", categories);
-        if(filterByName)
+        if(filterByName && filterByProductName) {
             query.setParameter("name", "%" + URLDecoder.decode(name, StandardCharsets.UTF_8).toLowerCase() + "%");
-        if(filterByProductName)
             query.setParameter("productName", "%" + URLDecoder.decode(productName, StandardCharsets.UTF_8).toLowerCase() + "%");
+        }
+
         try {
             return query.getResultList();
         }catch (Exception e){
