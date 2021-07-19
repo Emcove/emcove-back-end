@@ -2,6 +2,7 @@ package com.emcove.rest.api.Core.response;
 
 import com.emcove.rest.api.Core.utilities.NoBadWord;
 import com.emcove.rest.api.Core.utilities.NoBadWordObject;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 import javax.persistence.ElementCollection;
@@ -19,6 +20,7 @@ import java.util.Objects;
 public class ProductProp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Integer id;
     @NoBadWord
     private String name;

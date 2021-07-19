@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 @Entity
 @Table(name = "Orders")
@@ -14,19 +15,26 @@ public class Order {
     private Integer id;
     private LocalDate createDate;
     private LocalDate deliverDate;
-    @Enumerated(EnumType.STRING)
-    private OrderState state;
-    @OneToOne
+
+    @OneToOne(mappedBy = "user_id")
+    private User user;
+
+    @OneToOne(mappedBy = "entrepreneurship_id")
+    private Entrepreneurship entrepreneurship;
+
+    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    List<TrackingData> trackingData;
+
+    @OneToOne(mappedBy = "product_id")
     private Product product;
+
+    @OneToOne
+    private ProductSnapshot productSnapshot;
 
     public Order() {
     }
 
-    public Order(Integer id, LocalDate createDate, LocalDate deliverDate, OrderState state, Product product) {
-        this.id = id;
-        this.createDate = createDate;
-        this.deliverDate = deliverDate;
-        this.state = state;
+    public Order(Product product) {
         this.product = product;
     }
 
@@ -54,13 +62,7 @@ public class Order {
         this.deliverDate = deliverDate;
     }
 
-    public OrderState getState() {
-        return state;
-    }
 
-    public void setState(OrderState state) {
-        this.state = state;
-    }
 
     public Product getProduct() {
         return product;
