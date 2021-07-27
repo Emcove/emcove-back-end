@@ -5,6 +5,7 @@ import com.emcove.rest.api.Core.exception.ResourceNotFoundException;
 import com.emcove.rest.api.Core.repository.UserRepository;
 import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
+import com.emcove.rest.api.Core.response.Order;
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.UserService;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -69,5 +71,10 @@ public class UserController {
     @GetMapping("/reputation")
     public ResponseEntity<Reputation>  getMyReputation(){
         return ResponseEntity.ok().body(userService.getReputationByUsername(userService.getLoggedUsername()));
+    }
+
+    @GetMapping("/orders")
+    public ResponseEntity<List<Order>>  getOrders(){
+        return ResponseEntity.ok().body(userService.getOrders(userService.getLoggedUsername()));
     }
 }

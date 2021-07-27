@@ -14,7 +14,7 @@ public class OrderController {
     @GetMapping("/{id}")
     public ResponseEntity<Order> getOrder(@PathVariable Integer id){
         LocalDate localDate = LocalDate.of(2021,5,25);
-        Order order = new Order(null);
+        Order order = new Order();
         return ResponseEntity.ok().body(order);
     }
 
@@ -28,4 +28,6 @@ public class OrderController {
 
         return ResponseEntity.ok().body(order);
     }
+
+
 }

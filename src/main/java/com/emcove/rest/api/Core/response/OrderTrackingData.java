@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name="TrackingData")
-public class TrackingData {
+public class OrderTrackingData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -19,7 +19,11 @@ public class TrackingData {
     private OrderState state;
     private LocalDate creationDate;
 
-    public TrackingData(OrderState state) {
+    public OrderTrackingData() {
+        this.creationDate = LocalDate.now();
+    }
+
+    public OrderTrackingData(OrderState state) {
         this.state = state;
         this.creationDate = LocalDate.now();
     }

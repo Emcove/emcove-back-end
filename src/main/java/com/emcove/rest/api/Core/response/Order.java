@@ -1,12 +1,9 @@
 package com.emcove.rest.api.Core.response;
 
-import com.google.gson.Gson;
-
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 @Entity
 @Table(name = "Orders")
 public class Order {
@@ -23,19 +20,16 @@ public class Order {
     private Entrepreneurship entrepreneurship;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    List<TrackingData> trackingData;
-
-    @OneToOne(mappedBy = "product_id")
-    private Product product;
+    private List<OrderTrackingData> orderTrackingDatas;
 
     @OneToOne
     private ProductSnapshot productSnapshot;
 
-    public Order() {
-    }
+    @OneToOne
+    private Product product;
 
-    public Order(Product product) {
-        this.product = product;
+    public Order() {
+        this.createDate = LocalDate.now();
     }
 
     public Integer getId() {
@@ -62,7 +56,37 @@ public class Order {
         this.deliverDate = deliverDate;
     }
 
+    public User getUser() {
+        return user;
+    }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Entrepreneurship getEntrepreneurship() {
+        return entrepreneurship;
+    }
+
+    public void setEntrepreneurship(Entrepreneurship entrepreneurship) {
+        this.entrepreneurship = entrepreneurship;
+    }
+
+    public List<OrderTrackingData> getOrderTrackingData() {
+        return orderTrackingDatas;
+    }
+
+    public void setOrderTrackingData(List<OrderTrackingData> orderTrackingDatas) {
+        this.orderTrackingDatas = orderTrackingDatas;
+    }
+
+    public ProductSnapshot getProductSnapshot() {
+        return productSnapshot;
+    }
+
+    public void setProductSnapshot(ProductSnapshot productSnapshot) {
+        this.productSnapshot = productSnapshot;
+    }
 
     public Product getProduct() {
         return product;
@@ -70,5 +94,9 @@ public class Order {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public void addTrackingData(OrderTrackingData orderTrackingData) {
+        orderTrackingDatas.add(orderTrackingData);
     }
 }

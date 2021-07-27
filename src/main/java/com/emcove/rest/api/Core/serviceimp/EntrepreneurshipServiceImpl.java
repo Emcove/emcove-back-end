@@ -4,16 +4,19 @@ import com.emcove.rest.api.Core.dto.EntrepreneurshipDTO;
 import com.emcove.rest.api.Core.exception.ResourceNotFoundException;
 import com.emcove.rest.api.Core.repository.EntrepreneurshipRepository;
 import com.emcove.rest.api.Core.repository.EntrepreneurshipRepositoryCustom;
+import com.emcove.rest.api.Core.repository.OrderRepository;
 import com.emcove.rest.api.Core.repository.UserRepository;
 import com.emcove.rest.api.Core.response.Category;
 import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
+import com.emcove.rest.api.Core.response.Order;
+import com.emcove.rest.api.Core.response.OrderState;
+import com.emcove.rest.api.Core.response.OrderTrackingData;
 import com.emcove.rest.api.Core.response.Product;
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.EntrepreneurshipService;
 import com.emcove.rest.api.Core.service.ProductService;
-import org.springframework.beans.InvalidPropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +37,9 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Override
     public Entrepreneurship createEntrepreneurship(Entrepreneurship entrepreneurship) {
@@ -113,7 +119,7 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
             entrepreneurshipOpt.get().getReputation().addComent(comment);
             return entrepreneurshipRepository.save(entrepreneurshipOpt.get()).getReputation();
         }else
-            throw new ResourceNotFoundException("No se encontro ningún usuario");
+            throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
     }
 
     @Override
@@ -130,9 +136,37 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
         Optional<User> user = userRepository.findByUsername(loggedUsername);
         if(user.isEmpty())
             throw new ResourceNotFoundException("No se encontro ningún usuario");
-        if(user.get().hasEntrepreneuship())
+        if(!user.get().hasEntrepreneuship())
             throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
 
         return user.get().getEntrepreneurship().getReputation();
+    }
+
+    @Override
+    public Order addOrder(Integer id, Order order, String loggedUsername) {
+        Optional<User> user = userRepository.findByUsername(loggedUsername);
+        Optional<Entrepreneurship> entrepreneurshipOpt = entrepreneurshipRepository.findById(id);
+        if(entrepreneurshipOpt.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
+        if(user.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
+
+        order.setUser(user.get());
+        order.setEntrepreneurship(entrepreneurshipOpt.get());
+        order.addTrackingData(new OrderTrackingData(OrderState.PENDIENTE));
+        orderRepository.save(order);
+
+        return order;
+    }
+
+    @Override
+    public List<Order> getOrders(String loggedUsername) {
+        Optional<User> user = userRepository.findByUsername(loggedUsername);
+        if(user.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
+        if(!user.get().hasEntrepreneuship())
+            throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
+
+        return entrepreneurshipRepositoryCustom.findOrders(user.get().getEntrepreneurship().getId());
     }
 }

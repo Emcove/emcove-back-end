@@ -2,10 +2,12 @@ package com.emcove.rest.api.Core.service;
 
 import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
+import com.emcove.rest.api.Core.response.Order;
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.dto.UserDTO;
 import com.emcove.rest.api.Core.response.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
@@ -23,4 +25,7 @@ public interface UserService {
     Reputation getReputationByUsername(String username);
 
     User getLoggedUser();
+
+    List<Order> getOrders(String username);
+
 }

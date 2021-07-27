@@ -4,8 +4,10 @@ import com.emcove.rest.api.Core.dto.UserDTO;
 import com.emcove.rest.api.Core.exception.ResourceNotFoundException;
 import com.emcove.rest.api.Core.repository.UserRepository;
 
+import com.emcove.rest.api.Core.repository.UserRepositoryCustom;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Comment;
+import com.emcove.rest.api.Core.response.Order;
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.UserService;
@@ -18,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.EntityExistsException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,6 +30,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private UserRepositoryCustom userRepositoryCustom;
 
     @Override
     public void createUser(User newUser){
@@ -175,5 +181,14 @@ public class UserServiceImpl implements UserService {
             throw new ResourceNotFoundException("No se encontro ningún usuario");
 
         return userOpt.get();
+    }
+
+    @Override
+    public List<Order> getOrders(String username) {
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        if(userOpt.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
+
+        return userRepositoryCustom.findOrders(userOpt.get().getId());
     }
 }

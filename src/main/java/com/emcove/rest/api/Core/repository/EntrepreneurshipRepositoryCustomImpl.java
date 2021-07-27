@@ -2,6 +2,7 @@ package com.emcove.rest.api.Core.repository;
 
 import com.emcove.rest.api.Core.response.Category;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
+import com.emcove.rest.api.Core.response.Order;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -53,31 +54,26 @@ public class EntrepreneurshipRepositoryCustomImpl implements EntrepreneurshipRep
             e.printStackTrace();
             return new ArrayList<>();
         }
-       /* CriteriaQuery<Entrepreneurship> query = cb.createQuery(Entrepreneurship.class);
-        Root<Entrepreneurship> entrepreneurship = query.from(Entrepreneurship.class);
-        Join<Entrepreneurship, Product> product = entrepreneurship.join("products");
-        Expression<String> categoriesPath = entrepreneurship.get("categories");
-        Path<String> namePath = entrepreneurship.get("name");
-        Path<String> productPath = product.get("name");
-        List<Predicate> predicates = new ArrayList<>();
 
 
-        if(categories != null && !categories.isEmpty())
-            predicates.add(categoriesPath.in(categories));
-        if(name != null && !name.equals(""))
-            predicates.add(cb.like(namePath,name));
-        if(productName != null && !productName.equals(""))
-            predicates.add(cb.like(productPath,productName));
-        query.select(entrepreneurship)
-                .where(cb.or(predicates.toArray(new Predicate[predicates.size()])));
-        System.out.println(entityManager.createQuery(query).toString());
+    }
+
+    @Override
+    public List<Order> findOrders(Integer entrepreneurshipId) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("SELECT DISTINCT ordr from Order as ordr ");
+        sb.append("INNER JOIN ordr.entrepreneurship as ent ");
+        sb.append("WHERE ent.id = :entrepreneurshipId");
+
+        Query query = entityManager.createQuery(sb.toString());
+        query.setParameter("entrepreneurshipId",entrepreneurshipId);
+
         try {
-            return entityManager.createQuery(query)
-                    .getResultList();
+            return query.getResultList();
         }catch (Exception e){
             e.printStackTrace();
             return new ArrayList<>();
-        }*/
-
+        }
     }
 }
