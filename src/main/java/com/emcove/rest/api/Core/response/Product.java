@@ -99,21 +99,7 @@ public class Product {
         this.images = images;
     }
 
-    public boolean isHasStock() {
-        return hasStock;
-    }
 
-    public void setHasStock(boolean hasStock) {
-        this.hasStock = hasStock;
-    }
-
-    public int getStockQuantity() {
-        return stockQuantity;
-    }
-
-    public void setStockQuantity(int stockQuantity) {
-        this.stockQuantity = stockQuantity;
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -13,13 +13,13 @@ public class Order {
     private LocalDate createDate;
     private LocalDate deliverDate;
 
-    @OneToOne(mappedBy = "user_id")
+    @OneToOne
     private User user;
 
-    @OneToOne(mappedBy = "entrepreneurship_id")
+    @OneToOne
     private Entrepreneurship entrepreneurship;
 
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<OrderTrackingData> orderTrackingDatas;
 
     @OneToOne

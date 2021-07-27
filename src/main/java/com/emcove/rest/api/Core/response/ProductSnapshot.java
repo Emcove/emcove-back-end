@@ -20,10 +20,10 @@ public class ProductSnapshot {
 
     private String productName;
 
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = EAGER)
+    @OneToMany(cascade = {CascadeType.ALL})
     private List<ChosenProp> chosenProps;
 
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = EAGER)
+    @OneToMany(cascade = {CascadeType.ALL})
     private List<Image> images;
 
 
