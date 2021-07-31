@@ -116,6 +116,7 @@ public class EntrepreneurshipController {
         List<Map<String, String>> result = new ArrayList<>();
         String baseURL = System.getenv("BASE_URL");
         for (Float value : values) {
+            String subscriptionTitle = getSubscriptionTitle(value);
             Preference preference = new Preference();
 
             BackUrls backUrls = new BackUrls(
@@ -125,7 +126,7 @@ public class EntrepreneurshipController {
             preference.setBackUrls(backUrls);
 
             Item item = new Item();
-            item.setTitle(getSubscriptionTitle(value))
+            item.setTitle(subscriptionTitle)
                     .setQuantity(1)
                     .setUnitPrice(value);
             preference.appendItem(item);
@@ -136,6 +137,8 @@ public class EntrepreneurshipController {
             mpPref.put("price", value.toString());
             mpPref.put("sandbox_init_point", preference.getSandboxInitPoint());
             mpPref.put("init_point", preference.getInitPoint());
+            mpPref.put("title", subscriptionTitle);
+
             switch (value.toString()) {
                 case "1.0":
                     mpPref.put("plan", "month");
