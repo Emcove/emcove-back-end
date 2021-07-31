@@ -19,6 +19,8 @@ public interface EntrepreneurshipService {
 
     Entrepreneurship findEntrepreneurshipById(Integer id);
 
+    Entrepreneurship findEntrepreneurshipByName(String name);
+
     Entrepreneurship addProduct(Integer entrepreneurshipId, Product product);
 
     Entrepreneurship patchEntrepreneurship(Integer id, EntrepreneurshipDTO entrepreneurshipDTO);
@@ -30,4 +32,6 @@ public interface EntrepreneurshipService {
     Reputation getReputation(Integer id);
 
     Reputation getReputationByUsername(String loggedUsername);
+
+    Entrepreneurship getEntrepreneurshipByUsername(String loggedUsername);
 }
