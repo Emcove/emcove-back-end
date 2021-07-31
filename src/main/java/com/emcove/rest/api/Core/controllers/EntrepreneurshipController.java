@@ -9,6 +9,9 @@ import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.EntrepreneurshipService;
 import com.emcove.rest.api.Core.service.UserService;
+import com.mercadopago.exceptions.MPException;
+import com.mercadopago.resources.Preference;
+import com.mercadopago.resources.datastructures.preference.Item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,8 +21,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @RestController
@@ -93,6 +95,31 @@ public class EntrepreneurshipController {
     @PostMapping("/{id}/reputation/comment")
     public ResponseEntity<Reputation>  createComment(@PathVariable Integer id, @RequestBody Comment comment){
         return ResponseEntity.ok().body(entrepreneurshipService.addComment(id, comment));
+    }
+
+    @GetMapping("/{id}/subscriptions")
+    public ResponseEntity<List<Map<String, String>>> getSubscription(@PathVariable Integer id) throws MPException {
+        List<Float> values = new ArrayList<>();
+        values.add(1.0f);
+        values.add(5.0f);
+        values.add(10.0f);
+
+        List<Map<String, String>> result = new ArrayList<>();
+        for (Float value : values) {
+            Preference preference = new Preference();
+            Item item = new Item();
+            item.setTitle("Suscripción " + value)
+                    .setQuantity(1)
+                    .setUnitPrice(value);
+            preference.appendItem(item);
+            preference.save();
+            Map<String, String> mpPref = new HashMap<>();
+            mpPref.put("id", preference.getId());
+            mpPref.put("price", value.toString());
+            result.add(mpPref);
+        }
+
+        return ResponseEntity.ok(result);
     }
 
 

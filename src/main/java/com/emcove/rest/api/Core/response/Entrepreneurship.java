@@ -2,6 +2,7 @@ package com.emcove.rest.api.Core.response;
 
 
 import com.emcove.rest.api.Core.utilities.NoBadWord;
+import com.mercadopago.resources.Preference;
 
 import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
@@ -40,7 +41,6 @@ public class Entrepreneurship {
     @Enumerated(EnumType.STRING)
     private Set<Category> categories = new HashSet<>();
     private Boolean hasSuscription;
-
 
     public Entrepreneurship() {}
 

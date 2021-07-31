@@ -22,23 +22,6 @@ public class CoreApplication {
 			System.out.println("Error al setear MP access token");
 		}
 
-		// Crea un objeto de preferencia
-		Preference preference = new Preference();
-
-		// Crea un ítem en la preferencia
-			Item item = new Item();
-			item.setTitle("Suscripción")
-					.setQuantity(1)
-					.setUnitPrice((float) 1);
-			preference.appendItem(item);
-		try {
-			preference.save();
-			System.out.println("preference id: " + preference.getId());
-		} catch (MPException e) {
-			System.out.println("Error al guardar preference item");
-		}
-
-
 		SpringApplication.run(CoreApplication.class, args);
 	}
 
