@@ -125,7 +125,7 @@ public class EntrepreneurshipController {
             preference.setBackUrls(backUrls);
 
             Item item = new Item();
-            item.setTitle("Suscripción " + value)
+            item.setTitle(getSubscriptionTitle(value))
                     .setQuantity(1)
                     .setUnitPrice(value);
             preference.appendItem(item);
@@ -152,5 +152,18 @@ public class EntrepreneurshipController {
         }
 
         return ResponseEntity.ok(result);
+    }
+
+    private String getSubscriptionTitle(Float value) {
+        switch (value.toString()) {
+            case "1.0":
+                return "Suscripción mensual";
+            case "5.0":
+                return "6 meses";
+            case "10.0":
+                return "Suscripción anual";
+        }
+
+        return "Suscripción";
     }
 }
