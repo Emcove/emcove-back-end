@@ -39,6 +39,7 @@ public class Entrepreneurship {
     @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
     private Set<Category> categories = new HashSet<>();
+    private Boolean hasSuscription;
 
 
     public Entrepreneurship() {}
