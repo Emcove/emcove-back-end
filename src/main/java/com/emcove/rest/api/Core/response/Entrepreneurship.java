@@ -1,6 +1,7 @@
 package com.emcove.rest.api.Core.response;
 
 
+import com.emcove.rest.api.Core.dto.SubscriptionPlanDTO;
 import com.emcove.rest.api.Core.utilities.NoBadWord;
 import com.mercadopago.resources.Preference;
 
@@ -17,6 +18,8 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,7 +43,8 @@ public class Entrepreneurship {
     @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
     private Set<Category> categories = new HashSet<>();
-    private Boolean hasSuscription;
+    private Boolean hasSubscription;
+    private Date subscriptionExpirationDate;
 
     public Entrepreneurship() {}
 
@@ -114,6 +118,39 @@ public class Entrepreneurship {
 
     public boolean hasProduct(final Product product) {
         return getProducts().contains(product);
+    }
+
+    public Boolean getHasSubscription() { return hasSubscription; }
+
+    public void setHasSubscription(Boolean hasSubscription) { this.hasSubscription = hasSubscription; }
+
+    public Date getSubscriptionExpirationDate() {
+        return subscriptionExpirationDate;
+    }
+
+    public void setSubscriptionExpirationDate(Date subscriptionExpirationDate) {
+        this.subscriptionExpirationDate = subscriptionExpirationDate;
+    }
+
+    public void subscribe(SubscriptionPlanDTO plan) {
+        this.hasSubscription = true;
+        Date today = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(today);
+
+        switch(plan.getName()) {
+            case "month":
+                calendar.add(Calendar.MONTH, 1);
+                break;
+            case "6-month":
+                calendar.add(Calendar.MONTH, 6);
+                break;
+            case "annual":
+                calendar.add(Calendar.YEAR, 1);
+                break;
+        }
+
+        this.subscriptionExpirationDate = calendar.getTime();
     }
 }
 
