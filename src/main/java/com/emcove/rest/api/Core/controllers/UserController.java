@@ -3,6 +3,7 @@ package com.emcove.rest.api.Core.controllers;
 import com.emcove.rest.api.Core.dto.UserDTO;
 import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Order;
+import com.emcove.rest.api.Core.response.OrderState;
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.UserService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -76,5 +78,10 @@ public class UserController {
     @GetMapping("/orders")
     public ResponseEntity<List<Order>>  getOrders(){
         return ResponseEntity.ok().body(userService.getOrders(userService.getLoggedUsername()));
+    }
+
+    @PostMapping("/orders/{orderId}/cancel")
+    public ResponseEntity<Order>  addOrderTrackingToOrder(@PathVariable Integer orderId) throws IllegalAccessException {
+        return ResponseEntity.ok().body(userService.cancelOrder(orderId,userService.getLoggedUsername()));
     }
 }

@@ -16,7 +16,6 @@ import com.emcove.rest.api.Core.response.Product;
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.EntrepreneurshipService;
-import com.emcove.rest.api.Core.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,9 +36,6 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     private EntrepreneurshipRepositoryCustom entrepreneurshipRepositoryCustom;
 
     @Autowired
-    private ProductService productService;
-
-    @Autowired
     private OrderRepository orderRepository;
 
 
@@ -51,8 +47,9 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     @Override
     public void deleteEntrepreneurship(Integer id) {
         Optional<User> user = userRepository.findByEntrepreneurshipId(id);
-        if(user.isPresent())
-            user.get().setEntrepreneurship(null);
+
+        user.ifPresent(value -> value.setEntrepreneurship(null));
+
         entrepreneurshipRepository.deleteById(id);
     }
 
@@ -88,7 +85,7 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     @Override
     public Entrepreneurship patchEntrepreneurship(Integer id, EntrepreneurshipDTO entrepreneurshipDTO) {
         Optional<Entrepreneurship> entrepreneurshipOpt = entrepreneurshipRepository.findById(id);
-        if(!entrepreneurshipOpt.isPresent())
+        if(entrepreneurshipOpt.isEmpty())
             return null;
         Entrepreneurship entrepreneurship = entrepreneurshipOpt.get();
 
@@ -148,14 +145,15 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     public Order addOrder(Integer id, Order order, String loggedUsername) {
         Optional<User> user = userRepository.findByUsername(loggedUsername);
         Optional<Entrepreneurship> entrepreneurshipOpt = entrepreneurshipRepository.findById(id);
-        if(entrepreneurshipOpt.isEmpty())
+        if (entrepreneurshipOpt.isEmpty())
             throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
-        if(user.isEmpty())
+        if (user.isEmpty())
             throw new ResourceNotFoundException("No se encontro ningún usuario");
 
         order.setUser(user.get());
         order.setEntrepreneurship(entrepreneurshipOpt.get());
         order.addTrackingData(new OrderTrackingData(OrderState.PENDIENTE));
+
         orderRepository.save(order);
 
         return order;
@@ -186,7 +184,10 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
         Order order = optionalOrder.get();
 
         if(!order.getEntrepreneurship().getId().equals(user.get().getEntrepreneurship().getId()))
-            throw new IllegalAccessException("La orden deseada no pertenece al emprendimiento logueado");
+            throw new IllegalAccessException("El pedido deseado no pertenece al emprendimiento logueado");
+
+        if(order.isClosed())
+            throw new IllegalArgumentException("El pedido se encuentra cerrado");
 
         order.addTrackingData(new OrderTrackingData(newOrderState));
 

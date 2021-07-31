@@ -13,6 +13,8 @@ public class Order {
     private Integer id;
     private LocalDate createDate;
     private LocalDate deliverDate;
+    @Enumerated(EnumType.STRING)
+    private OrderState currentState;
 
     @OneToOne
     private User user;
@@ -105,5 +107,19 @@ public class Order {
             throw new IllegalArgumentException("El pedido ya contiene el estado: " + orderTrackingData.getState().name() );
 
         orderTrackingDatas.add(orderTrackingData);
+
+        setCurrentState(orderTrackingData.getState());
+    }
+
+    public void setCurrentState(OrderState state) {
+        this.currentState = state;
+    }
+
+    public OrderState getCurrentState() {
+        return currentState;
+    }
+
+    public boolean isClosed() {
+        return currentState.equals(OrderState.ENTREGADO) || currentState.equals(OrderState.CANCELADO) || currentState.equals(OrderState.RECHAZADO);
     }
 }

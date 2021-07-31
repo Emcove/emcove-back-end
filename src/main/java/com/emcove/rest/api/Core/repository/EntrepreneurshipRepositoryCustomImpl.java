@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -49,7 +48,7 @@ public class EntrepreneurshipRepositoryCustomImpl implements EntrepreneurshipRep
         }
 
         try {
-            return query.getResultList();
+            return (List<Entrepreneurship>)query.getResultList();
         }catch (Exception e){
             e.printStackTrace();
             return new ArrayList<>();
@@ -70,7 +69,7 @@ public class EntrepreneurshipRepositoryCustomImpl implements EntrepreneurshipRep
         query.setParameter("entrepreneurshipId",entrepreneurshipId);
 
         try {
-            return query.getResultList();
+            return (List<Order>)query.getResultList();
         }catch (Exception e){
             e.printStackTrace();
             return new ArrayList<>();
