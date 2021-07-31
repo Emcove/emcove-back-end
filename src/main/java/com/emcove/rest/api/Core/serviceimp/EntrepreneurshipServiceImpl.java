@@ -1,6 +1,7 @@
 package com.emcove.rest.api.Core.serviceimp;
 
 import com.emcove.rest.api.Core.dto.EntrepreneurshipDTO;
+import com.emcove.rest.api.Core.dto.SubscriptionPlanDTO;
 import com.emcove.rest.api.Core.exception.ResourceNotFoundException;
 import com.emcove.rest.api.Core.repository.EntrepreneurshipRepository;
 import com.emcove.rest.api.Core.repository.EntrepreneurshipRepositoryCustom;
@@ -16,6 +17,7 @@ import com.emcove.rest.api.Core.response.Product;
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.EntrepreneurshipService;
+import com.emcove.rest.api.Core.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -142,6 +144,7 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     }
 
     @Override
+
     public Order addOrder(Integer id, Order order, String loggedUsername) {
         Optional<User> user = userRepository.findByUsername(loggedUsername);
         Optional<Entrepreneurship> entrepreneurshipOpt = entrepreneurshipRepository.findById(id);
@@ -197,5 +200,14 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
         orderRepository.save(order);
 
         return order;
+    @Override
+    public void subscribe(Integer id, SubscriptionPlanDTO plan) {
+        Optional<Entrepreneurship> entrepreneurshipOpt = entrepreneurshipRepository.findById(id);
+        if(entrepreneurshipOpt.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
+
+        entrepreneurshipOpt.get().subscribe(plan);
+        entrepreneurshipRepository.save(entrepreneurshipOpt.get());
+
     }
 }

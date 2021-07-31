@@ -1,6 +1,7 @@
 package com.emcove.rest.api.Core.controllers;
 
 import com.emcove.rest.api.Core.dto.EntrepreneurshipDTO;
+import com.emcove.rest.api.Core.dto.SubscriptionPlanDTO;
 import com.emcove.rest.api.Core.response.Category;
 import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
@@ -11,7 +12,12 @@ import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.EntrepreneurshipService;
 import com.emcove.rest.api.Core.service.UserService;
+import com.mercadopago.exceptions.MPException;
+import com.mercadopago.resources.Preference;
+import com.mercadopago.resources.datastructures.preference.BackUrls;
+import com.mercadopago.resources.datastructures.preference.Item;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -20,8 +26,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 
 @RestController
@@ -117,5 +122,70 @@ public class EntrepreneurshipController {
         return ResponseEntity.ok().body(entrepreneurshipService.addOrderTrackingToOrder(orderId,newOrderState,userService.getLoggedUsername()));
     }
 
+    @PostMapping("/{id}/subscriptions")
+    public ResponseEntity createSubscription(@PathVariable Integer id, @RequestBody SubscriptionPlanDTO plan){
+        entrepreneurshipService.subscribe(id, plan);
+        return ResponseEntity.ok().build();
+    }
 
+    @GetMapping("/subscriptions")
+    public ResponseEntity<List<Map<String, String>>> getSubscription() throws MPException {
+        List<Float> values = new ArrayList<>();
+        values.add(1.0f);
+        values.add(5.0f);
+        values.add(10.0f);
+
+        List<Map<String, String>> result = new ArrayList<>();
+        String baseURL = System.getenv("BASE_URL");
+        for (Float value : values) {
+            Preference preference = new Preference();
+
+            BackUrls backUrls = new BackUrls(
+                    baseURL + "/#/business?from=nav-header",
+                    baseURL+ "/#/business?from=nav-header",
+                    baseURL + "/#/business?from=nav-header");
+            preference.setBackUrls(backUrls);
+
+            Item item = new Item();
+            item.setTitle(getSubscriptionTitle(value))
+                    .setQuantity(1)
+                    .setUnitPrice(value);
+            preference.appendItem(item);
+            preference.save();
+
+            Map<String, String> mpPref = new HashMap<>();
+            mpPref.put("id", preference.getId());
+            mpPref.put("price", value.toString());
+            mpPref.put("sandbox_init_point", preference.getSandboxInitPoint());
+            mpPref.put("init_point", preference.getInitPoint());
+            switch (value.toString()) {
+                case "1.0":
+                    mpPref.put("plan", "month");
+                    break;
+                case "5.0":
+                    mpPref.put("plan", "6-month");
+                    break;
+                case "10.0":
+                    mpPref.put("plan", "annual");
+                    break;
+            }
+
+            result.add(mpPref);
+        }
+
+        return ResponseEntity.ok(result);
+    }
+
+    private String getSubscriptionTitle(Float value) {
+        switch (value.toString()) {
+            case "1.0":
+                return "Suscripción mensual";
+            case "5.0":
+                return "6 meses";
+            case "10.0":
+                return "Suscripción anual";
+        }
+
+        return "Suscripción";
+    }
 }

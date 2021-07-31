@@ -1,6 +1,7 @@
 package com.emcove.rest.api.Core.service;
 
 import com.emcove.rest.api.Core.dto.EntrepreneurshipDTO;
+import com.emcove.rest.api.Core.dto.SubscriptionPlanDTO;
 import com.emcove.rest.api.Core.response.Category;
 import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
@@ -11,7 +12,6 @@ import com.emcove.rest.api.Core.response.Reputation;
 
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 public interface EntrepreneurshipService {
@@ -33,9 +33,13 @@ public interface EntrepreneurshipService {
 
     Reputation getReputationByUsername(String loggedUsername);
 
+
     Order addOrder(Integer id, Order order, String loggedUsername);
 
     List<Order> getOrders(String loggedUsername);
 
     Order addOrderTrackingToOrder(Integer orderId, OrderState newOrderState, String loggedUsername) throws IllegalAccessException;
+
+    void subscribe(Integer id, SubscriptionPlanDTO plan);
+
 }
