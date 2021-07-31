@@ -1,11 +1,10 @@
 package com.emcove.rest.api.Core.response;
 
-import com.google.gson.Gson;
-
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "Orders")
 public class Order {
@@ -15,19 +14,26 @@ public class Order {
     private LocalDate createDate;
     private LocalDate deliverDate;
     @Enumerated(EnumType.STRING)
-    private OrderState state;
+    private OrderState currentState;
+
+    @OneToOne
+    private User user;
+
+    @OneToOne
+    private Entrepreneurship entrepreneurship;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<OrderTrackingData> orderTrackingDatas;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private ProductSnapshot productSnapshot;
+
     @OneToOne
     private Product product;
 
     public Order() {
-    }
-
-    public Order(Integer id, LocalDate createDate, LocalDate deliverDate, OrderState state, Product product) {
-        this.id = id;
-        this.createDate = createDate;
-        this.deliverDate = deliverDate;
-        this.state = state;
-        this.product = product;
+        this.createDate = LocalDate.now();
+        this.orderTrackingDatas = new ArrayList<>();
     }
 
     public Integer getId() {
@@ -54,12 +60,36 @@ public class Order {
         this.deliverDate = deliverDate;
     }
 
-    public OrderState getState() {
-        return state;
+    public User getUser() {
+        return user;
     }
 
-    public void setState(OrderState state) {
-        this.state = state;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Entrepreneurship getEntrepreneurship() {
+        return entrepreneurship;
+    }
+
+    public void setEntrepreneurship(Entrepreneurship entrepreneurship) {
+        this.entrepreneurship = entrepreneurship;
+    }
+
+    public List<OrderTrackingData> getOrderTrackingData() {
+        return orderTrackingDatas;
+    }
+
+    public void setOrderTrackingData(List<OrderTrackingData> orderTrackingDatas) {
+        this.orderTrackingDatas = orderTrackingDatas;
+    }
+
+    public ProductSnapshot getProductSnapshot() {
+        return productSnapshot;
+    }
+
+    public void setProductSnapshot(ProductSnapshot productSnapshot) {
+        this.productSnapshot = productSnapshot;
     }
 
     public Product getProduct() {
@@ -68,5 +98,28 @@ public class Order {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public void addTrackingData(OrderTrackingData orderTrackingData) {
+        OrderTrackingData orderTrackingDataToFind = orderTrackingDatas.stream().filter(tracking -> tracking.getState().equals(orderTrackingData.getState())).findFirst().orElse(null);
+
+        if(orderTrackingDataToFind != null)
+            throw new IllegalArgumentException("El pedido ya contiene el estado: " + orderTrackingData.getState().name() );
+
+        orderTrackingDatas.add(orderTrackingData);
+
+        setCurrentState(orderTrackingData.getState());
+    }
+
+    public void setCurrentState(OrderState state) {
+        this.currentState = state;
+    }
+
+    public OrderState getCurrentState() {
+        return currentState;
+    }
+
+    public boolean isClosed() {
+        return currentState.equals(OrderState.ENTREGADO) || currentState.equals(OrderState.CANCELADO) || currentState.equals(OrderState.RECHAZADO);
     }
 }

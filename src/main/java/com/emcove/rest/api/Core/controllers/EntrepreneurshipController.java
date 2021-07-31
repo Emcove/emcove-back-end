@@ -5,6 +5,8 @@ import com.emcove.rest.api.Core.dto.SubscriptionPlanDTO;
 import com.emcove.rest.api.Core.response.Category;
 import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
+import com.emcove.rest.api.Core.response.Order;
+import com.emcove.rest.api.Core.response.OrderState;
 import com.emcove.rest.api.Core.response.Product;
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
@@ -104,6 +106,20 @@ public class EntrepreneurshipController {
     @PostMapping("/{id}/reputation/comment")
     public ResponseEntity<Reputation>  createComment(@PathVariable Integer id, @RequestBody Comment comment){
         return ResponseEntity.ok().body(entrepreneurshipService.addComment(id, comment));
+    }
+    @PostMapping("/{id}/order")
+    public ResponseEntity<Order>  createOrder(@PathVariable Integer id, @RequestBody Order order){
+        return ResponseEntity.ok().body(entrepreneurshipService.addOrder(id,order,userService.getLoggedUsername()));
+    }
+
+    @GetMapping("/orders")
+    public ResponseEntity<List<Order>>  getOrders(){
+        return ResponseEntity.ok().body(entrepreneurshipService.getOrders(userService.getLoggedUsername()));
+    }
+
+    @PostMapping("/orders/{orderId}/orderTracking")
+    public ResponseEntity<Order>  addOrderTrackingToOrder(@PathVariable Integer orderId, @RequestParam OrderState newOrderState) throws IllegalAccessException {
+        return ResponseEntity.ok().body(entrepreneurshipService.addOrderTrackingToOrder(orderId,newOrderState,userService.getLoggedUsername()));
     }
 
     @PostMapping("/{id}/subscriptions")

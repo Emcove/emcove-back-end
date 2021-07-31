@@ -2,10 +2,15 @@ package com.emcove.rest.api.Core.serviceimp;
 
 import com.emcove.rest.api.Core.dto.UserDTO;
 import com.emcove.rest.api.Core.exception.ResourceNotFoundException;
+import com.emcove.rest.api.Core.repository.OrderRepository;
 import com.emcove.rest.api.Core.repository.UserRepository;
 
+import com.emcove.rest.api.Core.repository.UserRepositoryCustom;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Comment;
+import com.emcove.rest.api.Core.response.Order;
+import com.emcove.rest.api.Core.response.OrderState;
+import com.emcove.rest.api.Core.response.OrderTrackingData;
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.UserService;
@@ -18,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.EntityExistsException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,6 +33,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private UserRepositoryCustom userRepositoryCustom;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Override
     public void createUser(User newUser){
@@ -176,4 +188,35 @@ public class UserServiceImpl implements UserService {
 
         return userOpt.get();
     }
+
+    @Override
+    public List<Order> getOrders(String username) {
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        if(userOpt.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
+
+        return userRepositoryCustom.findOrders(userOpt.get().getId());
+    }
+
+    @Override
+    public Order cancelOrder(Integer orderId, String username) {
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+        Optional<User> userOpt = userRepository.findByUsername(username);
+
+        if(optionalOrder.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ninguna orden");
+        if(userOpt.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
+        Order order = optionalOrder.get();
+
+        if(!order.getCurrentState().equals(OrderState.PENDIENTE))
+            throw new IllegalArgumentException("No puede cancelar un pedido que esta en preparacion");
+
+        order.addTrackingData(new OrderTrackingData(OrderState.CANCELADO));
+
+        orderRepository.save(order);
+
+        return order;
+    }
+
 }

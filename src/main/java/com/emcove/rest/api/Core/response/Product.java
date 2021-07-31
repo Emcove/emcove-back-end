@@ -30,6 +30,7 @@ public class Product {
     @NoBadWord
     private String description;
     private boolean hasStock;
+    private int stockQuantity;
     private Integer productionTime;
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = EAGER)
@@ -97,6 +98,8 @@ public class Product {
     public void setImages(List<Image> images) {
         this.images = images;
     }
+
+
 
     @Override
     public boolean equals(Object o) {

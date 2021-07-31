@@ -2,6 +2,7 @@ package com.emcove.rest.api.Core.response;
 
 import javax.annotation.processing.Generated;
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="Comments")
@@ -14,8 +15,9 @@ public class Comment {
     private String description;
     @Enumerated(EnumType.STRING)
     private CommentValue value;
-
+    private LocalDateTime creationDateTime;
     public Comment() {
+        creationDateTime = LocalDateTime.now();
     }
 
     public Comment(Integer id, String username, String title, String description, CommentValue value) {
@@ -64,5 +66,13 @@ public class Comment {
 
     public void setValue(CommentValue value) {
         this.value = value;
+    }
+
+    public LocalDateTime getCreationDateTime() {
+        return creationDateTime;
+    }
+
+    public void setCreationDateTime(LocalDateTime creationDateTime) {
+        this.creationDateTime = creationDateTime;
     }
 }
