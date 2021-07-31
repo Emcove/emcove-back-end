@@ -14,5 +14,5 @@ import java.util.Set;
 public interface EntrepreneurshipRepositoryCustom {
     List<Entrepreneurship> find(Set<Category> categories, String name, String productName);
 
-    List<Order> findOrders(Integer entrepreneurshipId);
+    List<Order> findOrdersByEntrepreneuship(Integer entrepreneurshipId);
 }

@@ -59,7 +59,7 @@ public class EntrepreneurshipRepositoryCustomImpl implements EntrepreneurshipRep
     }
 
     @Override
-    public List<Order> findOrders(Integer entrepreneurshipId) {
+    public List<Order> findOrdersByEntrepreneuship(Integer entrepreneurshipId) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("SELECT DISTINCT ordr from Order as ordr ");

@@ -23,7 +23,7 @@ public class ProductSnapshot {
     @OneToMany(cascade = {CascadeType.ALL})
     private List<ChosenProp> chosenProps;
 
-    @OneToMany(cascade = {CascadeType.ALL})
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = EAGER)
     private List<Image> images;
 
 

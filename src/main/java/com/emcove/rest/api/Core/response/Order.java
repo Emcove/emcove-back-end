@@ -2,6 +2,7 @@ package com.emcove.rest.api.Core.response;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,7 +23,7 @@ public class Order {
     @OneToMany(cascade = CascadeType.ALL)
     private List<OrderTrackingData> orderTrackingDatas;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private ProductSnapshot productSnapshot;
 
     @OneToOne
@@ -30,6 +31,7 @@ public class Order {
 
     public Order() {
         this.createDate = LocalDate.now();
+        this.orderTrackingDatas = new ArrayList<>();
     }
 
     public Integer getId() {
@@ -97,6 +99,11 @@ public class Order {
     }
 
     public void addTrackingData(OrderTrackingData orderTrackingData) {
+        OrderTrackingData orderTrackingDataToFind = orderTrackingDatas.stream().filter(tracking -> tracking.getState().equals(orderTrackingData.getState())).findFirst().orElse(null);
+
+        if(orderTrackingDataToFind != null)
+            throw new IllegalArgumentException("El pedido ya contiene el estado: " + orderTrackingData.getState().name() );
+
         orderTrackingDatas.add(orderTrackingData);
     }
 }

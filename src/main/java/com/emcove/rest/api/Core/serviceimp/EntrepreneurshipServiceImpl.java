@@ -20,6 +20,7 @@ import com.emcove.rest.api.Core.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -40,6 +41,7 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
 
     @Autowired
     private OrderRepository orderRepository;
+
 
     @Override
     public Entrepreneurship createEntrepreneurship(Entrepreneurship entrepreneurship) {
@@ -167,6 +169,32 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
         if(!user.get().hasEntrepreneuship())
             throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
 
-        return entrepreneurshipRepositoryCustom.findOrders(user.get().getEntrepreneurship().getId());
+        return entrepreneurshipRepositoryCustom.findOrdersByEntrepreneuship(user.get().getEntrepreneurship().getId());
+    }
+
+    @Override
+    public Order addOrderTrackingToOrder(Integer orderId, OrderState newOrderState, String loggedUsername) throws IllegalAccessException {
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+        Optional<User> user = userRepository.findByUsername(loggedUsername);
+
+        if(optionalOrder.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ninguna orden");
+        if(user.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
+        if(!user.get().hasEntrepreneuship())
+            throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
+        Order order = optionalOrder.get();
+
+        if(!order.getEntrepreneurship().getId().equals(user.get().getEntrepreneurship().getId()))
+            throw new IllegalAccessException("La orden deseada no pertenece al emprendimiento logueado");
+
+        order.addTrackingData(new OrderTrackingData(newOrderState));
+
+        if(newOrderState.equals(OrderState.ENTREGADO))
+            order.setDeliverDate(LocalDate.now());
+
+        orderRepository.save(order);
+
+        return order;
     }
 }

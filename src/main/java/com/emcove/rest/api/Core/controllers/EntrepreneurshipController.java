@@ -5,6 +5,7 @@ import com.emcove.rest.api.Core.response.Category;
 import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Order;
+import com.emcove.rest.api.Core.response.OrderState;
 import com.emcove.rest.api.Core.response.Product;
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
@@ -111,6 +112,10 @@ public class EntrepreneurshipController {
         return ResponseEntity.ok().body(entrepreneurshipService.getOrders(userService.getLoggedUsername()));
     }
 
+    @PostMapping("/orders/{orderId}/orderTracking")
+    public ResponseEntity<Order>  addOrderTrackingToOrder(@PathVariable Integer orderId, @RequestParam OrderState newOrderState) throws IllegalAccessException {
+        return ResponseEntity.ok().body(entrepreneurshipService.addOrderTrackingToOrder(orderId,newOrderState,userService.getLoggedUsername()));
+    }
 
 
 }
