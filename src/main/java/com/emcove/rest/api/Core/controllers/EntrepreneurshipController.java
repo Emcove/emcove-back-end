@@ -117,12 +117,13 @@ public class EntrepreneurshipController {
         String baseURL = System.getenv("BASE_URL");
         for (Float value : values) {
             String subscriptionTitle = getSubscriptionTitle(value);
+            String subscriptionName = getSubscriptionPlan(value);
             Preference preference = new Preference();
 
             BackUrls backUrls = new BackUrls(
-                    baseURL + "/#/business?from=nav-header",
-                    baseURL+ "/#/business?from=nav-header",
-                    baseURL + "/#/business?from=nav-header");
+                    baseURL + "/#/business?from=nav-header&plan=" + subscriptionName,
+                    baseURL+ "/#/business?from=nav-header&plan=" + subscriptionName,
+                    baseURL + "/#/business?from=nav-header&plan=" + subscriptionName);
             preference.setBackUrls(backUrls);
 
             Item item = new Item();
@@ -138,18 +139,7 @@ public class EntrepreneurshipController {
             mpPref.put("sandbox_init_point", preference.getSandboxInitPoint());
             mpPref.put("init_point", preference.getInitPoint());
             mpPref.put("title", subscriptionTitle);
-
-            switch (value.toString()) {
-                case "1.0":
-                    mpPref.put("plan", "month");
-                    break;
-                case "5.0":
-                    mpPref.put("plan", "6-month");
-                    break;
-                case "10.0":
-                    mpPref.put("plan", "annual");
-                    break;
-            }
+            mpPref.put("plan", subscriptionName);
 
             result.add(mpPref);
         }
@@ -168,5 +158,17 @@ public class EntrepreneurshipController {
         }
 
         return "Suscripción";
+    }
+
+    private String getSubscriptionPlan(Float value) {
+        switch (value.toString()) {
+            case "1.0":
+                return "month";
+            case "5.0":
+                return "6-month";
+            case "10.0":
+                return "annual";
+        }
+        return "";
     }
 }
