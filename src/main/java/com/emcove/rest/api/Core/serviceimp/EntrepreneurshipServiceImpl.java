@@ -178,28 +178,30 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
         Optional<User> user = userRepository.findByUsername(loggedUsername);
 
-        if(optionalOrder.isEmpty())
+        if (optionalOrder.isEmpty())
             throw new ResourceNotFoundException("No se encontro ninguna orden");
-        if(user.isEmpty())
+        if (user.isEmpty())
             throw new ResourceNotFoundException("No se encontro ningún usuario");
-        if(!user.get().hasEntrepreneuship())
+        if (!user.get().hasEntrepreneuship())
             throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
         Order order = optionalOrder.get();
 
-        if(!order.getEntrepreneurship().getId().equals(user.get().getEntrepreneurship().getId()))
+        if (!order.getEntrepreneurship().getId().equals(user.get().getEntrepreneurship().getId()))
             throw new IllegalAccessException("El pedido deseado no pertenece al emprendimiento logueado");
 
-        if(order.isClosed())
+        if (order.isClosed())
             throw new IllegalArgumentException("El pedido se encuentra cerrado");
 
         order.addTrackingData(new OrderTrackingData(newOrderState));
 
-        if(newOrderState.equals(OrderState.ENTREGADO))
+        if (newOrderState.equals(OrderState.ENTREGADO))
             order.setDeliverDate(LocalDate.now());
 
         orderRepository.save(order);
 
         return order;
+    }
+
     @Override
     public void subscribe(Integer id, SubscriptionPlanDTO plan) {
         Optional<Entrepreneurship> entrepreneurshipOpt = entrepreneurshipRepository.findById(id);
