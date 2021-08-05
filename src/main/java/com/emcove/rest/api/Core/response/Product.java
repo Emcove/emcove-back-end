@@ -3,6 +3,7 @@ package com.emcove.rest.api.Core.response;
 
 
 import com.emcove.rest.api.Core.utilities.NoBadWord;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
@@ -30,6 +31,8 @@ public class Product {
     @NoBadWord
     private String description;
     private boolean hasStock;
+    @ColumnDefault("0")
+    private int stockQuantity;
     private Integer productionTime;
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = EAGER)
@@ -97,6 +100,8 @@ public class Product {
     public void setImages(List<Image> images) {
         this.images = images;
     }
+
+
 
     @Override
     public boolean equals(Object o) {

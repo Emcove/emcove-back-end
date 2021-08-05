@@ -50,6 +50,10 @@ spring:
 
 ---
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres

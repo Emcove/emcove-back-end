@@ -1,22 +1,27 @@
 package com.emcove.rest.api.Core.serviceimp;
 
 import com.emcove.rest.api.Core.dto.EntrepreneurshipDTO;
+import com.emcove.rest.api.Core.dto.SubscriptionPlanDTO;
 import com.emcove.rest.api.Core.exception.ResourceNotFoundException;
 import com.emcove.rest.api.Core.repository.EntrepreneurshipRepository;
 import com.emcove.rest.api.Core.repository.EntrepreneurshipRepositoryCustom;
+import com.emcove.rest.api.Core.repository.OrderRepository;
 import com.emcove.rest.api.Core.repository.UserRepository;
 import com.emcove.rest.api.Core.response.Category;
 import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
+import com.emcove.rest.api.Core.response.Order;
+import com.emcove.rest.api.Core.response.OrderState;
+import com.emcove.rest.api.Core.response.OrderTrackingData;
 import com.emcove.rest.api.Core.response.Product;
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.EntrepreneurshipService;
 import com.emcove.rest.api.Core.service.ProductService;
-import org.springframework.beans.InvalidPropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -33,7 +38,8 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     private EntrepreneurshipRepositoryCustom entrepreneurshipRepositoryCustom;
 
     @Autowired
-    private ProductService productService;
+    private OrderRepository orderRepository;
+
 
     @Override
     public Entrepreneurship createEntrepreneurship(Entrepreneurship entrepreneurship) {
@@ -43,8 +49,9 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     @Override
     public void deleteEntrepreneurship(Integer id) {
         Optional<User> user = userRepository.findByEntrepreneurshipId(id);
-        if(user.isPresent())
-            user.get().setEntrepreneurship(null);
+
+        user.ifPresent(value -> value.setEntrepreneurship(null));
+
         entrepreneurshipRepository.deleteById(id);
     }
 
@@ -89,7 +96,7 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     @Override
     public Entrepreneurship patchEntrepreneurship(Integer id, EntrepreneurshipDTO entrepreneurshipDTO) {
         Optional<Entrepreneurship> entrepreneurshipOpt = entrepreneurshipRepository.findById(id);
-        if(!entrepreneurshipOpt.isPresent())
+        if(entrepreneurshipOpt.isEmpty())
             return null;
         Entrepreneurship entrepreneurship = entrepreneurshipOpt.get();
 
@@ -122,7 +129,7 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
             entrepreneurshipOpt.get().getReputation().addComent(comment);
             return entrepreneurshipRepository.save(entrepreneurshipOpt.get()).getReputation();
         }else
-            throw new ResourceNotFoundException("No se encontro ningún usuario");
+            throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
     }
 
     @Override
@@ -137,7 +144,6 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     @Override
     public Reputation getReputationByUsername(String loggedUsername) {
         Optional<User> user = userRepository.findByUsername(loggedUsername);
-
         if(user.isEmpty())
             throw new ResourceNotFoundException("No se encontro ningún usuario");
         if(!user.get().hasEntrepreneuship())
@@ -156,5 +162,75 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
             throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
 
         return user.get().getEntrepreneurship();
+    }
+
+    @Override
+
+    public Order addOrder(Integer id, Order order, String loggedUsername) {
+        Optional<User> user = userRepository.findByUsername(loggedUsername);
+        Optional<Entrepreneurship> entrepreneurshipOpt = entrepreneurshipRepository.findById(id);
+        if (entrepreneurshipOpt.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
+        if (user.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
+
+        order.setUser(user.get());
+        order.setEntrepreneurship(entrepreneurshipOpt.get());
+        order.addTrackingData(new OrderTrackingData(OrderState.PENDIENTE));
+
+        orderRepository.save(order);
+
+        return order;
+    }
+
+    @Override
+    public List<Order> getOrders(String loggedUsername) {
+        Optional<User> user = userRepository.findByUsername(loggedUsername);
+        if(user.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
+        if(!user.get().hasEntrepreneuship())
+            throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
+
+        return entrepreneurshipRepositoryCustom.findOrdersByEntrepreneuship(user.get().getEntrepreneurship().getId());
+    }
+
+    @Override
+    public Order addOrderTrackingToOrder(Integer orderId, OrderState newOrderState, String loggedUsername) throws IllegalAccessException {
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+        Optional<User> user = userRepository.findByUsername(loggedUsername);
+
+        if (optionalOrder.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ninguna orden");
+        if (user.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
+        if (!user.get().hasEntrepreneuship())
+            throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
+        Order order = optionalOrder.get();
+
+        if (!order.getEntrepreneurship().getId().equals(user.get().getEntrepreneurship().getId()))
+            throw new IllegalAccessException("El pedido deseado no pertenece al emprendimiento logueado");
+
+        if (order.isClosed())
+            throw new IllegalArgumentException("El pedido se encuentra cerrado");
+
+        order.addTrackingData(new OrderTrackingData(newOrderState));
+
+        if (newOrderState.equals(OrderState.ENTREGADO))
+            order.setDeliverDate(LocalDate.now());
+
+        orderRepository.save(order);
+
+        return order;
+    }
+
+    @Override
+    public void subscribe(Integer id, SubscriptionPlanDTO plan) {
+        Optional<Entrepreneurship> entrepreneurshipOpt = entrepreneurshipRepository.findById(id);
+        if(entrepreneurshipOpt.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
+
+        entrepreneurshipOpt.get().subscribe(plan);
+        entrepreneurshipRepository.save(entrepreneurshipOpt.get());
+
     }
 }
