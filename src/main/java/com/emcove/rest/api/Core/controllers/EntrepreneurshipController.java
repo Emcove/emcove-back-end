@@ -123,9 +123,9 @@ public class EntrepreneurshipController {
     }
 
     @PostMapping("/{id}/subscriptions")
-    public ResponseEntity createSubscription(@PathVariable Integer id, @RequestBody SubscriptionPlanDTO plan){
+    public ResponseEntity<Entrepreneurship> createSubscription(@PathVariable Integer id, @RequestBody SubscriptionPlanDTO plan){
         entrepreneurshipService.subscribe(id, plan);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(entrepreneurshipService.findEntrepreneurshipById(id));
     }
 
     @GetMapping("/subscriptions")
