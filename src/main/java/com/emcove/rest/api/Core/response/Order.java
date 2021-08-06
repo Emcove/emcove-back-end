@@ -15,6 +15,7 @@ public class Order {
     private LocalDate deliverDate;
     @Enumerated(EnumType.STRING)
     private OrderState currentState;
+    private String details;
 
     @OneToOne
     private User user;
@@ -118,6 +119,10 @@ public class Order {
     public OrderState getCurrentState() {
         return currentState;
     }
+
+    public String getDetails() { return details; }
+
+    public void setDetails(String details) { this.details = details; }
 
     public boolean isClosed() {
         return currentState.equals(OrderState.ENTREGADO) || currentState.equals(OrderState.CANCELADO) || currentState.equals(OrderState.RECHAZADO);
