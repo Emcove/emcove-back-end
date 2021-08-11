@@ -48,6 +48,11 @@ public class EntrepreneurshipController {
         return ResponseEntity.ok(entrepreneurshipService.findEntrepreneurshipById(id));
     }
 
+    @GetMapping("/name/{name}")
+    public ResponseEntity<Entrepreneurship> getEntrepreneurshipByName(@PathVariable String name) {
+        return ResponseEntity.ok(entrepreneurshipService.findEntrepreneurshipByName(name));
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Entrepreneurship> deleteEntrepreneurship(@PathVariable Integer id){
         entrepreneurshipService.deleteEntrepreneurship(id);
@@ -57,8 +62,6 @@ public class EntrepreneurshipController {
 
     @PostMapping()
     public ResponseEntity<Entrepreneurship> createEntrepreneurship(@Valid @RequestBody Entrepreneurship entrepreneurship) {
-        //TODO: Ver por que cuando se manda un nombre de emprendimiento igual tira "Unable to access lob stream"
-
         String loggedUsername = userService.getLoggedUsername();
         User user = userService.createEntrepreneurship(loggedUsername, entrepreneurship);
         final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getEntrepreneurship().getId()).toUri();
@@ -66,7 +69,7 @@ public class EntrepreneurshipController {
     }
 
     @PutMapping()
-    public ResponseEntity<Entrepreneurship> updateEnteEntrepreneurship(@RequestBody Entrepreneurship entrepreneurship){
+    public ResponseEntity<Entrepreneurship> updateEntrepreneurship(@RequestBody Entrepreneurship entrepreneurship){
         return  ResponseEntity.ok().body(entrepreneurshipService.updateEntrepreneurship(entrepreneurship));
     }
 
@@ -97,6 +100,15 @@ public class EntrepreneurshipController {
     public ResponseEntity<Reputation> getLoggedEntrepreneurshipReputation(){
         return ResponseEntity.ok().body(entrepreneurshipService.getReputationByUsername(userService.getLoggedUsername()));
     }
+
+    /**
+     * Trae emprendimiento del usuario logueado
+     */
+    @GetMapping("/logged")
+    public ResponseEntity<Entrepreneurship> getLoggedEntrepreneurship(){
+        return ResponseEntity.ok().body(entrepreneurshipService.getEntrepreneurshipByUsername(userService.getLoggedUsername()));
+    }
+
 
     @PostMapping("/{id}/product")
     public ResponseEntity<Entrepreneurship> addEntrepreneurshipProduct(@PathVariable Integer id,@Valid @RequestBody Product product){

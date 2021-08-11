@@ -73,6 +73,15 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     }
 
     @Override
+    public Entrepreneurship findEntrepreneurshipByName(String name) {
+        Optional<Entrepreneurship> entrepreneurshipOpt = entrepreneurshipRepository.findByName(name);
+        if(entrepreneurshipOpt.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
+
+        return entrepreneurshipOpt.get();
+    }
+
+    @Override
     public Entrepreneurship addProduct(Integer entrepreneurshipId, Product product) {
         Optional<Entrepreneurship> entrepreneurshipOp = entrepreneurshipRepository.findById(entrepreneurshipId);
         if(entrepreneurshipOp.isEmpty())
@@ -141,6 +150,18 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
             throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
 
         return user.get().getEntrepreneurship().getReputation();
+    }
+
+    @Override
+    public Entrepreneurship getEntrepreneurshipByUsername(String loggedUsername) {
+        Optional<User> user = userRepository.findByUsername(loggedUsername);
+
+        if(user.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
+        if(!user.get().hasEntrepreneuship())
+            throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
+
+        return user.get().getEntrepreneurship();
     }
 
     @Override

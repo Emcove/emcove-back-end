@@ -12,6 +12,7 @@ import com.emcove.rest.api.Core.response.Reputation;
 
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface EntrepreneurshipService {
@@ -20,6 +21,8 @@ public interface EntrepreneurshipService {
     Entrepreneurship updateEntrepreneurship(Entrepreneurship entrepreneurship);
 
     Entrepreneurship findEntrepreneurshipById(Integer id);
+
+    Entrepreneurship findEntrepreneurshipByName(String name);
 
     Entrepreneurship addProduct(Integer entrepreneurshipId, Product product);
 
@@ -33,6 +36,7 @@ public interface EntrepreneurshipService {
 
     Reputation getReputationByUsername(String loggedUsername);
 
+    Entrepreneurship getEntrepreneurshipByUsername(String loggedUsername);
 
     Order addOrder(Integer id, Order order, String loggedUsername);
 
