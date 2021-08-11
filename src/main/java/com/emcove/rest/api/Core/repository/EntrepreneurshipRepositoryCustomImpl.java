@@ -11,6 +11,7 @@ import javax.persistence.Query;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -37,6 +38,8 @@ public class EntrepreneurshipRepositoryCustomImpl implements EntrepreneurshipRep
         }
         if(filterByCategory)
             sb.append((filterByName && filterByProductName? " AND" : "" )+ " cat in (:categories) ");
+
+        sb.append("ORDER BY ent.hasSubscription DESC");
 
         Query query = entityManager.createQuery(sb.toString());
 
@@ -70,6 +73,25 @@ public class EntrepreneurshipRepositoryCustomImpl implements EntrepreneurshipRep
 
         try {
             return (List<Order>)query.getResultList();
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public List<Entrepreneurship> findBySubscriptionExpirationDate(Date currentTime) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("SELECT DISTINCT ent from Entrepreneurship as ent ");
+        sb.append("WHERE ent.hasSubscription = '1' ");
+        sb.append("AND ent.subscriptionExpirationDate <= :currentTime");
+
+        Query query = entityManager.createQuery(sb.toString());
+        query.setParameter("currentTime",currentTime);
+
+        try {
+            return (List<Entrepreneurship>)query.getResultList();
         }catch (Exception e){
             e.printStackTrace();
             return new ArrayList<>();

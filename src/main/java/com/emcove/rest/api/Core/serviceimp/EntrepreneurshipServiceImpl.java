@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -110,7 +111,7 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
         if((categories != null && !categories.isEmpty()) || (name != null && !name.equals("")) || (productName != null && !productName.equals("")))
             return entrepreneurshipRepositoryCustom.find(categories,name,productName);
         else
-            return entrepreneurshipRepository.findAll();
+            return entrepreneurshipRepository.findAllByOrderByHasSubscriptionDesc();
     }
 
     @Override
@@ -211,5 +212,15 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
         entrepreneurshipOpt.get().subscribe(plan);
         entrepreneurshipRepository.save(entrepreneurshipOpt.get());
 
+    }
+
+    @Override
+    public void checkExpiredSubscriptions(Date currentTime) {
+        List<Entrepreneurship> entrepreneurshipsToExpired = entrepreneurshipRepositoryCustom.findBySubscriptionExpirationDate(currentTime);
+
+        for(Entrepreneurship ent : entrepreneurshipsToExpired){
+            ent.setHasSubscription("0");
+            entrepreneurshipRepository.save(ent);
+        }
     }
 }
