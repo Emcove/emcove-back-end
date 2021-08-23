@@ -2,6 +2,7 @@ package com.emcove.rest.api.Core.response;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -53,6 +54,7 @@ public class Reputation {
     }
 
     public List<Comment> getComments() {
+        Collections.sort(comments, (comment1, comment2) -> comment1.getCreationDateTime().compareTo(comment2.getCreationDateTime()));
         return comments;
     }
 

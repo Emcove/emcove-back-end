@@ -140,8 +140,6 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
         if(entrepreneurshipOpt.isEmpty())
             throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
         Reputation reputation = entrepreneurshipOpt.get().getReputation();
-        List<Comment> comments = reputation.getComments();
-        Collections.sort(comments, (comment1,comment2) -> comment1.getCreationDateTime().compareTo(comment2.getCreationDateTime()));
 
         return reputation;
     }
@@ -154,8 +152,6 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
         if(!user.get().hasEntrepreneuship())
             throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
         Reputation reputation = user.get().getEntrepreneurship().getReputation();
-        List<Comment> comments = reputation.getComments();
-        Collections.sort(comments, (comment1,comment2) -> comment1.getCreationDateTime().compareTo(comment2.getCreationDateTime()));
 
         return reputation;
     }
