@@ -43,7 +43,7 @@ public class Entrepreneurship {
     @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)
     private Set<Category> categories = new HashSet<>();
-    private Boolean hasSubscription;
+    private String hasSubscription = "0";
     private Date subscriptionExpirationDate;
 
     public Entrepreneurship() {}
@@ -120,9 +120,9 @@ public class Entrepreneurship {
         return getProducts().contains(product);
     }
 
-    public Boolean getHasSubscription() { return hasSubscription; }
+    public String getHasSubscription() { return hasSubscription; }
 
-    public void setHasSubscription(Boolean hasSubscription) { this.hasSubscription = hasSubscription; }
+    public void setHasSubscription(String hasSubscription) { this.hasSubscription = hasSubscription; }
 
     public Date getSubscriptionExpirationDate() {
         return subscriptionExpirationDate;
@@ -133,7 +133,7 @@ public class Entrepreneurship {
     }
 
     public void subscribe(SubscriptionPlanDTO plan) {
-        this.hasSubscription = true;
+        this.hasSubscription = "1";
         Date today = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(today);
