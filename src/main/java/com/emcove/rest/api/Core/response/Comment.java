@@ -1,5 +1,7 @@
 package com.emcove.rest.api.Core.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.annotation.processing.Generated;
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,6 +17,7 @@ public class Comment {
     private String description;
     @Enumerated(EnumType.STRING)
     private CommentValue value;
+    @JsonFormat(pattern="dd-MM-yyyy")
     private LocalDateTime creationDateTime;
     public Comment() {
         creationDateTime = LocalDateTime.now();
