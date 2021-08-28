@@ -6,6 +6,7 @@ import com.emcove.rest.api.Core.response.Order;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -15,4 +16,6 @@ public interface EntrepreneurshipRepositoryCustom {
     List<Entrepreneurship> find(Set<Category> categories, String name, String productName);
 
     List<Order> findOrdersByEntrepreneuship(Integer entrepreneurshipId);
+
+    List<Entrepreneurship> findBySubscriptionExpirationDate(Date currentTime);
 }

@@ -11,6 +11,7 @@ import com.emcove.rest.api.Core.response.Product;
 import com.emcove.rest.api.Core.response.Reputation;
 
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -46,4 +47,5 @@ public interface EntrepreneurshipService {
 
     void subscribe(Integer id, SubscriptionPlanDTO plan);
 
+    void checkExpiredSubscriptions(Date  currentTime);
 }
