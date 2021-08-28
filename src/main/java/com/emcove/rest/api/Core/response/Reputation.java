@@ -1,7 +1,10 @@
 package com.emcove.rest.api.Core.response;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -13,7 +16,7 @@ public class Reputation {
     private Float averagePoints;
     private int totalPoint;
     @OneToMany(cascade = CascadeType.ALL)
-    private Set<Comment> comments = new HashSet<>();
+    private List<Comment> comments = new ArrayList<>();
 
     public Reputation(Integer id, Float averagePoints, int totalPoint) {
         this.id = id;
@@ -50,11 +53,12 @@ public class Reputation {
         this.totalPoint = totalPoint;
     }
 
-    public Set<Comment> getComments() {
+    public List<Comment> getComments() {
+        Collections.sort(comments, (comment1, comment2) -> comment1.getCreationDateTime().compareTo(comment2.getCreationDateTime()));
         return comments;
     }
 
-    public void setComments(Set<Comment> coments) {
+    public void setComments(List<Comment> coments) {
         this.comments = coments;
     }
 

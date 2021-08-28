@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -138,8 +140,9 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
         Optional<Entrepreneurship> entrepreneurshipOpt = entrepreneurshipRepository.findById(id);
         if(entrepreneurshipOpt.isEmpty())
             throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
+        Reputation reputation = entrepreneurshipOpt.get().getReputation();
 
-        return entrepreneurshipOpt.get().getReputation();
+        return reputation;
     }
 
     @Override
@@ -149,8 +152,9 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
             throw new ResourceNotFoundException("No se encontro ningún usuario");
         if(!user.get().hasEntrepreneuship())
             throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
+        Reputation reputation = user.get().getEntrepreneurship().getReputation();
 
-        return user.get().getEntrepreneurship().getReputation();
+        return reputation;
     }
 
     @Override
