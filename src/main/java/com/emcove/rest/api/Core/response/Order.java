@@ -1,5 +1,7 @@
 package com.emcove.rest.api.Core.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -11,8 +13,13 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @JsonFormat(pattern="dd-MM-yyyy")
     private LocalDate createDate;
+    @JsonFormat(pattern="dd-MM-yyyy")
+    private LocalDate updateDate;
+    @JsonFormat(pattern="dd-MM-yyyy")
     private LocalDate deliverDate;
+
     @Enumerated(EnumType.STRING)
     private OrderState currentState;
     private String details;
@@ -34,6 +41,7 @@ public class Order {
 
     public Order() {
         this.createDate = LocalDate.now();
+        this.updateDate = LocalDate.now();
         this.orderTrackingDatas = new ArrayList<>();
     }
 
@@ -108,8 +116,16 @@ public class Order {
             throw new IllegalArgumentException("El pedido ya contiene el estado: " + orderTrackingData.getState().name() );
 
         orderTrackingDatas.add(orderTrackingData);
-
+        setUpdateDate(LocalDate.now());
         setCurrentState(orderTrackingData.getState());
+    }
+
+    public LocalDate getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(LocalDate updateDate) {
+        this.updateDate = updateDate;
     }
 
     public void setCurrentState(OrderState state) {

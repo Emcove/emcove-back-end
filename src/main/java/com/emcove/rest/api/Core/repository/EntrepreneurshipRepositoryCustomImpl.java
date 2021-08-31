@@ -3,6 +3,7 @@ package com.emcove.rest.api.Core.repository;
 import com.emcove.rest.api.Core.response.Category;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Order;
+import com.emcove.rest.api.Core.response.OrderState;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -61,7 +62,7 @@ public class EntrepreneurshipRepositoryCustomImpl implements EntrepreneurshipRep
     }
 
     @Override
-    public List<Order> findOrdersByEntrepreneuship(Integer entrepreneurshipId) {
+    public List<Order> findOrdersByEntrepreneurship(Integer entrepreneurshipId) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("SELECT DISTINCT ordr from Order as ordr ");
@@ -92,6 +93,31 @@ public class EntrepreneurshipRepositoryCustomImpl implements EntrepreneurshipRep
 
         try {
             return (List<Entrepreneurship>)query.getResultList();
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public List<Order> findOrdersByEntrepreneurshipFilter(Integer entrepreneurshipId, OrderState orderState, boolean asc) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("SELECT DISTINCT ordr from Order as ordr ");
+        sb.append("INNER JOIN ordr.entrepreneurship as ent ");
+        sb.append("WHERE ent.id = :entrepreneurshipId ");
+        if(orderState != null)
+            sb.append("AND ordr.currentState = :orderState ");
+
+        sb.append("order by ordr.updateDate " + (asc? "ASC " : "DESC "));
+
+        Query query = entityManager.createQuery(sb.toString());
+        query.setParameter("entrepreneurshipId",entrepreneurshipId);
+        if(orderState != null)
+            query.setParameter("orderState",orderState);
+
+        try {
+            return (List<Order>)query.getResultList();
         }catch (Exception e){
             e.printStackTrace();
             return new ArrayList<>();

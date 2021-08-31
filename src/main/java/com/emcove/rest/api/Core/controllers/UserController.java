@@ -76,8 +76,8 @@ public class UserController {
     }
 
     @GetMapping("/orders")
-    public ResponseEntity<List<Order>>  getOrders(){
-        return ResponseEntity.ok().body(userService.getOrders(userService.getLoggedUsername()));
+    public ResponseEntity<List<Order>>  getOrders(@RequestParam(required = false) OrderState orderState, @RequestParam(required = false) boolean asc){
+        return ResponseEntity.ok().body(userService.getOrdersFilter(userService.getLoggedUsername(), orderState,asc));
     }
 
     @PostMapping("/orders/{orderId}/cancel")
