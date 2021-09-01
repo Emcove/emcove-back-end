@@ -14,4 +14,6 @@ public class DeliveryPoint {
     private Integer id;
 
 
+
+
 }

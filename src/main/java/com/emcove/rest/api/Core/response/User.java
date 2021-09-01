@@ -1,7 +1,7 @@
 package com.emcove.rest.api.Core.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.annotations.Type;
+
 
 import javax.persistence.*;
 
