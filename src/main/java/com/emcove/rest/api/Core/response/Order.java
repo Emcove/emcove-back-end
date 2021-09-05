@@ -16,6 +16,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderState currentState;
     private String details;
+    private Float totalPrice;
 
     @OneToOne
     private User user;
