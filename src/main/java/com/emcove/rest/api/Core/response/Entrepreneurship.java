@@ -3,7 +3,6 @@ package com.emcove.rest.api.Core.response;
 
 import com.emcove.rest.api.Core.dto.SubscriptionPlanDTO;
 import com.emcove.rest.api.Core.utilities.NoBadWord;
-import com.mercadopago.resources.Preference;
 
 import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;

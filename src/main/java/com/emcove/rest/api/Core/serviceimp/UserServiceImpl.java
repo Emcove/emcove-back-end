@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
     public void createUser(User newUser){
         Optional<User> user = userRepository.findByUsername(newUser.getUsername());
 
-        if(!user.isPresent()){
+        if(user.isEmpty()){
             try {
                 newUser.setReputation(new Reputation());
                 newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
     public User patchUser(UserDTO userDTO) {
         Optional<User> userOpt = userRepository.findByUsername(getLoggedUsername());
 
-        if(!userOpt.isPresent())
+        if(userOpt.isEmpty())
             return null;
         User user = userOpt.get();
 
@@ -128,10 +128,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkUserPassword(User user) {
         Optional<User> userOpt = userRepository.findByUsername(user.getUsername());
-        if(userOpt.isPresent()){
-            if(BCrypt.checkpw(user.getPassword(),userOpt.get().getPassword())){
-                return true;
-            }
+        if(userOpt.isPresent() && BCrypt.checkpw(user.getPassword(),userOpt.get().getPassword())){
+            return true;
         }
         return false;
     }

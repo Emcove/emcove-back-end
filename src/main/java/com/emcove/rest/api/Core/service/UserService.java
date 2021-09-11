@@ -9,7 +9,6 @@ import com.emcove.rest.api.Core.dto.UserDTO;
 import com.emcove.rest.api.Core.response.User;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
 

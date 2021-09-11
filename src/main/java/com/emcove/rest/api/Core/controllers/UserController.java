@@ -4,7 +4,6 @@ import com.emcove.rest.api.Core.dto.UserDTO;
 import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.DeliveryPoint;
 import com.emcove.rest.api.Core.response.Order;
-import com.emcove.rest.api.Core.response.OrderState;
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.UserService;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -82,12 +80,12 @@ public class UserController {
     }
 
     @PostMapping("/orders/{orderId}/cancel")
-    public ResponseEntity<Order>  addOrderTrackingToOrder(@PathVariable Integer orderId) throws IllegalAccessException {
+    public ResponseEntity<Order>  addOrderTrackingToOrder(@PathVariable Integer orderId)  {
         return ResponseEntity.ok().body(userService.cancelOrder(orderId,userService.getLoggedUsername()));
     }
 
     @PostMapping("/deliveryPoints")
-    public ResponseEntity<User>  addDeliveryPoint(@RequestBody DeliveryPoint deliveryPoint) throws IllegalAccessException {
+    public ResponseEntity<User>  addDeliveryPoint(@RequestBody DeliveryPoint deliveryPoint)  {
         return ResponseEntity.ok().body(userService.addDeliveryPoint(userService.getLoggedUsername(), deliveryPoint));
     }
 

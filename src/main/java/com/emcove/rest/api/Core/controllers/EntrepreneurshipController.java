@@ -18,15 +18,12 @@ import com.mercadopago.resources.Preference;
 import com.mercadopago.resources.datastructures.preference.BackUrls;
 import com.mercadopago.resources.datastructures.preference.Item;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 
@@ -136,7 +133,7 @@ public class EntrepreneurshipController {
     }
 
     @PostMapping("/deliveryPoints")
-    public ResponseEntity<Entrepreneurship>  addDeliveryPoint(@RequestBody DeliveryPoint deliveryPoint) throws IllegalAccessException {
+    public ResponseEntity<Entrepreneurship>  addDeliveryPoint(@RequestBody DeliveryPoint deliveryPoint)  {
         return ResponseEntity.ok().body(entrepreneurshipService.addDeliveryPoint(userService.getLoggedUsername(), deliveryPoint));
     }
 
