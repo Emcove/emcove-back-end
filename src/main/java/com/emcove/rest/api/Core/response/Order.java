@@ -32,6 +32,12 @@ public class Order {
     @OneToOne
     private Product product;
 
+    @OneToOne
+    private DeliveryPoint userDeliveryPoint;
+
+    @OneToOne
+    private DeliveryPoint entrepreneurshipDeliveryPoint;
+
     public Order() {
         this.createDate = LocalDate.now();
         this.orderTrackingDatas = new ArrayList<>();
@@ -126,5 +132,21 @@ public class Order {
 
     public boolean isClosed() {
         return currentState.equals(OrderState.ENTREGADO) || currentState.equals(OrderState.CANCELADO) || currentState.equals(OrderState.RECHAZADO);
+    }
+
+    public DeliveryPoint getUserDeliveryPoint() {
+        return userDeliveryPoint;
+    }
+
+    public void setUserDeliveryPoint(DeliveryPoint userDeliveryPoint) {
+        this.userDeliveryPoint = userDeliveryPoint;
+    }
+
+    public DeliveryPoint getEntrepreneurshipDeliveryPoint() {
+        return entrepreneurshipDeliveryPoint;
+    }
+
+    public void setEntrepreneurshipDeliveryPoint(DeliveryPoint entrepreneurshipDeliveryPoint) {
+        this.entrepreneurshipDeliveryPoint = entrepreneurshipDeliveryPoint;
     }
 }

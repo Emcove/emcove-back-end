@@ -4,6 +4,7 @@ import com.emcove.rest.api.Core.dto.EntrepreneurshipDTO;
 import com.emcove.rest.api.Core.dto.SubscriptionPlanDTO;
 import com.emcove.rest.api.Core.response.Category;
 import com.emcove.rest.api.Core.response.Comment;
+import com.emcove.rest.api.Core.response.DeliveryPoint;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Order;
 import com.emcove.rest.api.Core.response.OrderState;
@@ -48,4 +49,6 @@ public interface EntrepreneurshipService {
     void subscribe(Integer id, SubscriptionPlanDTO plan);
 
     void checkExpiredSubscriptions(Date  currentTime);
+
+    Entrepreneurship addDeliveryPoint(String username, DeliveryPoint deliveryPoint);
 }

@@ -9,6 +9,7 @@ import com.emcove.rest.api.Core.repository.OrderRepository;
 import com.emcove.rest.api.Core.repository.UserRepository;
 import com.emcove.rest.api.Core.response.Category;
 import com.emcove.rest.api.Core.response.Comment;
+import com.emcove.rest.api.Core.response.DeliveryPoint;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Order;
 import com.emcove.rest.api.Core.response.OrderState;
@@ -247,5 +248,23 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
             ent.setHasSubscription("0");
             entrepreneurshipRepository.save(ent);
         }
+    }
+
+    @Override
+    public Entrepreneurship addDeliveryPoint(String username, DeliveryPoint deliveryPoint) {
+        Optional<User> user = userRepository.findByUsername(username);
+
+        if (user.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
+        if (!user.get().hasEntrepreneuship())
+            throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
+
+        Entrepreneurship entrepreneurship = user.get().getEntrepreneurship();
+
+        entrepreneurship.addDeliveryPoint(deliveryPoint);
+
+        entrepreneurshipRepository.save(entrepreneurship);
+
+        return entrepreneurship;
     }
 }

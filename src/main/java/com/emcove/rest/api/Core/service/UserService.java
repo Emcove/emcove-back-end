@@ -1,6 +1,7 @@
 package com.emcove.rest.api.Core.service;
 
 import com.emcove.rest.api.Core.response.Comment;
+import com.emcove.rest.api.Core.response.DeliveryPoint;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Order;
 import com.emcove.rest.api.Core.response.Reputation;
@@ -29,4 +30,6 @@ public interface UserService {
     List<Order> getOrders(String username);
 
     Order cancelOrder(Integer orderId, String username);
+
+    User addDeliveryPoint(String username, DeliveryPoint deliveryPoint);
 }

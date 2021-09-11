@@ -6,6 +6,7 @@ import com.emcove.rest.api.Core.repository.OrderRepository;
 import com.emcove.rest.api.Core.repository.UserRepository;
 
 import com.emcove.rest.api.Core.repository.UserRepositoryCustom;
+import com.emcove.rest.api.Core.response.DeliveryPoint;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Order;
@@ -217,6 +218,22 @@ public class UserServiceImpl implements UserService {
         orderRepository.save(order);
 
         return order;
+    }
+
+    @Override
+    public User addDeliveryPoint(String username, DeliveryPoint deliveryPoint) {
+        Optional<User> userOpt = userRepository.findByUsername(username);
+
+        if(userOpt.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
+
+        User user = userOpt.get();
+
+        user.addDeliveryPoint(deliveryPoint);
+
+        userRepository.save(user);
+
+        return user;
     }
 
 }

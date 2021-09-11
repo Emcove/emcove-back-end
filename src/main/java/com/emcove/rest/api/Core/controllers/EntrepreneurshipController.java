@@ -4,6 +4,7 @@ import com.emcove.rest.api.Core.dto.EntrepreneurshipDTO;
 import com.emcove.rest.api.Core.dto.SubscriptionPlanDTO;
 import com.emcove.rest.api.Core.response.Category;
 import com.emcove.rest.api.Core.response.Comment;
+import com.emcove.rest.api.Core.response.DeliveryPoint;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Order;
 import com.emcove.rest.api.Core.response.OrderState;
@@ -134,6 +135,11 @@ public class EntrepreneurshipController {
         return ResponseEntity.ok().body(entrepreneurshipService.addOrderTrackingToOrder(orderId,newOrderState,userService.getLoggedUsername()));
     }
 
+    @PostMapping("/deliveryPoints")
+    public ResponseEntity<Entrepreneurship>  addDeliveryPoint(@RequestBody DeliveryPoint deliveryPoint) throws IllegalAccessException {
+        return ResponseEntity.ok().body(entrepreneurshipService.addDeliveryPoint(userService.getLoggedUsername(), deliveryPoint));
+    }
+
     @PostMapping("/{id}/subscriptions")
     public ResponseEntity<Entrepreneurship> createSubscription(@PathVariable Integer id, @RequestBody SubscriptionPlanDTO plan){
         entrepreneurshipService.subscribe(id, plan);
@@ -180,6 +186,8 @@ public class EntrepreneurshipController {
 
         return ResponseEntity.ok(result);
     }
+
+
 
     private String getSubscriptionTitle(Float value) {
         switch (value.toString()) {

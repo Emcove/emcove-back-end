@@ -2,6 +2,7 @@ package com.emcove.rest.api.Core.controllers;
 
 import com.emcove.rest.api.Core.dto.UserDTO;
 import com.emcove.rest.api.Core.response.Comment;
+import com.emcove.rest.api.Core.response.DeliveryPoint;
 import com.emcove.rest.api.Core.response.Order;
 import com.emcove.rest.api.Core.response.OrderState;
 import com.emcove.rest.api.Core.response.Reputation;
@@ -84,4 +85,10 @@ public class UserController {
     public ResponseEntity<Order>  addOrderTrackingToOrder(@PathVariable Integer orderId) throws IllegalAccessException {
         return ResponseEntity.ok().body(userService.cancelOrder(orderId,userService.getLoggedUsername()));
     }
+
+    @PostMapping("/deliveryPoints")
+    public ResponseEntity<User>  addDeliveryPoint(@RequestBody DeliveryPoint deliveryPoint) throws IllegalAccessException {
+        return ResponseEntity.ok().body(userService.addDeliveryPoint(userService.getLoggedUsername(), deliveryPoint));
+    }
+
 }

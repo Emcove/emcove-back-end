@@ -21,6 +21,7 @@ import javax.persistence.Table;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -45,6 +46,9 @@ public class Entrepreneurship {
     private Set<Category> categories = new HashSet<>();
     private String hasSubscription = "0";
     private Date subscriptionExpirationDate;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<DeliveryPoint> deliveryPoints;
 
     public Entrepreneurship() {}
 
@@ -151,6 +155,18 @@ public class Entrepreneurship {
         }
 
         this.subscriptionExpirationDate = calendar.getTime();
+    }
+
+    public List<DeliveryPoint> getDeliveryPoints() {
+        return deliveryPoints;
+    }
+
+    public void setDeliveryPoints(List<DeliveryPoint> deliveryPoints) {
+        this.deliveryPoints = deliveryPoints;
+    }
+
+    public boolean addDeliveryPoint(DeliveryPoint deliveryPoint){
+        return deliveryPoints.add(deliveryPoint);
     }
 }
 
