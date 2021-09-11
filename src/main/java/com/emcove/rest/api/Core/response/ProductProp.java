@@ -5,12 +5,15 @@ import com.emcove.rest.api.Core.utilities.NoBadWordObject;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
 import java.util.Objects;
@@ -25,22 +28,23 @@ public class ProductProp {
     @NoBadWord
     private String name;
 
-    @ElementCollection
-    @JoinColumn(name = "product_id")
-    private List<String> options ;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_prop_id")
+    private List<ProductOption> options ;
 
     @NoBadWord(content = NoBadWordObject.List)
     public ProductProp() {
     }
 
-    public ProductProp(List<String> options) {
+    public ProductProp(List<ProductOption> options) {
         this.options = options;
     }
-    public List<String> getOptions() {
+
+    public List<ProductOption> getOptions() {
         return options;
     }
 
-    public void setOptions(List<String> options) {
+    public void setOptions(List<ProductOption> options) {
         this.options = options;
     }
 

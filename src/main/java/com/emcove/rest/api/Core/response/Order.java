@@ -16,6 +16,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderState currentState;
     private String details;
+    private Float totalPrice;
 
     @OneToOne
     private User user;
@@ -126,5 +127,13 @@ public class Order {
 
     public boolean isClosed() {
         return currentState.equals(OrderState.ENTREGADO) || currentState.equals(OrderState.CANCELADO) || currentState.equals(OrderState.RECHAZADO);
+    }
+
+    public Float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Float totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

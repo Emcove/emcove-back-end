@@ -30,10 +30,12 @@ public class Product {
     private String name;
     @NoBadWord
     private String description;
-    private boolean hasStock;
-    @ColumnDefault("0")
-    private int stockQuantity;
+
+    private Boolean immediateDelivery;
+
     private Integer productionTime;
+
+    private Float basePrice;
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = EAGER)
     private List<Image> images;
@@ -77,12 +79,12 @@ public class Product {
         this.props = props;
     }
 
-    public Boolean getHasStock() {
-        return hasStock;
+    public Boolean getImmediateDelivery() {
+        return immediateDelivery;
     }
 
-    public void setHasStock(Boolean hasStock) {
-        this.hasStock = hasStock;
+    public void setImmediateDelivery(Boolean immediateDelivery) {
+        this.immediateDelivery = immediateDelivery;
     }
 
     public Integer getProductionTime() {
