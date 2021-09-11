@@ -49,5 +49,5 @@ public interface EntrepreneurshipService {
 
     void checkExpiredSubscriptions(Date  currentTime);
 
-    List<Order> getOrders(String loggedUsername, OrderState orderState, boolean asc);
+    List<Order> getOrders(String loggedUsername, OrderState orderState);
 }

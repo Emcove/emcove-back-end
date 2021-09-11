@@ -100,7 +100,7 @@ public class EntrepreneurshipRepositoryCustomImpl implements EntrepreneurshipRep
     }
 
     @Override
-    public List<Order> findOrdersByEntrepreneurshipFilter(Integer entrepreneurshipId, OrderState orderState, boolean asc) {
+    public List<Order> findOrdersByEntrepreneurshipFilter(Integer entrepreneurshipId, OrderState orderState) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("SELECT DISTINCT ordr from Order as ordr ");
@@ -109,7 +109,7 @@ public class EntrepreneurshipRepositoryCustomImpl implements EntrepreneurshipRep
         if(orderState != null)
             sb.append("AND ordr.currentState = :orderState ");
 
-        sb.append("order by ordr.updateDate " + (asc? "ASC " : "DESC "));
+
 
         Query query = entityManager.createQuery(sb.toString());
         query.setParameter("entrepreneurshipId",entrepreneurshipId);

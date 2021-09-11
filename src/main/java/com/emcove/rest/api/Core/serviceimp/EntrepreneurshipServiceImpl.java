@@ -250,13 +250,13 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     }
 
     @Override
-    public List<Order> getOrders(String loggedUsername, OrderState orderState, boolean asc) {
+    public List<Order> getOrders(String loggedUsername, OrderState orderState) {
         Optional<User> user = userRepository.findByUsername(loggedUsername);
         if(user.isEmpty())
             throw new ResourceNotFoundException("No se encontro ningún usuario");
         if(!user.get().hasEntrepreneuship())
             throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
 
-        return entrepreneurshipRepositoryCustom.findOrdersByEntrepreneurshipFilter(user.get().getEntrepreneurship().getId(), orderState, asc);
+        return entrepreneurshipRepositoryCustom.findOrdersByEntrepreneurshipFilter(user.get().getEntrepreneurship().getId(), orderState);
     }
 }

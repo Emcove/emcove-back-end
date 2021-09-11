@@ -20,5 +20,5 @@ public interface EntrepreneurshipRepositoryCustom {
 
     List<Entrepreneurship> findBySubscriptionExpirationDate(Date currentTime);
 
-    List<Order> findOrdersByEntrepreneurshipFilter(Integer entrepreneurshipId, OrderState orderState, boolean asc);
+    List<Order> findOrdersByEntrepreneurshipFilter(Integer entrepreneurshipId, OrderState orderState);
 }
