@@ -28,7 +28,7 @@ public interface UserService {
 
     List<Order> getOrders(String username);
 
-    Order cancelOrder(Integer orderId, String username);
+    Order cancelOrder(Integer orderId, String username, String cancelReason);
 
     User addDeliveryPoint(String username, DeliveryPoint deliveryPoint);
 }

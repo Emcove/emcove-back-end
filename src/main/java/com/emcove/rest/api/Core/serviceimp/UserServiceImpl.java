@@ -198,7 +198,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Order cancelOrder(Integer orderId, String username) {
+    public Order cancelOrder(Integer orderId, String username, String cancelReason) {
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
         Optional<User> userOpt = userRepository.findByUsername(username);
 
@@ -212,6 +212,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("No puede cancelar un pedido que esta en preparacion");
 
         order.addTrackingData(new OrderTrackingData(OrderState.CANCELADO));
+        order.setCloseReason(cancelReason);
 
         orderRepository.save(order);
 

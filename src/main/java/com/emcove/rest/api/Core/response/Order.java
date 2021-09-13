@@ -16,7 +16,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderState currentState;
     private String details;
-
+    private String closeReason;
     @OneToOne
     private User user;
 
@@ -148,5 +148,13 @@ public class Order {
 
     public void setEntrepreneurshipDeliveryPoint(DeliveryPoint entrepreneurshipDeliveryPoint) {
         this.entrepreneurshipDeliveryPoint = entrepreneurshipDeliveryPoint;
+    }
+
+    public String getCloseReason() {
+        return closeReason;
+    }
+
+    public void setCloseReason(String closeReason) {
+        this.closeReason = closeReason;
     }
 }
