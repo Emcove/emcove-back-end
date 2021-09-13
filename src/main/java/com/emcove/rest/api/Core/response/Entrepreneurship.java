@@ -45,6 +45,7 @@ public class Entrepreneurship {
     private Set<Category> categories = new HashSet<>();
     private String hasSubscription = "0";
     private Date subscriptionExpirationDate;
+    private String facebook_page_id;
 
     public Entrepreneurship() {}
 
@@ -151,6 +152,14 @@ public class Entrepreneurship {
         }
 
         this.subscriptionExpirationDate = calendar.getTime();
+    }
+
+    public String getFacebook_page_id() {
+        return facebook_page_id;
+    }
+
+    public void setFacebook_page_id(String facebook_page_id) {
+        this.facebook_page_id = facebook_page_id;
     }
 }
 
