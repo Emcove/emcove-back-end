@@ -73,10 +73,10 @@ public class EntrepreneurshipController {
 
     @PatchMapping()
     public ResponseEntity<Entrepreneurship> patchEntrepreneurship(@RequestBody Entrepreneurship entrepreneurship){
-            if(entrepreneurship.getId().equals(entrepreneurshipService.getEntrepreneurshipByUsername(userService.getLoggedUsername()).getId())){
-                return ResponseEntity.ok().body(entrepreneurshipService.patchEntrepreneurship(entrepreneurship));
-            }
-            return new ResponseEntity<>(entrepreneurship, HttpStatus.UNAUTHORIZED);
+        if(entrepreneurship.getId().equals(entrepreneurshipService.getEntrepreneurshipByUsername(userService.getLoggedUsername()).getId())){
+            return ResponseEntity.ok().body(entrepreneurshipService.patchEntrepreneurship(entrepreneurship));
+        }
+        return new ResponseEntity<>(entrepreneurship, HttpStatus.UNAUTHORIZED);
     }
 
     @GetMapping("/{id}/products")
