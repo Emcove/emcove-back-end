@@ -27,7 +27,7 @@ public interface EntrepreneurshipService {
 
     Entrepreneurship addProduct(Integer entrepreneurshipId, Product product);
 
-    Entrepreneurship patchEntrepreneurship(Integer id, EntrepreneurshipDTO entrepreneurshipDTO);
+    Entrepreneurship patchEntrepreneurship(Entrepreneurship entrepreneurship);
 
     List<Entrepreneurship> findAll(Set<Category> categories, String name, String productName);
 
