@@ -219,4 +219,13 @@ public class UserServiceImpl implements UserService {
         return order;
     }
 
+    @Override
+    public List<Order> getOrdersFilter(String username, OrderState orderState, boolean asc) {
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        if(userOpt.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
+
+        return userRepositoryCustom.findOrdersFilter(userOpt.get().getId(), orderState, asc);
+    }
+
 }

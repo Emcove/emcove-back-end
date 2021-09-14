@@ -126,8 +126,8 @@ public class EntrepreneurshipController {
     }
 
     @GetMapping("/orders")
-    public ResponseEntity<List<Order>>  getOrders(){
-        return ResponseEntity.ok().body(entrepreneurshipService.getOrders(userService.getLoggedUsername()));
+    public ResponseEntity<List<Order>>  getOrders(@RequestParam(required = false) OrderState orderState){
+        return ResponseEntity.ok().body(entrepreneurshipService.getOrders(userService.getLoggedUsername(), orderState));
     }
 
     @PostMapping("/orders/{orderId}/orderTracking")

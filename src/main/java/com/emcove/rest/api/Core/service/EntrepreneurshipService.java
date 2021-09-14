@@ -48,4 +48,6 @@ public interface EntrepreneurshipService {
     void subscribe(Integer id, SubscriptionPlanDTO plan);
 
     void checkExpiredSubscriptions(Date  currentTime);
+
+    List<Order> getOrders(String loggedUsername, OrderState orderState);
 }
