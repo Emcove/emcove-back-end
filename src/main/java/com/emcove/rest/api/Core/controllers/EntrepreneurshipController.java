@@ -144,9 +144,9 @@ public class EntrepreneurshipController {
     @GetMapping("/subscriptions")
     public ResponseEntity<List<Map<String, String>>> getSubscription() throws MPException {
         List<Float> values = new ArrayList<>();
-        values.add(1.0f);
-        values.add(5.0f);
-        values.add(10.0f);
+        values.add(300.0f);
+        values.add(1500.0f);
+        values.add(2400.0f);
 
         List<Map<String, String>> result = new ArrayList<>();
         String baseURL = System.getenv("BASE_URL");
@@ -184,11 +184,11 @@ public class EntrepreneurshipController {
 
     private String getSubscriptionTitle(Float value) {
         switch (value.toString()) {
-            case "1.0":
+            case "300.0":
                 return "Suscripción mensual";
-            case "5.0":
+            case "1500.0":
                 return "6 meses";
-            case "10.0":
+            case "2400.0":
                 return "Suscripción anual";
         }
 
@@ -197,11 +197,11 @@ public class EntrepreneurshipController {
 
     private String getSubscriptionPlan(Float value) {
         switch (value.toString()) {
-            case "1.0":
+            case "300.0":
                 return "month";
-            case "5.0":
+            case "1500.0":
                 return "6-month";
-            case "10.0":
+            case "2400.0":
                 return "annual";
         }
         return "";
