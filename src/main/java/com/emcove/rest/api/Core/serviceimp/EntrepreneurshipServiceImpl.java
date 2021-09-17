@@ -97,23 +97,7 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     }
 
     @Override
-    public Entrepreneurship patchEntrepreneurship(Integer id, EntrepreneurshipDTO entrepreneurshipDTO) {
-        Optional<Entrepreneurship> entrepreneurshipOpt = entrepreneurshipRepository.findById(id);
-        if(entrepreneurshipOpt.isEmpty())
-            return null;
-        Entrepreneurship entrepreneurship = entrepreneurshipOpt.get();
-
-        if(entrepreneurshipDTO.getName() != null)
-            entrepreneurship.setName(entrepreneurshipDTO.getName());
-        if(entrepreneurshipDTO.getLogo() != null)
-            entrepreneurship.setLogo(entrepreneurshipDTO.getLogo());
-        if(entrepreneurshipDTO.getCity() != null)
-            entrepreneurship.setCity(entrepreneurshipDTO.getCity());
-        if(entrepreneurshipDTO.getDoesShipments() != null)
-            entrepreneurship.setDoesShipments(entrepreneurshipDTO.getDoesShipments());
-        if (entrepreneurshipDTO.getCategories() != null && !entrepreneurshipDTO.getCategories().isEmpty())
-            entrepreneurship.setCategories(entrepreneurshipDTO.getCategories());
-
+    public Entrepreneurship patchEntrepreneurship( Entrepreneurship entrepreneurship) {
         return entrepreneurshipRepository.save(entrepreneurship);
     }
 
