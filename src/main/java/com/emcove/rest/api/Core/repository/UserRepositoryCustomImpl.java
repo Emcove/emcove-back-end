@@ -39,11 +39,11 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom{
 
         sb.append("SELECT DISTINCT ordr from Order as ordr ");
         sb.append("INNER JOIN ordr.user as usr ");
-        sb.append("WHERE usr.id = :userId");
+        sb.append("WHERE usr.id = :userId ");
         if(orderState != null)
             sb.append("AND ordr.currentState = :orderState ");
 
-        sb.append("order by ordr.updateDate " + (asc? "ASC " : "DESC "));
+        sb.append("ORDER by ordr.updateDate " + (asc? "ASC " : "DESC "));
 
         Query query = entityManager.createQuery(sb.toString());
         query.setParameter("userId",userId);
