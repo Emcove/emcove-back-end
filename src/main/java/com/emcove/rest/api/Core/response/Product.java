@@ -103,7 +103,13 @@ public class Product {
         this.images = images;
     }
 
+    public Float getBasePrice() {
+        return basePrice;
+    }
 
+    public void setBasePrice(Float basePrice) {
+        this.basePrice = basePrice;
+    }
 
     @Override
     public boolean equals(Object o) {
