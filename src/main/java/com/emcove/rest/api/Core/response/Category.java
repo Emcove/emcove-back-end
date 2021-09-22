@@ -13,8 +13,8 @@ public enum Category {
     HERRAMIENTAS("Herramientas", "HERRAMIENTAS"),
     DECO("Deco", "DECO");
 
-    private String description;
-    private String code;
+    private final String description;
+    private final String code;
 
     public String getDescription() {
         return description;

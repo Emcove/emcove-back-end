@@ -3,7 +3,6 @@ package com.emcove.rest.api.Core.response;
 
 
 import com.emcove.rest.api.Core.utilities.NoBadWord;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
@@ -114,8 +113,12 @@ public class Product {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
+        if (this.getId() == null) return false;
         if (o == null || getClass() != o.getClass()) return false;
+
         Product product = (Product) o;
+        if (product.getId() == null) return false;
+
         return id.equals(product.id);
     }
 
