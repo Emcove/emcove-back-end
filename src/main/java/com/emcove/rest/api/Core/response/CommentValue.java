@@ -18,8 +18,8 @@ public enum CommentValue {
         this.value = value;
     }
 
-    private String name;
-    private Integer value;
+    private final String name;
+    private final Integer value;
     @JsonValue
     public int getValue() {
         return value;
