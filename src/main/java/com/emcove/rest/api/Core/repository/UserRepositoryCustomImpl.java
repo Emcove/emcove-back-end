@@ -1,6 +1,7 @@
 package com.emcove.rest.api.Core.repository;
 
 import com.emcove.rest.api.Core.response.Order;
+import com.emcove.rest.api.Core.response.OrderState;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -23,6 +24,31 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom{
 
         Query query = entityManager.createQuery(sb.toString());
         query.setParameter("userId",userId);
+
+        try {
+            return query.getResultList();
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public List<Order> findOrdersFilter(Integer userId, OrderState orderState, boolean asc) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("SELECT DISTINCT ordr from Order as ordr ");
+        sb.append("INNER JOIN ordr.user as usr ");
+        sb.append("WHERE usr.id = :userId ");
+        if(orderState != null)
+            sb.append("AND ordr.currentState = :orderState ");
+
+        sb.append("ORDER by ordr.updateDate " + (asc? "ASC " : "DESC "));
+
+        Query query = entityManager.createQuery(sb.toString());
+        query.setParameter("userId",userId);
+        if(orderState != null)
+            query.setParameter("orderState",orderState);
 
         try {
             return query.getResultList();

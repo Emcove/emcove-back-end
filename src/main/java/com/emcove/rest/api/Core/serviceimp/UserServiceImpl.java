@@ -220,6 +220,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<Order> getOrdersFilter(String username, OrderState orderState, boolean asc) {
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        if(userOpt.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
+
+        return userRepositoryCustom.findOrdersFilter(userOpt.get().getId(), orderState, asc);
+    }
+
+    @Override
     public User addDeliveryPoint(String username, DeliveryPoint deliveryPoint) {
         Optional<User> userOpt = userRepository.findByUsername(username);
 

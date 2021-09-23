@@ -1,6 +1,5 @@
 package com.emcove.rest.api.Core.controllers;
 
-import com.emcove.rest.api.Core.dto.EntrepreneurshipDTO;
 import com.emcove.rest.api.Core.dto.SubscriptionPlanDTO;
 import com.emcove.rest.api.Core.response.Category;
 import com.emcove.rest.api.Core.response.Comment;
@@ -18,6 +17,7 @@ import com.mercadopago.resources.Preference;
 import com.mercadopago.resources.datastructures.preference.BackUrls;
 import com.mercadopago.resources.datastructures.preference.Item;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -71,9 +71,12 @@ public class EntrepreneurshipController {
         return  ResponseEntity.ok().body(entrepreneurshipService.updateEntrepreneurship(entrepreneurship));
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<Entrepreneurship> patchEntrepreneurship(@PathVariable Integer id, @RequestBody EntrepreneurshipDTO entrepreneurshipDTO){
-           return ResponseEntity.ok().body(entrepreneurshipService.patchEntrepreneurship(id,entrepreneurshipDTO));
+    @PatchMapping()
+    public ResponseEntity<Entrepreneurship> patchEntrepreneurship(@RequestBody Entrepreneurship entrepreneurship){
+        if(entrepreneurship.getId().equals(entrepreneurshipService.getEntrepreneurshipByUsername(userService.getLoggedUsername()).getId())){
+            return ResponseEntity.ok().body(entrepreneurshipService.patchEntrepreneurship(entrepreneurship));
+        }
+        return new ResponseEntity<>(entrepreneurship, HttpStatus.UNAUTHORIZED);
     }
 
     @GetMapping("/{id}/products")
@@ -123,8 +126,8 @@ public class EntrepreneurshipController {
     }
 
     @GetMapping("/orders")
-    public ResponseEntity<List<Order>>  getOrders(){
-        return ResponseEntity.ok().body(entrepreneurshipService.getOrders(userService.getLoggedUsername()));
+    public ResponseEntity<List<Order>>  getOrders(@RequestParam(required = false) OrderState orderState){
+        return ResponseEntity.ok().body(entrepreneurshipService.getOrders(userService.getLoggedUsername(), orderState));
     }
 
     @PostMapping("/orders/{orderId}/orderTracking")
@@ -146,9 +149,9 @@ public class EntrepreneurshipController {
     @GetMapping("/subscriptions")
     public ResponseEntity<List<Map<String, String>>> getSubscription() throws MPException {
         List<Float> values = new ArrayList<>();
-        values.add(1.0f);
-        values.add(5.0f);
-        values.add(10.0f);
+        values.add(300.0f);
+        values.add(1500.0f);
+        values.add(2400.0f);
 
         List<Map<String, String>> result = new ArrayList<>();
         String baseURL = System.getenv("BASE_URL");
@@ -188,11 +191,11 @@ public class EntrepreneurshipController {
 
     private String getSubscriptionTitle(Float value) {
         switch (value.toString()) {
-            case "1.0":
+            case "300.0":
                 return "Suscripción mensual";
-            case "5.0":
+            case "1500.0":
                 return "6 meses";
-            case "10.0":
+            case "2400.0":
                 return "Suscripción anual";
         }
 
@@ -201,11 +204,11 @@ public class EntrepreneurshipController {
 
     private String getSubscriptionPlan(Float value) {
         switch (value.toString()) {
-            case "1.0":
+            case "300.0":
                 return "month";
-            case "5.0":
+            case "1500.0":
                 return "6-month";
-            case "10.0":
+            case "2400.0":
                 return "annual";
         }
         return "";

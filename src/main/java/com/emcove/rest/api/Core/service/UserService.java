@@ -4,6 +4,7 @@ import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.DeliveryPoint;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Order;
+import com.emcove.rest.api.Core.response.OrderState;
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.dto.UserDTO;
 import com.emcove.rest.api.Core.response.User;
@@ -28,6 +29,9 @@ public interface UserService {
 
     List<Order> getOrders(String username);
 
+    Order cancelOrder(Integer orderId, String username);
+
+    List<Order> getOrdersFilter(String loggedUsername, OrderState orderState, boolean asc);
     Order cancelOrder(Integer orderId, String username, String cancelReason);
 
     User addDeliveryPoint(String username, DeliveryPoint deliveryPoint);

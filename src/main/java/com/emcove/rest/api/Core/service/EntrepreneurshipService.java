@@ -27,7 +27,7 @@ public interface EntrepreneurshipService {
 
     Entrepreneurship addProduct(Integer entrepreneurshipId, Product product);
 
-    Entrepreneurship patchEntrepreneurship(Integer id, EntrepreneurshipDTO entrepreneurshipDTO);
+    Entrepreneurship patchEntrepreneurship(Entrepreneurship entrepreneurship);
 
     List<Entrepreneurship> findAll(Set<Category> categories, String name, String productName);
 
@@ -50,4 +50,6 @@ public interface EntrepreneurshipService {
     void checkExpiredSubscriptions(Date  currentTime);
 
     Entrepreneurship addDeliveryPoint(String username, DeliveryPoint deliveryPoint);
+
+    List<Order> getOrders(String loggedUsername, OrderState orderState);
 }

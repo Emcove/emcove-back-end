@@ -3,6 +3,7 @@ package com.emcove.rest.api.Core.response;
 
 import com.emcove.rest.api.Core.dto.SubscriptionPlanDTO;
 import com.emcove.rest.api.Core.utilities.NoBadWord;
+import com.mercadopago.resources.Preference;
 
 import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
@@ -13,7 +14,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -21,7 +21,6 @@ import javax.persistence.Table;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -46,6 +45,7 @@ public class Entrepreneurship {
     private Set<Category> categories = new HashSet<>();
     private String hasSubscription = "0";
     private Date subscriptionExpirationDate;
+    private String facebook_page_id;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "entrepreneurship_id")
@@ -156,6 +156,14 @@ public class Entrepreneurship {
         }
 
         this.subscriptionExpirationDate = calendar.getTime();
+    }
+
+    public String getFacebook_page_id() {
+        return facebook_page_id;
+    }
+
+    public void setFacebook_page_id(String facebook_page_id) {
+        this.facebook_page_id = facebook_page_id;
     }
 
     public List<DeliveryPoint> getDeliveryPoints() {
