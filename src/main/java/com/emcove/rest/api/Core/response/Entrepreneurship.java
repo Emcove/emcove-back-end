@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -47,6 +48,7 @@ public class Entrepreneurship {
     private Date subscriptionExpirationDate;
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "entrepreneurship_id")
     private List<DeliveryPoint> deliveryPoints;
 
     public Entrepreneurship() {}

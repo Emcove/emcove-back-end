@@ -3,6 +3,7 @@ package com.emcove.rest.api.Core.serviceimp;
 import com.emcove.rest.api.Core.dto.EntrepreneurshipDTO;
 import com.emcove.rest.api.Core.dto.SubscriptionPlanDTO;
 import com.emcove.rest.api.Core.exception.ResourceNotFoundException;
+import com.emcove.rest.api.Core.repository.DeliveryPointRepository;
 import com.emcove.rest.api.Core.repository.EntrepreneurshipRepository;
 import com.emcove.rest.api.Core.repository.EntrepreneurshipRepositoryCustom;
 import com.emcove.rest.api.Core.repository.OrderRepository;
@@ -40,6 +41,9 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private DeliveryPointRepository deliveryPointRepository;
 
 
     @Override
@@ -196,10 +200,10 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     }
 
     @Override
-    public Order addOrderTrackingToOrder(Integer orderId, OrderState newOrderState, String loggedUsername) throws IllegalAccessException {
+    public Order addOrderTrackingToOrder(Integer orderId, OrderState newOrderState, String loggedUsername, Integer deliveryPointId) throws IllegalAccessException {
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
         Optional<User> user = userRepository.findByUsername(loggedUsername);
-
+        Optional<DeliveryPoint> deliveryPointOpt =  deliveryPointRepository.findById(deliveryPointId);
         if (optionalOrder.isEmpty())
             throw new ResourceNotFoundException("No se encontro ninguna orden");
         if (user.isEmpty())
@@ -218,6 +222,13 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
 
         if (newOrderState.equals(OrderState.ENTREGADO))
             order.setDeliverDate(LocalDate.now());
+
+        if(newOrderState.equals(OrderState.LISTO_PARA_ENTREGAR)){
+            if(deliveryPointOpt.isEmpty())
+                throw new ResourceNotFoundException("No se encontro ningún punto de entrega");
+
+            order.setEntrepreneurshipDeliveryPoint(deliveryPointOpt.get());
+        }
 
         orderRepository.save(order);
 
