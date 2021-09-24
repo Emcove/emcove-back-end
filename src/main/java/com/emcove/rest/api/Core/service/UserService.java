@@ -28,10 +28,7 @@ public interface UserService {
     User getLoggedUser();
 
     List<Order> getOrders(String username);
-
-    Order cancelOrder(Integer orderId, String username);
-
-    List<Order> getOrdersFilter(String loggedUsername, OrderState orderState, boolean asc);
+    List<Order> getOrdersFilter(String loggedUsername, OrderState orderState);
     Order cancelOrder(Integer orderId, String username, String cancelReason);
 
     User addDeliveryPoint(String username, DeliveryPoint deliveryPoint);

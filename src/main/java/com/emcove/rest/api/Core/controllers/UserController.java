@@ -4,6 +4,7 @@ import com.emcove.rest.api.Core.dto.UserDTO;
 import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.DeliveryPoint;
 import com.emcove.rest.api.Core.response.Order;
+import com.emcove.rest.api.Core.response.OrderState;
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.UserService;
@@ -76,8 +77,8 @@ public class UserController {
     }
 
     @GetMapping("/orders")
-    public ResponseEntity<List<Order>>  getOrders(@RequestParam(required = false) OrderState orderState, @RequestParam(required = false) boolean asc){
-        return ResponseEntity.ok().body(userService.getOrdersFilter(userService.getLoggedUsername(), orderState,asc));
+    public ResponseEntity<List<Order>>  getOrders(@RequestParam(required = false) OrderState orderState){
+        return ResponseEntity.ok().body(userService.getOrdersFilter(userService.getLoggedUsername(), orderState));
     }
 
     @PostMapping("/orders/{orderId}/cancel")
