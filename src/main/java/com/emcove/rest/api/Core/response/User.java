@@ -1,9 +1,10 @@
 package com.emcove.rest.api.Core.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.hibernate.annotations.Type;
+
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "Users")
@@ -27,19 +28,10 @@ public class User {
     private String avatar;
     private Boolean adult;
 
-    public User(){}
+    @OneToMany(cascade = CascadeType.ALL)
+    List<DeliveryPoint> deliveryPoints;
 
-    public User(String userName, String password, String email,String name, String surname, String city, Boolean adult) {
-        this.username = userName;
-        this.password = password;
-        this.email = email;
-        //Ver como se inicializa, se deberia autogenerar el id
-        this.reputation = new Reputation();
-        this.name = name;
-        this.surname = surname;
-        this.city = city;
-        this.adult = adult;
-    }
+    public User(){}
     public Integer getId() {
         return id;
     }
@@ -137,4 +129,16 @@ public class User {
     }
 
     public boolean hasEntrepreneuship(){ return getEntrepreneurship() != null;}
+
+    public List<DeliveryPoint> getDeliveryPoints() {
+        return deliveryPoints;
+    }
+
+    public void setDeliveryPoints(List<DeliveryPoint> deliveryPoints) {
+        this.deliveryPoints = deliveryPoints;
+    }
+
+    public boolean addDeliveryPoint(DeliveryPoint deliveryPoint){
+        return deliveryPoints.add(deliveryPoint);
+    }
 }

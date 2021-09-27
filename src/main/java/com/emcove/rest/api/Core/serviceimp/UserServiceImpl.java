@@ -6,6 +6,7 @@ import com.emcove.rest.api.Core.repository.OrderRepository;
 import com.emcove.rest.api.Core.repository.UserRepository;
 
 import com.emcove.rest.api.Core.repository.UserRepositoryCustom;
+import com.emcove.rest.api.Core.response.DeliveryPoint;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Comment;
 import com.emcove.rest.api.Core.response.Order;
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
     public void createUser(User newUser){
         Optional<User> user = userRepository.findByUsername(newUser.getUsername());
 
-        if(!user.isPresent()){
+        if(user.isEmpty()){
             try {
                 newUser.setReputation(new Reputation());
                 newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
@@ -78,7 +79,7 @@ public class UserServiceImpl implements UserService {
     public User patchUser(UserDTO userDTO) {
         Optional<User> userOpt = userRepository.findByUsername(getLoggedUsername());
 
-        if(!userOpt.isPresent())
+        if(userOpt.isEmpty())
             return null;
         User user = userOpt.get();
 
@@ -127,10 +128,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkUserPassword(User user) {
         Optional<User> userOpt = userRepository.findByUsername(user.getUsername());
-        if(userOpt.isPresent()){
-            if(BCrypt.checkpw(user.getPassword(),userOpt.get().getPassword())){
-                return true;
-            }
+        if(userOpt.isPresent() && BCrypt.checkpw(user.getPassword(),userOpt.get().getPassword())){
+            return true;
         }
         return false;
     }
@@ -199,7 +198,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Order cancelOrder(Integer orderId, String username) {
+    public Order cancelOrder(Integer orderId, String username, String cancelReason) {
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
         Optional<User> userOpt = userRepository.findByUsername(username);
 
@@ -213,6 +212,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("No puede cancelar un pedido que esta en preparacion");
 
         order.addTrackingData(new OrderTrackingData(OrderState.CANCELADO));
+        order.setCloseReason(cancelReason);
 
         orderRepository.save(order);
 
@@ -220,12 +220,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Order> getOrdersFilter(String username, OrderState orderState, boolean asc) {
+    public List<Order> getOrdersFilter(String username, OrderState orderState) {
         Optional<User> userOpt = userRepository.findByUsername(username);
         if(userOpt.isEmpty())
             throw new ResourceNotFoundException("No se encontro ningún usuario");
 
-        return userRepositoryCustom.findOrdersFilter(userOpt.get().getId(), orderState, asc);
+        return userRepositoryCustom.findOrdersFilter(userOpt.get().getId(), orderState);
+    }
+
+    @Override
+    public User addDeliveryPoint(String username, DeliveryPoint deliveryPoint) {
+        Optional<User> userOpt = userRepository.findByUsername(username);
+
+        if(userOpt.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
+
+        User user = userOpt.get();
+
+        user.addDeliveryPoint(deliveryPoint);
+
+        userRepository.save(user);
+
+        return user;
     }
 
 }

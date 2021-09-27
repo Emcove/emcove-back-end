@@ -4,6 +4,7 @@ import com.emcove.rest.api.Core.dto.EntrepreneurshipDTO;
 import com.emcove.rest.api.Core.dto.SubscriptionPlanDTO;
 import com.emcove.rest.api.Core.response.Category;
 import com.emcove.rest.api.Core.response.Comment;
+import com.emcove.rest.api.Core.response.DeliveryPoint;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Order;
 import com.emcove.rest.api.Core.response.OrderState;
@@ -13,7 +14,6 @@ import com.emcove.rest.api.Core.response.Reputation;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 public interface EntrepreneurshipService {
@@ -43,11 +43,13 @@ public interface EntrepreneurshipService {
 
     List<Order> getOrders(String loggedUsername);
 
-    Order addOrderTrackingToOrder(Integer orderId, OrderState newOrderState, String loggedUsername) throws IllegalAccessException;
+    Order addOrderTrackingToOrder(Integer orderId, OrderState newOrderState, String loggedUsername, Integer deliveryPointId) throws IllegalAccessException;
 
     void subscribe(Integer id, SubscriptionPlanDTO plan);
 
     void checkExpiredSubscriptions(Date  currentTime);
+
+    Entrepreneurship addDeliveryPoint(String username, DeliveryPoint deliveryPoint);
 
     List<Order> getOrders(String loggedUsername, OrderState orderState);
 }

@@ -3,6 +3,7 @@ package com.emcove.rest.api.Core.controllers;
 import com.emcove.rest.api.Core.dto.SubscriptionPlanDTO;
 import com.emcove.rest.api.Core.response.Category;
 import com.emcove.rest.api.Core.response.Comment;
+import com.emcove.rest.api.Core.response.DeliveryPoint;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Order;
 import com.emcove.rest.api.Core.response.OrderState;
@@ -130,8 +131,13 @@ public class EntrepreneurshipController {
     }
 
     @PostMapping("/orders/{orderId}/orderTracking")
-    public ResponseEntity<Order>  addOrderTrackingToOrder(@PathVariable Integer orderId, @RequestParam OrderState newOrderState) throws IllegalAccessException {
-        return ResponseEntity.ok().body(entrepreneurshipService.addOrderTrackingToOrder(orderId,newOrderState,userService.getLoggedUsername()));
+    public ResponseEntity<Order>  addOrderTrackingToOrder(@PathVariable Integer orderId, @RequestParam OrderState newOrderState, @RequestParam(required = false) Integer deliveryPointId) throws IllegalAccessException {
+        return ResponseEntity.ok().body(entrepreneurshipService.addOrderTrackingToOrder(orderId,newOrderState,userService.getLoggedUsername(),deliveryPointId));
+    }
+
+    @PostMapping("/deliveryPoints")
+    public ResponseEntity<Entrepreneurship>  addDeliveryPoint(@RequestBody DeliveryPoint deliveryPoint)  {
+        return ResponseEntity.ok().body(entrepreneurshipService.addDeliveryPoint(userService.getLoggedUsername(), deliveryPoint));
     }
 
     @PostMapping("/{id}/subscriptions")
@@ -180,6 +186,8 @@ public class EntrepreneurshipController {
 
         return ResponseEntity.ok(result);
     }
+
+
 
     private String getSubscriptionTitle(Float value) {
         switch (value.toString()) {

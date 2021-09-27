@@ -13,5 +13,5 @@ public interface UserRepositoryCustom {
 
     List<Order> findOrders(Integer userId);
 
-    List<Order> findOrdersFilter(Integer userId, OrderState orderState, boolean asc);
+    List<Order> findOrdersFilter(Integer userId, OrderState orderState);
 }

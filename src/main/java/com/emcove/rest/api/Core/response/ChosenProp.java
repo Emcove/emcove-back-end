@@ -17,7 +17,7 @@ public class ChosenProp {
 
     private String chosenOption;
 
-
+    private Float price;
 
     public String getName() {
         return name;
@@ -41,5 +41,13 @@ public class ChosenProp {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
     }
 }
