@@ -14,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -21,6 +22,7 @@ import javax.persistence.Table;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -47,6 +49,10 @@ public class Entrepreneurship {
     private Date subscriptionExpirationDate;
     private String facebook_page_id;
     private String googleCalendarId;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "entrepreneurship_id")
+    private List<DeliveryPoint> deliveryPoints;
 
     public Entrepreneurship() {}
 
@@ -169,6 +175,18 @@ public class Entrepreneurship {
 
     public void setFacebook_page_id(String facebook_page_id) {
         this.facebook_page_id = facebook_page_id;
+    }
+
+    public List<DeliveryPoint> getDeliveryPoints() {
+        return deliveryPoints;
+    }
+
+    public void setDeliveryPoints(List<DeliveryPoint> deliveryPoints) {
+        this.deliveryPoints = deliveryPoints;
+    }
+
+    public boolean addDeliveryPoint(DeliveryPoint deliveryPoint){
+        return deliveryPoints.add(deliveryPoint);
     }
 }
 

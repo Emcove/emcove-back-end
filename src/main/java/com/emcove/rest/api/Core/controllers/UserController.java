@@ -2,6 +2,7 @@ package com.emcove.rest.api.Core.controllers;
 
 import com.emcove.rest.api.Core.dto.UserDTO;
 import com.emcove.rest.api.Core.response.Comment;
+import com.emcove.rest.api.Core.response.DeliveryPoint;
 import com.emcove.rest.api.Core.response.Order;
 import com.emcove.rest.api.Core.response.OrderState;
 import com.emcove.rest.api.Core.response.Reputation;
@@ -76,12 +77,18 @@ public class UserController {
     }
 
     @GetMapping("/orders")
-    public ResponseEntity<List<Order>>  getOrders(@RequestParam(required = false) OrderState orderState, @RequestParam(required = false) boolean asc){
-        return ResponseEntity.ok().body(userService.getOrdersFilter(userService.getLoggedUsername(), orderState,asc));
+    public ResponseEntity<List<Order>>  getOrders(@RequestParam(required = false) OrderState orderState){
+        return ResponseEntity.ok().body(userService.getOrdersFilter(userService.getLoggedUsername(), orderState));
     }
 
     @PostMapping("/orders/{orderId}/cancel")
-    public ResponseEntity<Order>  addOrderTrackingToOrder(@PathVariable Integer orderId) throws IllegalAccessException {
-        return ResponseEntity.ok().body(userService.cancelOrder(orderId,userService.getLoggedUsername()));
+    public ResponseEntity<Order>  addOrderTrackingToOrder(@PathVariable Integer orderId, @RequestParam String cancelReason)  {
+        return ResponseEntity.ok().body(userService.cancelOrder(orderId,userService.getLoggedUsername(), cancelReason));
     }
+
+    @PostMapping("/deliveryPoints")
+    public ResponseEntity<User>  addDeliveryPoint(@RequestBody DeliveryPoint deliveryPoint)  {
+        return ResponseEntity.ok().body(userService.addDeliveryPoint(userService.getLoggedUsername(), deliveryPoint));
+    }
+
 }

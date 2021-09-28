@@ -25,6 +25,7 @@ public class Order {
     private String details;
     private Float totalPrice;
 
+    private String closeReason;
     @OneToOne
     private User user;
 
@@ -39,6 +40,12 @@ public class Order {
 
     @OneToOne
     private Product product;
+
+    @OneToOne
+    private DeliveryPoint userDeliveryPoint;
+
+    @OneToOne
+    private DeliveryPoint entrepreneurshipDeliveryPoint;
 
     public Order() {
         this.createDate = LocalDate.now();
@@ -151,5 +158,29 @@ public class Order {
 
     public void setTotalPrice(Float totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public DeliveryPoint getUserDeliveryPoint() {
+        return userDeliveryPoint;
+    }
+
+    public void setUserDeliveryPoint(DeliveryPoint userDeliveryPoint) {
+        this.userDeliveryPoint = userDeliveryPoint;
+    }
+
+    public DeliveryPoint getEntrepreneurshipDeliveryPoint() {
+        return entrepreneurshipDeliveryPoint;
+    }
+
+    public void setEntrepreneurshipDeliveryPoint(DeliveryPoint entrepreneurshipDeliveryPoint) {
+        this.entrepreneurshipDeliveryPoint = entrepreneurshipDeliveryPoint;
+    }
+
+    public String getCloseReason() {
+        return closeReason;
+    }
+
+    public void setCloseReason(String closeReason) {
+        this.closeReason = closeReason;
     }
 }

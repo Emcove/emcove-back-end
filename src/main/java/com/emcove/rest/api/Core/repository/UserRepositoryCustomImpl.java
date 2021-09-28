@@ -34,7 +34,7 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom{
     }
 
     @Override
-    public List<Order> findOrdersFilter(Integer userId, OrderState orderState, boolean asc) {
+    public List<Order> findOrdersFilter(Integer userId, OrderState orderState) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("SELECT DISTINCT ordr from Order as ordr ");
@@ -43,10 +43,10 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom{
         if(orderState != null)
             sb.append("AND ordr.currentState = :orderState ");
 
-        sb.append("ORDER by ordr.updateDate " + (asc? "ASC " : "DESC "));
 
         Query query = entityManager.createQuery(sb.toString());
         query.setParameter("userId",userId);
+
         if(orderState != null)
             query.setParameter("orderState",orderState);
 

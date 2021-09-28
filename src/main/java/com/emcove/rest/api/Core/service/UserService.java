@@ -1,6 +1,7 @@
 package com.emcove.rest.api.Core.service;
 
 import com.emcove.rest.api.Core.response.Comment;
+import com.emcove.rest.api.Core.response.DeliveryPoint;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Order;
 import com.emcove.rest.api.Core.response.OrderState;
@@ -9,7 +10,6 @@ import com.emcove.rest.api.Core.dto.UserDTO;
 import com.emcove.rest.api.Core.response.User;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserService {
 
@@ -28,8 +28,8 @@ public interface UserService {
     User getLoggedUser();
 
     List<Order> getOrders(String username);
+    List<Order> getOrdersFilter(String loggedUsername, OrderState orderState);
+    Order cancelOrder(Integer orderId, String username, String cancelReason);
 
-    Order cancelOrder(Integer orderId, String username);
-
-    List<Order> getOrdersFilter(String loggedUsername, OrderState orderState, boolean asc);
+    User addDeliveryPoint(String username, DeliveryPoint deliveryPoint);
 }
