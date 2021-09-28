@@ -50,4 +50,6 @@ public interface EntrepreneurshipService {
     void checkExpiredSubscriptions(Date  currentTime);
 
     List<Order> getOrders(String loggedUsername, OrderState orderState);
+
+    void registerCalendar(Integer id, String calendarId);
 }
