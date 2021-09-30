@@ -213,4 +213,10 @@ public class EntrepreneurshipController {
         }
         return "";
     }
+
+    @PostMapping("/{id}/calendar")
+    public ResponseEntity<Entrepreneurship> registerCalendar(@PathVariable Integer id, @RequestParam String calendarId){
+        entrepreneurshipService.registerCalendar(id, calendarId);
+        return ResponseEntity.ok().body(entrepreneurshipService.findEntrepreneurshipById(id));
+    }
 }

@@ -52,4 +52,6 @@ public interface EntrepreneurshipService {
     Entrepreneurship addDeliveryPoint(String username, DeliveryPoint deliveryPoint);
 
     List<Order> getOrders(String loggedUsername, OrderState orderState);
+
+    void registerCalendar(Integer id, String calendarId);
 }

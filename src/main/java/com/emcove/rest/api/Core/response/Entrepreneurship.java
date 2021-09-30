@@ -48,6 +48,7 @@ public class Entrepreneurship {
     private String hasSubscription = "0";
     private Date subscriptionExpirationDate;
     private String facebook_page_id;
+    private String googleCalendarId;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "entrepreneurship_id")
@@ -137,6 +138,14 @@ public class Entrepreneurship {
 
     public void setSubscriptionExpirationDate(Date subscriptionExpirationDate) {
         this.subscriptionExpirationDate = subscriptionExpirationDate;
+    }
+
+    public String getGoogleCalendarId() {
+        return googleCalendarId;
+    }
+
+    public void setGoogleCalendarId(String googleCalendarId) {
+        this.googleCalendarId = googleCalendarId;
     }
 
     public void subscribe(SubscriptionPlanDTO plan) {

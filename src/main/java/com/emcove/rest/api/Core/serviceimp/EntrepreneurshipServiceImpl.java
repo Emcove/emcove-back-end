@@ -268,4 +268,14 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
 
         return entrepreneurship;
     }
+    
+    @Override
+    public void registerCalendar(Integer id, String calendarId) {
+        Optional<Entrepreneurship> entrepreneurshipOpt = entrepreneurshipRepository.findById(id);
+        if(entrepreneurshipOpt.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
+
+        entrepreneurshipOpt.get().setGoogleCalendarId(calendarId);
+        entrepreneurshipRepository.save(entrepreneurshipOpt.get());
+    }
 }
