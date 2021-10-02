@@ -187,7 +187,7 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     public Order addOrderTrackingToOrder(Integer orderId, OrderState newOrderState, String loggedUsername, Integer deliveryPointId) throws IllegalAccessException {
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
         Optional<User> user = userRepository.findByUsername(loggedUsername);
-        Optional<DeliveryPoint> deliveryPointOpt =  deliveryPointRepository.findById(deliveryPointId);
+
         if (optionalOrder.isEmpty())
             throw new ResourceNotFoundException("No se encontro ninguna orden");
         if (user.isEmpty())
@@ -207,7 +207,8 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
         if (newOrderState.equals(OrderState.ENTREGADO))
             order.setDeliverDate(LocalDate.now());
 
-        if(newOrderState.equals(OrderState.LISTO_PARA_ENTREGAR)){
+        if(newOrderState.equals(OrderState.LISTO_PARA_ENTREGAR) && deliveryPointId != null){
+            Optional<DeliveryPoint> deliveryPointOpt =  deliveryPointRepository.findById(deliveryPointId);
             if(deliveryPointOpt.isEmpty())
                 throw new ResourceNotFoundException("No se encontro ningún punto de entrega");
 
