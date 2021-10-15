@@ -136,7 +136,7 @@ public class EntrepreneurshipController {
     }
 
     @PostMapping("/deliveryPoints")
-    public ResponseEntity<Entrepreneurship>  addDeliveryPoint(@RequestBody DeliveryPoint deliveryPoint)  {
+    public ResponseEntity<Entrepreneurship> addDeliveryPoint(@RequestBody DeliveryPoint deliveryPoint)  {
         return ResponseEntity.ok().body(entrepreneurshipService.addDeliveryPoint(userService.getLoggedUsername(), deliveryPoint));
     }
 
@@ -147,7 +147,7 @@ public class EntrepreneurshipController {
     }
 
     @GetMapping("/subscriptions")
-    public ResponseEntity<List<Map<String, String>>> getSubscription() throws MPException {
+    public ResponseEntity<List<Map<String, String>>> getSubscription(@RequestParam String businessName) throws MPException {
         List<Float> values = new ArrayList<>();
         values.add(300.0f);
         values.add(1500.0f);
@@ -161,9 +161,9 @@ public class EntrepreneurshipController {
             Preference preference = new Preference();
 
             BackUrls backUrls = new BackUrls(
-                    baseURL + "/#/business?from=nav-header&plan=" + subscriptionName,
-                    baseURL+ "/#/business?from=nav-header&plan=" + subscriptionName,
-                    baseURL + "/#/business?from=nav-header&plan=" + subscriptionName);
+                    baseURL + "/#/business/" + businessName + "?from=nav-header&plan=" + subscriptionName,
+                    baseURL+ "/#/business/" + businessName +"?from=nav-header&plan=" + subscriptionName,
+                    baseURL + "/#/business/" + businessName + "?from=nav-header&plan=" + subscriptionName);
             preference.setBackUrls(backUrls);
 
             Item item = new Item();
