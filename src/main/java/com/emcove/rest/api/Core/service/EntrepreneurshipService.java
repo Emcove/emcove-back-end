@@ -43,7 +43,7 @@ public interface EntrepreneurshipService {
 
     List<Order> getOrders(String loggedUsername);
 
-    Order addOrderTrackingToOrder(Integer orderId, OrderState newOrderState, String loggedUsername, Integer deliveryPointId) throws IllegalAccessException;
+    Order addOrderTrackingToOrder(Integer orderId, OrderState newOrderState, String loggedUsername, Integer deliveryPointId, String closeReason) throws IllegalAccessException;
 
     void subscribe(Integer id, SubscriptionPlanDTO plan);
 

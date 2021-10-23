@@ -19,6 +19,7 @@ import com.emcove.rest.api.Core.response.Product;
 import com.emcove.rest.api.Core.response.Reputation;
 import com.emcove.rest.api.Core.response.User;
 import com.emcove.rest.api.Core.service.EntrepreneurshipService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -184,7 +185,7 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     }
 
     @Override
-    public Order addOrderTrackingToOrder(Integer orderId, OrderState newOrderState, String loggedUsername, Integer deliveryPointId) throws IllegalAccessException {
+    public Order addOrderTrackingToOrder(Integer orderId, OrderState newOrderState, String loggedUsername, Integer deliveryPointId, String closeReason) throws IllegalAccessException {
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
         Optional<User> user = userRepository.findByUsername(loggedUsername);
 
@@ -199,9 +200,6 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
         if (!order.getEntrepreneurship().getId().equals(user.get().getEntrepreneurship().getId()))
             throw new IllegalAccessException("El pedido deseado no pertenece al emprendimiento logueado");
 
-        if (order.isClosed())
-            throw new IllegalArgumentException("El pedido se encuentra cerrado");
-
         order.addTrackingData(new OrderTrackingData(newOrderState));
 
         if (newOrderState.equals(OrderState.ENTREGADO))
@@ -213,6 +211,10 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
                 throw new ResourceNotFoundException("No se encontro ningún punto de entrega");
 
             order.setEntrepreneurshipDeliveryPoint(deliveryPointOpt.get());
+        }
+
+        if(!StringUtils.isEmpty(closeReason)) {
+            order.setCloseReason(closeReason);
         }
 
         orderRepository.save(order);

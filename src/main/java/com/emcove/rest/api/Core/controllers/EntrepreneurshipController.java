@@ -131,8 +131,8 @@ public class EntrepreneurshipController {
     }
 
     @PostMapping("/orders/{orderId}/orderTracking")
-    public ResponseEntity<Order>  addOrderTrackingToOrder(@PathVariable Integer orderId, @RequestParam OrderState newOrderState, @RequestParam(required = false) Integer deliveryPointId) throws IllegalAccessException {
-        return ResponseEntity.ok().body(entrepreneurshipService.addOrderTrackingToOrder(orderId,newOrderState,userService.getLoggedUsername(),deliveryPointId));
+    public ResponseEntity<Order>  addOrderTrackingToOrder(@PathVariable Integer orderId, @RequestParam OrderState newOrderState, @RequestParam(required = false) Integer deliveryPointId, @RequestParam(required = false) String closeReason) throws IllegalAccessException {
+        return ResponseEntity.ok().body(entrepreneurshipService.addOrderTrackingToOrder(orderId,newOrderState,userService.getLoggedUsername(),deliveryPointId, closeReason));
     }
 
     @PostMapping("/deliveryPoints")
