@@ -22,6 +22,7 @@ public class Address {
     private String department;
     private boolean isHome;
     private boolean isWork;
+    private String description;
 
     public Integer getId() {
         return id;
@@ -89,5 +90,13 @@ public class Address {
 
     public void setWork(boolean work) {
         isWork = work;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
