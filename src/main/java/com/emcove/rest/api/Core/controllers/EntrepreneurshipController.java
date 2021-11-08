@@ -138,6 +138,7 @@ public class EntrepreneurshipController {
         orders.stream().map(o ->  {
             o.setProduct(null);
             o.getEntrepreneurship().setProducts(null);
+            o.getUser().setEntrepreneurship(null);
             return o;
         }).collect(Collectors.toList());
         return ResponseEntity.ok().body(orders);
