@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin("${spring.config.env.crossOrigin}")
@@ -78,7 +79,14 @@ public class UserController {
 
     @GetMapping("/orders")
     public ResponseEntity<List<Order>>  getOrders(@RequestParam(required = false) OrderState orderState){
-        return ResponseEntity.ok().body(userService.getOrdersFilter(userService.getLoggedUsername(), orderState));
+        List<Order> orders = userService.getOrdersFilter(userService.getLoggedUsername(), orderState);
+        orders.stream().map(o -> {
+            o.getEntrepreneurship().setProducts(null);
+            o.setProduct(null);
+            o.setUser(null);
+            return o;
+        }).collect(Collectors.toList());
+        return ResponseEntity.ok().body(orders);
     }
 
     @PostMapping("/orders/{orderId}/cancel")

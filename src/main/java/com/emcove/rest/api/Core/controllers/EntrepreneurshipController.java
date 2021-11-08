@@ -25,6 +25,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -37,8 +38,14 @@ public class EntrepreneurshipController {
     protected UserService userService;
 
     @GetMapping()
-    public ResponseEntity<List<Entrepreneurship>> getAll(@RequestParam(required = false) Set<Category> categories, @RequestParam(required = false) String name, @RequestParam(required = false) String productName) {
-        return ResponseEntity.ok().body(entrepreneurshipService.findAll(categories,name,productName));
+    public ResponseEntity<List<Entrepreneurship>> getAll(@RequestParam(required = false) Set<Category> categories,
+                                                         @RequestParam(required = false) String name, @RequestParam(required = false) String productName) {
+        List<Entrepreneurship> entrepreneurships = entrepreneurshipService.findAll(categories, name, productName);
+        entrepreneurships.stream().map(e -> {
+            e.setProducts(null);
+            return e;
+        }).collect(Collectors.toList());
+        return ResponseEntity.ok().body(entrepreneurships);
     }
 
     @GetMapping("/{id}")
@@ -127,7 +134,14 @@ public class EntrepreneurshipController {
 
     @GetMapping("/orders")
     public ResponseEntity<List<Order>>  getOrders(@RequestParam(required = false) OrderState orderState){
-        return ResponseEntity.ok().body(entrepreneurshipService.getOrders(userService.getLoggedUsername(), orderState));
+        List<Order> orders = entrepreneurshipService.getOrders(userService.getLoggedUsername(), orderState);
+        orders.stream().map(o ->  {
+            o.setProduct(null);
+            o.getEntrepreneurship().setProducts(null);
+            o.getUser().setEntrepreneurship(null);
+            return o;
+        }).collect(Collectors.toList());
+        return ResponseEntity.ok().body(orders);
     }
 
     @PostMapping("/orders/{orderId}/orderTracking")
