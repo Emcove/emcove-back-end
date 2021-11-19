@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -157,15 +158,25 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
     @Override
 
     public Order addOrder(Integer id, Order order, String loggedUsername) {
-        Optional<User> user = userRepository.findByUsername(loggedUsername);
         Optional<Entrepreneurship> entrepreneurshipOpt = entrepreneurshipRepository.findById(id);
+        Optional<User> user = userRepository.findByUsername(loggedUsername);
+
+        if(user.isEmpty())
+            throw new ResourceNotFoundException("No se encontro ningún usuario");
         if (entrepreneurshipOpt.isEmpty())
             throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
-        if (user.isEmpty())
-            throw new ResourceNotFoundException("No se encontro ningún usuario");
 
-        order.setUser(user.get());
-        order.setEntrepreneurship(entrepreneurshipOpt.get());
+        Entrepreneurship entrepreneurship = entrepreneurshipOpt.get();
+        User loggedUser = user.get();
+        order.setUsername(loggedUsername);
+        order.setUserPersonalName(loggedUser.getName());
+        order.setUserPersonalSurname(loggedUser.getSurname());
+        order.setUserId(loggedUser.getId());
+        order.setEntrepreneurshipDoesShipments(entrepreneurship.getDoesShipments());
+        order.setEntrepreneurshipName(entrepreneurship.getName());
+        order.setEntrepreneurshipId(entrepreneurship.getId());
+        order.setEntrepreneurshipLogo(entrepreneurship.getLogo());
+
         order.addTrackingData(new OrderTrackingData(OrderState.PENDIENTE));
 
         orderRepository.save(order);
@@ -175,13 +186,10 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
 
     @Override
     public List<Order> getOrders(String loggedUsername) {
-        Optional<User> user = userRepository.findByUsername(loggedUsername);
-        if(user.isEmpty())
-            throw new ResourceNotFoundException("No se encontro ningún usuario");
-        if(!user.get().hasEntrepreneuship())
-            throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
 
-        return entrepreneurshipRepositoryCustom.findOrdersByEntrepreneurship(user.get().getEntrepreneurship().getId());
+        Entrepreneurship entrepreneurship = getEntrepreneurshipByUsername(loggedUsername);
+
+        return entrepreneurshipRepositoryCustom.findOrdersByEntrepreneurship(entrepreneurship.getName());
     }
 
     @Override
@@ -197,7 +205,7 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
             throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
         Order order = optionalOrder.get();
 
-        if (!order.getEntrepreneurship().getId().equals(user.get().getEntrepreneurship().getId()))
+        if (!order.getEntrepreneurshipName().equals(user.get().getEntrepreneurship().getName()))
             throw new IllegalAccessException("El pedido deseado no pertenece al emprendimiento logueado");
 
         order.addTrackingData(new OrderTrackingData(newOrderState));
@@ -245,13 +253,9 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
 
     @Override
     public List<Order> getOrders(String loggedUsername, OrderState orderState) {
-        Optional<User> user = userRepository.findByUsername(loggedUsername);
-        if(user.isEmpty())
-            throw new ResourceNotFoundException("No se encontro ningún usuario");
-        if(!user.get().hasEntrepreneuship())
-            throw new ResourceNotFoundException("No se encontro ningún emprendimiento");
+        Entrepreneurship entrepreneurship = getEntrepreneurshipByUsername(loggedUsername);
 
-        return entrepreneurshipRepositoryCustom.findOrdersByEntrepreneurshipFilter(user.get().getEntrepreneurship().getId(), orderState);
+        return entrepreneurshipRepositoryCustom.findOrdersByEntrepreneurshipFilter(entrepreneurship.getName(), orderState);
     }
 
     @Override
@@ -280,5 +284,17 @@ public class EntrepreneurshipServiceImpl implements EntrepreneurshipService {
 
         entrepreneurshipOpt.get().setGoogleCalendarId(calendarId);
         entrepreneurshipRepository.save(entrepreneurshipOpt.get());
+    }
+
+    @Override
+    public Set<Product> findEntrepreneurshipProducts(Integer entrepreneurshipId) {
+        Set<Product> products = new HashSet<Product>();
+        try{
+            products = entrepreneurshipRepositoryCustom.findProductsByEntrepreneurship(entrepreneurshipId);
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
+        return null;
     }
 }

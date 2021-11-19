@@ -50,7 +50,7 @@ public class Entrepreneurship {
     private String facebook_page_id;
     private String googleCalendarId;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "entrepreneurship_id")
     private List<DeliveryPoint> deliveryPoints;
 

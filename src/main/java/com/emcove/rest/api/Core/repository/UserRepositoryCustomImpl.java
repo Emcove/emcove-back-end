@@ -15,15 +15,15 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom{
     @PersistenceContext
     private EntityManager entityManager;
     @Override
-    public List<Order> findOrders(Integer userId) {
+    public List<Order> findOrders(String username) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("SELECT DISTINCT ordr from Order as ordr ");
-        sb.append("INNER JOIN ordr.user as usr ");
-        sb.append("WHERE usr.id = :userId");
+        sb.append("WHERE ordr.username = :username ");
+
 
         Query query = entityManager.createQuery(sb.toString());
-        query.setParameter("userId",userId);
+        query.setParameter("username",username);
 
         try {
             return query.getResultList();
@@ -34,18 +34,17 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom{
     }
 
     @Override
-    public List<Order> findOrdersFilter(Integer userId, OrderState orderState) {
+    public List<Order> findOrdersFilter(String username, OrderState orderState) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("SELECT DISTINCT ordr from Order as ordr ");
-        sb.append("INNER JOIN ordr.user as usr ");
-        sb.append("WHERE usr.id = :userId ");
+        sb.append("WHERE ordr.username = :username ");
         if(orderState != null)
             sb.append("AND ordr.currentState = :orderState ");
 
 
         Query query = entityManager.createQuery(sb.toString());
-        query.setParameter("userId",userId);
+        query.setParameter("username",username);
 
         if(orderState != null)
             query.setParameter("orderState",orderState);

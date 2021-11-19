@@ -1,5 +1,6 @@
 package com.emcove.rest.api.Core.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
@@ -16,6 +17,7 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private String email;
+    //@JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     private Entrepreneurship entrepreneurship;
     @OneToOne(cascade = CascadeType.ALL)
@@ -27,6 +29,9 @@ public class User {
     @Lob
     private String avatar;
     private Boolean adult;
+
+    private Boolean hasEntrepreneurship = false;
+    private String entrepreneurshipName;
 
     @OneToMany(cascade = CascadeType.ALL)
     List<DeliveryPoint> deliveryPoints;
@@ -140,5 +145,21 @@ public class User {
 
     public boolean addDeliveryPoint(DeliveryPoint deliveryPoint){
         return deliveryPoints.add(deliveryPoint);
+    }
+
+    public Boolean getHasEntrepreneurship() {
+        return hasEntrepreneurship;
+    }
+
+    public void setHasEntrepreneurship(Boolean hasEntrepreneurship) {
+        this.hasEntrepreneurship = hasEntrepreneurship;
+    }
+
+    public String getEntrepreneurshipName() {
+        return entrepreneurshipName;
+    }
+
+    public void setEntrepreneurshipName(String entrepreneurshipName) {
+        this.entrepreneurshipName = entrepreneurshipName;
     }
 }

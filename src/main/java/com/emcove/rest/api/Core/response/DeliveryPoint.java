@@ -26,10 +26,6 @@ public class DeliveryPoint {
     private Address address;
 
 
-    @ElementCollection
-    @JoinColumn(name = "delivery_point_id")
-    List<String> attentionAvailability;
-
     public Integer getId() {
         return id;
     }
@@ -48,13 +44,5 @@ public class DeliveryPoint {
 
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    public List<String> getAttentionAvailability() {
-        return attentionAvailability;
-    }
-
-    public void setAttentionAvailability(List<String> attentionAvailability) {
-        this.attentionAvailability = attentionAvailability;
     }
 }

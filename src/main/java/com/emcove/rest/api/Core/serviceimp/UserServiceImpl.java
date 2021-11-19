@@ -121,8 +121,10 @@ public class UserServiceImpl implements UserService {
         Optional<User> userOp = userRepository.findById(id);
         if(userOp.isEmpty())
             throw new ResourceNotFoundException("No se encontro ningún usuario");
+        User user = userOp.get();
+        user.setEntrepreneurship(null);
 
-        return userOp.get();
+        return user;
     }
 
     @Override
@@ -144,6 +146,9 @@ public class UserServiceImpl implements UserService {
                 throw new EntityExistsException("Ya cuenta con un emprendimiento creado");
 
             user.setEntrepreneurship(entrepreneurship);
+            user.setHasEntrepreneurship(true);
+            user.setEntrepreneurshipName(entrepreneurship.getName());
+
             return userRepository.save(user);
         }else
             throw new ResourceNotFoundException("No se encontro ningún usuario");
@@ -184,17 +189,22 @@ public class UserServiceImpl implements UserService {
         Optional<User> userOpt = userRepository.findByUsername(getLoggedUsername());
         if(userOpt.isEmpty())
             throw new ResourceNotFoundException("No se encontro ningún usuario");
+        User user = userOpt.get();
+        if(user.getEntrepreneurship() != null){
+            Entrepreneurship entrepreneurship = user.getEntrepreneurship();
+            entrepreneurship.setProducts(null);
+            entrepreneurship.setCategories(null);
+            entrepreneurship.setLogo(null);
+        }
 
-        return userOpt.get();
+
+        return user;
     }
 
     @Override
     public List<Order> getOrders(String username) {
-        Optional<User> userOpt = userRepository.findByUsername(username);
-        if(userOpt.isEmpty())
-            throw new ResourceNotFoundException("No se encontro ningún usuario");
 
-        return userRepositoryCustom.findOrders(userOpt.get().getId());
+        return userRepositoryCustom.findOrders(username);
     }
 
     @Override
@@ -221,11 +231,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Order> getOrdersFilter(String username, OrderState orderState) {
-        Optional<User> userOpt = userRepository.findByUsername(username);
-        if(userOpt.isEmpty())
-            throw new ResourceNotFoundException("No se encontro ningún usuario");
 
-        return userRepositoryCustom.findOrdersFilter(userOpt.get().getId(), orderState);
+        return userRepositoryCustom.findOrdersFilter(username, orderState);
     }
 
     @Override
