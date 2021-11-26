@@ -54,4 +54,6 @@ public interface EntrepreneurshipService {
     List<Order> getOrders(String loggedUsername, OrderState orderState);
 
     void registerCalendar(Integer id, String calendarId);
+
+    Set<Product> findEntrepreneurshipProducts(Integer entrepreneurshipId);
 }

@@ -54,6 +54,7 @@ public class Reputation {
     }
 
     public List<Comment> getComments() {
+
         Collections.sort(comments, (comment1, comment2) -> comment1.getCreationDateTime().compareTo(comment2.getCreationDateTime()));
         return comments;
     }

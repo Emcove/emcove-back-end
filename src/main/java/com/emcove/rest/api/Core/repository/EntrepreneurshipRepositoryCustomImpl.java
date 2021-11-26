@@ -4,6 +4,7 @@ import com.emcove.rest.api.Core.response.Category;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Order;
 import com.emcove.rest.api.Core.response.OrderState;
+import com.emcove.rest.api.Core.response.Product;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -13,6 +14,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -62,15 +64,14 @@ public class EntrepreneurshipRepositoryCustomImpl implements EntrepreneurshipRep
     }
 
     @Override
-    public List<Order> findOrdersByEntrepreneurship(Integer entrepreneurshipId) {
+    public List<Order> findOrdersByEntrepreneurship(String entrepreneurshipName) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("SELECT DISTINCT ordr from Order as ordr ");
-        sb.append("INNER JOIN ordr.entrepreneurship as ent ");
-        sb.append("WHERE ent.id = :entrepreneurshipId");
+        sb.append("WHERE ordr.entrepreneurshipName :entrepreneurshipName");
 
         Query query = entityManager.createQuery(sb.toString());
-        query.setParameter("entrepreneurshipId",entrepreneurshipId);
+        query.setParameter("entrepreneurshipName",entrepreneurshipName);
 
         try {
             return (List<Order>)query.getResultList();
@@ -100,19 +101,18 @@ public class EntrepreneurshipRepositoryCustomImpl implements EntrepreneurshipRep
     }
 
     @Override
-    public List<Order> findOrdersByEntrepreneurshipFilter(Integer entrepreneurshipId, OrderState orderState) {
+    public List<Order> findOrdersByEntrepreneurshipFilter(String entrepreneurshipName, OrderState orderState) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("SELECT DISTINCT ordr from Order as ordr ");
-        sb.append("INNER JOIN ordr.entrepreneurship as ent ");
-        sb.append("WHERE ent.id = :entrepreneurshipId ");
+        sb.append("WHERE ordr.entrepreneurshipName = :entrepreneurshipName ");
         if(orderState != null)
             sb.append("AND ordr.currentState = :orderState ");
 
 
 
         Query query = entityManager.createQuery(sb.toString());
-        query.setParameter("entrepreneurshipId",entrepreneurshipId);
+        query.setParameter("entrepreneurshipName",entrepreneurshipName);
         if(orderState != null)
             query.setParameter("orderState",orderState);
 
@@ -121,6 +121,24 @@ public class EntrepreneurshipRepositoryCustomImpl implements EntrepreneurshipRep
         }catch (Exception e){
             e.printStackTrace();
             return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public Set<Product> findProductsByEntrepreneurship(Integer entrepreneurshipId) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("SELECT DISTINCT product from entrepreneurship as ent ");
+        sb.append("INNER JOIN ent.products as product ");
+        sb.append("WHERE ent.id = :entrepreneurshipId ");
+        Query query = entityManager.createQuery(sb.toString());
+        query.setParameter("entrepreneurshipId",entrepreneurshipId);
+
+        try {
+            return (Set<Product>)query.getResultList();
+        }catch (Exception e){
+            e.printStackTrace();
+            return new HashSet<>();
         }
     }
 }

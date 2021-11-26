@@ -4,6 +4,7 @@ import com.emcove.rest.api.Core.response.Category;
 import com.emcove.rest.api.Core.response.Entrepreneurship;
 import com.emcove.rest.api.Core.response.Order;
 import com.emcove.rest.api.Core.response.OrderState;
+import com.emcove.rest.api.Core.response.Product;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,9 +17,11 @@ import java.util.Set;
 public interface EntrepreneurshipRepositoryCustom {
     List<Entrepreneurship> find(Set<Category> categories, String name, String productName);
 
-    List<Order> findOrdersByEntrepreneurship(Integer entrepreneurshipId);
+    List<Order> findOrdersByEntrepreneurship(String entrepreneurshipName);
 
     List<Entrepreneurship> findBySubscriptionExpirationDate(Date currentTime);
 
-    List<Order> findOrdersByEntrepreneurshipFilter(Integer entrepreneurshipId, OrderState orderState);
+    List<Order> findOrdersByEntrepreneurshipFilter(String entrepreneurshipName, OrderState orderState);
+
+    Set<Product> findProductsByEntrepreneurship(Integer entrepreneurshipId);
 }

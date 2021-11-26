@@ -81,9 +81,8 @@ public class UserController {
     public ResponseEntity<List<Order>>  getOrders(@RequestParam(required = false) OrderState orderState){
         List<Order> orders = userService.getOrdersFilter(userService.getLoggedUsername(), orderState);
         orders.stream().map(o -> {
-            o.getEntrepreneurship().setProducts(null);
-            o.setProduct(null);
-            o.setUser(null);
+            //o.getEntrepreneurship().setProducts(null);
+          // o.setUser(null);
             return o;
         }).collect(Collectors.toList());
         return ResponseEntity.ok().body(orders);

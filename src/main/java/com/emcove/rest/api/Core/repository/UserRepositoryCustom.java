@@ -11,7 +11,7 @@ import java.util.List;
 @NoRepositoryBean
 public interface UserRepositoryCustom {
 
-    List<Order> findOrders(Integer userId);
+    List<Order> findOrders(String username);
 
-    List<Order> findOrdersFilter(Integer userId, OrderState orderState);
+    List<Order> findOrdersFilter(String username, OrderState orderState);
 }

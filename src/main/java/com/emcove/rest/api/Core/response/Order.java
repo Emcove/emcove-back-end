@@ -26,21 +26,34 @@ public class Order {
     private Float totalPrice;
 
     private String closeReason;
+
+    private Integer userId;
+    private String username;
+    private String userPersonalName;
+    private String userPersonalSurname;
+
+    private String entrepreneurshipName;
+    private Boolean entrepreneurshipDoesShipments;
+    @Lob
+    private String entrepreneurshipLogo;
+    private Integer entrepreneurshipId;
+
+/*
     @OneToOne
     private User user;
 
     @OneToOne
     private Entrepreneurship entrepreneurship;
-
+*/
     @OneToMany(cascade = CascadeType.ALL)
     private List<OrderTrackingData> orderTrackingDatas;
 
     @OneToOne(cascade = CascadeType.ALL)
     private ProductSnapshot productSnapshot;
-
+/*
     @OneToOne
     private Product product;
-
+*/
     @OneToOne
     private DeliveryPoint userDeliveryPoint;
 
@@ -76,7 +89,7 @@ public class Order {
     public void setDeliverDate(LocalDate deliverDate) {
         this.deliverDate = deliverDate;
     }
-
+/*
     public User getUser() {
         return user;
     }
@@ -92,7 +105,7 @@ public class Order {
     public void setEntrepreneurship(Entrepreneurship entrepreneurship) {
         this.entrepreneurship = entrepreneurship;
     }
-
+*/
     public List<OrderTrackingData> getOrderTrackingData() {
         return orderTrackingDatas;
     }
@@ -108,7 +121,7 @@ public class Order {
     public void setProductSnapshot(ProductSnapshot productSnapshot) {
         this.productSnapshot = productSnapshot;
     }
-
+/*
     public Product getProduct() {
         return product;
     }
@@ -116,7 +129,7 @@ public class Order {
     public void setProduct(Product product) {
         this.product = product;
     }
-
+*/
     public void addTrackingData(OrderTrackingData orderTrackingData) {
         OrderTrackingData orderTrackingDataToFind = orderTrackingDatas.stream().filter(tracking -> tracking.getState().equals(orderTrackingData.getState())).findFirst().orElse(null);
 
@@ -182,5 +195,78 @@ public class Order {
 
     public void setCloseReason(String closeReason) {
         this.closeReason = closeReason;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEntrepreneurshipName() {
+        return entrepreneurshipName;
+    }
+
+    public void setEntrepreneurshipName(String entrepreneurshipName) {
+        this.entrepreneurshipName = entrepreneurshipName;
+    }
+
+    public Boolean getEntrepreneurshipDoesShipments() {
+        return entrepreneurshipDoesShipments;
+    }
+
+    public void setEntrepreneurshipDoesShipments(Boolean entrepreneurshipDoesShipments) {
+        this.entrepreneurshipDoesShipments = entrepreneurshipDoesShipments;
+    }
+
+
+    public List<OrderTrackingData> getOrderTrackingDatas() {
+        return orderTrackingDatas;
+    }
+
+    public void setOrderTrackingDatas(List<OrderTrackingData> orderTrackingDatas) {
+        this.orderTrackingDatas = orderTrackingDatas;
+    }
+
+    public String getUserPersonalName() {
+        return userPersonalName;
+    }
+
+    public void setUserPersonalName(String userPersonalName) {
+        this.userPersonalName = userPersonalName;
+    }
+
+    public String getUserPersonalSurname() {
+        return userPersonalSurname;
+    }
+
+    public void setUserPersonalSurname(String userPersonalSurname) {
+        this.userPersonalSurname = userPersonalSurname;
+    }
+
+    public String getEntrepreneurshipLogo() {
+        return entrepreneurshipLogo;
+    }
+
+    public void setEntrepreneurshipLogo(String entrepreneurshipLogo) {
+        this.entrepreneurshipLogo = entrepreneurshipLogo;
+    }
+
+    public Integer getEntrepreneurshipId() {
+        return entrepreneurshipId;
+    }
+
+    public void setEntrepreneurshipId(Integer entrepreneurshipId) {
+        this.entrepreneurshipId = entrepreneurshipId;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }
